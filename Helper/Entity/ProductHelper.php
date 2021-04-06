@@ -334,11 +334,6 @@ class ProductHelper
             $this->logger->log('Pushing the same settings to TMP index as well');
         }
 
-        $this->setFacetsQueryRules($indexName);
-        if ($saveToTmpIndicesToo === true) {
-            $this->setFacetsQueryRules($indexNameTmp);
-        }
-
         /*
          * Handle replicas
          */
@@ -994,83 +989,6 @@ class ProductHelper
 
             foreach ($indicesToDelete as $indexToDelete) {
                 $this->algoliaHelper->deleteIndex($indexToDelete);
-            }
-        }
-    }
-
-    private function setFacetsQueryRules($indexName)
-    {
-        $index = $this->algoliaHelper->getIndex($indexName);
-
-        $this->clearFacetsQueryRules($index);
-
-        $rules = [];
-        $facets = $this->configHelper->getFacets();
-        foreach ($facets as $facet) {
-            if (!array_key_exists('create_rule', $facet) || $facet['create_rule'] !== '1') {
-                continue;
-            }
-
-            $attribute = $facet['attribute'];
-
-            $condition = [
-                'anchoring' => 'contains',
-                'pattern' => '{facet:' . $attribute . '}',
-                'context' => 'magento_filters',
-            ];
-
-            $rules[] = [
-                'objectID' => 'filter_' . $attribute,
-                'description' => 'Filter facet "' . $attribute . '"',
-                'conditions' => [$condition],
-                'consequence' => [
-                    'params' => [
-                        'automaticFacetFilters' => [$attribute],
-                        'query' => [
-                            'remove' => ['{facet:' . $attribute . '}'],
-                        ],
-                    ],
-                ],
-            ];
-        }
-
-        if ($rules) {
-            $this->logger->log('Setting facets query rules to "' . $indexName . '" index: ' . json_encode($rules));
-            $index->saveRules($rules, [
-                'forwardToReplicas' => true,
-            ]);
-        }
-    }
-
-    private function clearFacetsQueryRules(SearchIndex $index)
-    {
-        try {
-            $hitsPerPage = 100;
-            $page = 0;
-            do {
-                $fetchedQueryRules = $index->searchRules('', [
-                    'context' => 'magento_filters',
-                    'page' => $page,
-                    'hitsPerPage' => $hitsPerPage,
-                ]);
-
-                if (!$fetchedQueryRules || !array_key_exists('hits', $fetchedQueryRules)) {
-                    break;
-                }
-
-                foreach ($fetchedQueryRules['hits'] as $hit) {
-                    $index->deleteRule($hit['objectID'], [
-                        'forwardToReplicas' => true,
-                    ]);
-                }
-
-                $page++;
-            } while (($page * $hitsPerPage) < $fetchedQueryRules['nbHits']);
-        } catch (AlgoliaException $e) {
-            // Fail silently if query rules are disabled on the app
-            // If QRs are disabled, nothing will happen and the extension will work as expected
-            if ($e->getMessage() !== 'Query Rules are not enabled on this application') {
-                throw $e;
             }
         }
     }
