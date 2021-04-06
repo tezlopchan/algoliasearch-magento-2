@@ -37,10 +37,6 @@
         <observer name="show_warning_mismatch_indexer_type_dashboard" instance="Algolia\AlgoliaSearch\Model\Observer\IndexerMismatchWarning" />
     </event>
 
-    <event name="catalog_category_save_after">
-        <observer name="algoliasearch_create_merchandising_query_rule" instance="Algolia\AlgoliaSearch\Model\Observer\Merchandising"/>
-    </event>
-
     <event name="catalog_category_move_after">
         <observer name="algoliasearch_category_move_after" instance="Algolia\AlgoliaSearch\Model\Observer\CategoryMoveAfter"/>
     </event>
