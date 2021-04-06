@@ -15,7 +15,7 @@ class Configuration extends Algolia implements CollectionDataSourceInterface
             /** @var Http $request */
             $request = $this->getRequest();
 
-            if ($request->getFullActionName() === 'catalogsearch_result_index' || $this->isLandingPage()) {
+            if ($request->getFullActionName() === 'catalogsearch_result_index') {
                 return true;
             }
 
@@ -174,7 +174,6 @@ class Configuration extends Algolia implements CollectionDataSourceInterface
             )),
             'isSearchPage' => $this->isSearchPage(),
             'isCategoryPage' => $isCategoryPage,
-            'isLandingPage' => $this->isLandingPage(),
             'removeBranding' => (bool) $config->isRemoveBranding(),
             'productId' => $productId,
             'priceKey' => $priceKey,
