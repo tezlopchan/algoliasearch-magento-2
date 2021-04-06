@@ -53,7 +53,7 @@ class AdapterHelper
         $algoliaQuery = $query !== '__empty__' ? $query : '';
         $searchParams = [];
         $targetedIndex = null;
-        if ($this->isReplaceCategory() || $this->isSearch() || $this->isLandingPage()) {
+        if ($this->isReplaceCategory() || $this->isSearch()) {
             $searchParams = $this->getSearchParams($storeId);
             $orderParam = $this->getOrderParam($storeId);
             if ($this->filtersHelper->getRequest()->getParam('sortBy') !== null) {
