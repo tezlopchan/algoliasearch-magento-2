@@ -83,8 +83,6 @@ class UpgradeSchema implements UpgradeSchemaInterface
         'algoliasearch_analytics/analytics_group/trigger_on_ui_interaction' => '1',
         'algoliasearch_analytics/analytics_group/push_initial_search' => '0',
 
-        'algoliasearch_synonyms/synonyms_group/enable_synonyms' => '0',
-
         'algoliasearch_advanced/advanced/number_of_element_by_page' => '300',
         'algoliasearch_advanced/advanced/remove_words_if_no_result' => 'allOptional',
         'algoliasearch_advanced/advanced/partial_update' => '0',

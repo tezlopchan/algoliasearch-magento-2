@@ -82,24 +82,6 @@ document.addEventListener("DOMContentLoaded", function(event) {
             	});
 			}
 
-			// SYNONYMS
-
-			handleSynonyms($('#algoliasearch_synonyms_synonyms_group_enable_synonyms').val());
-
-			$(document).on('change', '#algoliasearch_synonyms_synonyms_group_enable_synonyms', function() {
-				handleSynonyms($(this).val());
-			});
-
-			function handleSynonyms(enabled) {
-				var $rows = $('#row_algoliasearch_synonyms_synonyms_group_synonyms, #row_algoliasearch_synonyms_synonyms_group_oneway_synonyms, #row_algoliasearch_synonyms_synonyms_group_synonyms_file');
-
-				if (enabled === '1') {
-					$rows.show();
-				} else {
-					$rows.hide();
-				}
-			}
-
 			// ORDERED / UNORDERED
 			var $attributesRows = $('#algoliasearch_products_products_product_additional_attributes, #algoliasearch_categories_categories_category_additional_attributes');
 			initAttributes($attributesRows);

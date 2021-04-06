@@ -40,11 +40,6 @@ class AssetHelper extends \Magento\Framework\App\Helper\AbstractHelper
             'url' => 'https://www.youtube.com/watch?v=0V1BSKlCm10',
             'thumbnail' => 'https://img.youtube.com/vi/0V1BSKlCm10/mqdefault.jpg',
         ],
-        'algoliasearch_synonyms' => [
-            'title' => 'Notable features',
-            'url' => 'https://www.youtube.com/watch?v=45NKJbrs1Z4',
-            'thumbnail' => 'https://img.youtube.com/vi/45NKJbrs1Z4/mqdefault.jpg',
-        ],
         'algoliasearch_cc_analytics' => [
             'title' => 'Notable features',
             'url' => 'https://www.youtube.com/watch?v=45NKJbrs1Z4',
@@ -130,13 +125,6 @@ class AssetHelper extends \Magento\Framework\App\Helper\AbstractHelper
             [
                 'title' => 'Indexing troubleshooting guide',
                 'url' => 'https://www.algolia.com/doc/integration/magento-2/troubleshooting/data-indexes-queues/?utm_source=magento&utm_medium=extension&utm_campaign=magento_2&utm_term=shop-owner&utm_content=doc-link#general-information',
-                'icon' => 'iconDocs',
-            ],
-        ],
-        'algoliasearch_synonyms' => [
-            [
-                'title' => 'Synonyms documentation',
-                'url' => 'https://www.algolia.com/doc/guides/managing-results/optimize-search-results/adding-synonyms/?utm_source=magento&utm_medium=extension&utm_campaign=magento_2&utm_term=shop-owner&utm_content=doc-link',
                 'icon' => 'iconDocs',
             ],
         ],
