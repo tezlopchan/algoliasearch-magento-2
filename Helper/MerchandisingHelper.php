@@ -62,7 +62,7 @@ class MerchandisingHelper
             unset($condition['context']);
         }
 
-        if (in_array($entityType, ['query', 'landingpage'])) {
+        if (in_array($entityType, ['query'])) {
             $rule['tags'] = ['visual-editor'];
         }
 

@@ -587,14 +587,6 @@ requirejs(['algoliaBundle'], function(algoliaBundle) {
 					var uiStateProductIndex = {}
 
 					uiStateProductIndex['query'] = routeParameters.q == '__empty__' ? '' : routeParameters.q;
-					if (algoliaConfig.isLandingPage && typeof uiStateProductIndex['query'] === 'undefined' && algoliaConfig.landingPage.query != '') {
-						uiStateProductIndex['query'] = algoliaConfig.landingPage.query;
-					}
-
-					var landingPageConfig = algoliaConfig.isLandingPage && algoliaConfig.landingPage.configuration ?
-						JSON.parse(algoliaConfig.landingPage.configuration) :
-						{};
-
 					uiStateProductIndex['refinementList'] = {};
 					uiStateProductIndex['hierarchicalMenu'] = {};
 					uiStateProductIndex['range'] = {};
@@ -604,20 +596,10 @@ requirejs(['algoliaBundle'], function(algoliaBundle) {
 							// Handle refinement facets
 							if (currentFacet.attribute != 'categories' && (currentFacet.type == 'conjunctive' || currentFacet.type == 'disjunctive')) {
 								uiStateProductIndex['refinementList'][currentFacet.attribute] = routeParameters[currentFacet.attribute] && routeParameters[currentFacet.attribute].split('~');
-								if (algoliaConfig.isLandingPage &&
-									typeof uiStateProductIndex['refinementList'][currentFacet.attribute] === 'undefined' &&
-									currentFacet.attribute in landingPageConfig) {
-									uiStateProductIndex['refinementList'][currentFacet.attribute] = landingPageConfig[currentFacet.attribute].split('~');
-								}
 							}
 							// Handle categories facet
 							if (currentFacet.attribute == 'categories' && !algoliaConfig.isCategoryPage) {
 								uiStateProductIndex['hierarchicalMenu']['categories.level0'] = routeParameters['categories'] && routeParameters['categories'].split('~');
-								if (algoliaConfig.isLandingPage &&
-									typeof uiStateProductIndex['hierarchicalMenu']['categories.level0'] === 'undefined' &&
-									'categories.level0' in landingPageConfig) {
-									uiStateProductIndex['hierarchicalMenu']['categories.level0'] = landingPageConfig['categories.level0'].split(' /// ');
-								}
 							}
 							if (currentFacet.attribute == 'categories' && algoliaConfig.isCategoryPage) {
 								uiStateProductIndex['hierarchicalMenu']['categories.level0'] = [algoliaConfig.request.path];
@@ -629,20 +611,6 @@ requirejs(['algoliaBundle'], function(algoliaBundle) {
 									currentFacetAttribute += algoliaConfig.priceKey;
 								}
 								uiStateProductIndex['range'][currentFacetAttribute] = routeParameters[currentFacetAttribute] && routeParameters[currentFacetAttribute];
-								if (algoliaConfig.isLandingPage &&
-									typeof uiStateProductIndex['range'][currentFacetAttribute] === 'undefined' &&
-									currentFacetAttribute in landingPageConfig) {
-
-									var facetValue = '';
-									if (typeof landingPageConfig[currentFacetAttribute]['>='] !== "undefined") {
-										facetValue = landingPageConfig[currentFacetAttribute]['>='][0];
-									}
-									facetValue += ':';
-									if (typeof landingPageConfig[currentFacetAttribute]['<='] !== "undefined") {
-										facetValue += landingPageConfig[currentFacetAttribute]['<='][0];
-									}
-									uiStateProductIndex['range'][currentFacetAttribute] = facetValue;
-								}
 							}
 						};
 					}

@@ -37,7 +37,6 @@ class Algolia extends Template implements CollectionDataSourceInterface
     private $httpContext;
     private $coreHelper;
     private $categoryHelper;
-    private $landingPageHelper;
     private $personalizationHelper;
     private $checkoutSession;
     private $date;
@@ -58,7 +57,6 @@ class Algolia extends Template implements CollectionDataSourceInterface
         HttpContext $httpContext,
         CoreHelper $coreHelper,
         CategoryHelper $categoryHelper,
-        LandingPageHelper $landingPageHelper,
         PersonalizationHelper $personalizationHelper,
         CheckoutSession $checkoutSession,
         DateTime $date,
@@ -76,7 +74,6 @@ class Algolia extends Template implements CollectionDataSourceInterface
         $this->httpContext = $httpContext;
         $this->coreHelper = $coreHelper;
         $this->categoryHelper = $categoryHelper;
-        $this->landingPageHelper = $landingPageHelper;
         $this->personalizationHelper = $personalizationHelper;
         $this->checkoutSession = $checkoutSession;
         $this->date = $date;
@@ -217,15 +214,5 @@ class Algolia extends Template implements CollectionDataSourceInterface
         }
 
         return $this->_urlBuilder->getUrl('checkout/cart/add', $routeParams);
-    }
-
-    protected function getCurrentLandingPage()
-    {
-        $landingPageId = $this->getRequest()->getParam('landing_page_id');
-        if (!$landingPageId) {
-            return null;
-        }
-
-        return $this->landingPageHelper->getLandingPage($landingPageId);
     }
 }

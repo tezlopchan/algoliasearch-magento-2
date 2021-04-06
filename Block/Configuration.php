@@ -153,10 +153,6 @@ class Configuration extends Algolia implements CollectionDataSourceInterface
                 'nbOfQueriesSuggestions' => $config->getNumberOfQueriesSuggestions(),
                 'isDebugEnabled' => $config->isAutocompleteDebugEnabled(),
             ],
-            'landingPage' => [
-                'query' => $this->getLandingPageQuery(),
-                'configuration' => $this->getLandingPageConfiguration(),
-            ],
             'extensionVersion' => $config->getExtensionVersion(),
             'applicationId' => $config->getApplicationID(),
             'indexName' => $coreHelper->getBaseIndexName(),
@@ -192,7 +188,6 @@ class Configuration extends Algolia implements CollectionDataSourceInterface
                 'refinementKey' => $refinementKey,
                 'refinementValue' => $refinementValue,
                 'categoryId' => $categoryId,
-                'landingPageId' => $this->getLandingPageId(),
                 'path' => $path,
                 'level' => $level,
             ],
@@ -321,25 +316,5 @@ class Configuration extends Algolia implements CollectionDataSourceInterface
         }
 
         return $ids;
-    }
-
-    private function isLandingPage()
-    {
-        return $this->getRequest()->getFullActionName() === 'algolia_landingpage_view';
-    }
-
-    private function getLandingPageId()
-    {
-        return $this->isLandingPage() ? $this->getCurrentLandingPage()->getId() : '';
-    }
-
-    private function getLandingPageQuery()
-    {
-        return $this->isLandingPage() ? $this->getCurrentLandingPage()->getQuery() : '';
-    }
-
-    private function getLandingPageConfiguration()
-    {
-        return $this->isLandingPage() ? $this->getCurrentLandingPage()->getConfiguration() : json_encode([]);
     }
 }
