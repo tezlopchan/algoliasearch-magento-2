@@ -7,7 +7,6 @@ var algolia = {
 		'beforeWidgetInitialization',
 		'beforeInstantsearchStart',
 		'afterInstantsearchStart',
-		'afterInsightsBindEvents',
 		'beforeAutocompleteProductSourceOptions'
 	],
 	registeredHooks: [],

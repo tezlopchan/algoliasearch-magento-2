@@ -31,16 +31,5 @@
                 <custom_ranking_category_attributes><![CDATA[{"_1600352142072_72":{"attribute":"product_count","order":"desc"}}]]></custom_ranking_category_attributes>
             </categories>
         </algoliasearch_categories>
-        <algoliasearch_personalization>
-            <personalization_group>
-                <personalization_click_events_group>
-                    <product_clicked_selector>.ais-Hits-item a.result, .ais-InfiniteHits-item a.result</product_clicked_selector>
-                    <filter_clicked_selector>.default-filter-selector</filter_clicked_selector>
-                    <product_recommended_clicked_selector>.products-upsell .product-item</product_recommended_clicked_selector>
-                </personalization_click_events_group>
-                <personalization_conversion_events_group>
-                </personalization_conversion_events_group>
-            </personalization_group>
-        </algoliasearch_personalization>
     </default>
 </config>
