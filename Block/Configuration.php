@@ -2,7 +2,6 @@
 
 namespace Algolia\AlgoliaSearch\Block;
 
-use Algolia\AlgoliaSearch\Helper\ConfigHelper;
 use Magento\Framework\App\Request\Http;
 use Magento\Framework\Data\CollectionDataSourceInterface;
 use Magento\Framework\DataObject;
