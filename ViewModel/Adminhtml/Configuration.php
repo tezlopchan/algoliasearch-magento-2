@@ -21,12 +21,6 @@ class Configuration implements \Magento\Framework\View\Element\Block\ArgumentInt
         $this->noticeHelper = $noticeHelper;
     }
 
-    /** @return bool */
-    public function isClickAnalyticsEnabled()
-    {
-        return $this->noticeHelper->isClickAnalyticsEnabled();
-    }
-
     public function getLinksAndVideoTemplate($section)
     {
         return $this->assetHelper->getLinksAndVideoTemplate($section);

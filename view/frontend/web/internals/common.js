@@ -175,25 +175,6 @@ requirejs(['algoliaBundle'], function(algoliaBundle) {
 				'formKey': algoliaConfig.instant.addToCartParams.formKey
 			};
 
-			if (hit.__queryID) {
-
-				hit.urlForInsights = hit.url;
-
-				if (algoliaConfig.ccAnalytics.enabled
-					&& algoliaConfig.ccAnalytics.conversionAnalyticsMode !== 'disabled') {
-					var insightsDataUrlString = $.param({
-						queryID: hit.__queryID,
-						objectID: hit.objectID,
-						indexName: hit.__indexName
-					});
-					if (hit.url.indexOf('?') > -1) {
-						hit.urlForInsights += insightsDataUrlString
-					} else {
-						hit.urlForInsights += '?' + insightsDataUrlString;
-					}
-				}
-			}
-
 			return hit;
 		};
 
@@ -244,7 +225,6 @@ requirejs(['algoliaBundle'], function(algoliaBundle) {
 						},
 						suggestion: function (hit, payload) {
 							hit.__indexName = algoliaConfig.indexName + "_" + section.name;
-							hit.__queryID = payload.queryID;
 							hit.__position = payload.hits.indexOf(hit) + 1;
 
 							hit = transformHit(hit, algoliaConfig.priceKey);
@@ -291,7 +271,6 @@ requirejs(['algoliaBundle'], function(algoliaBundle) {
 							hit.displayKey = hit.displayKey || hit.name;
 
 							hit.__indexName = algoliaConfig.indexName + "_" + section.name;
-							hit.__queryID = payload.queryID;
 							hit.__position = payload.hits.indexOf(hit) + 1;
 
 							return algoliaConfig.autocomplete.templates[section.name].render(hit);
@@ -336,7 +315,6 @@ requirejs(['algoliaBundle'], function(algoliaBundle) {
 							hit._highlightResult.query.value = algoliaBundle.autocomplete.escapeHighlightedString(toEscape);
 
 							hit.__indexName = algoliaConfig.indexName + "_" + section.name;
-							hit.__queryID = payload.queryID;
 							hit.__position = payload.hits.indexOf(hit) + 1;
 
 							return algoliaConfig.autocomplete.templates.suggestions.render(hit);
@@ -356,7 +334,6 @@ requirejs(['algoliaBundle'], function(algoliaBundle) {
 							hit.url = algoliaConfig.baseUrl + '/catalogsearch/result/?q=' + hit.value + '&refinement_key=' + encodeURIComponent(section.name);
 
 							hit.__indexName = algoliaConfig.indexName + "_section_" + section.name;
-							hit.__queryID = payload.queryID;
 							hit.__position = payload.hits.indexOf(hit) + 1;
 
 							return algoliaConfig.autocomplete.templates.additionalSection.render(hit);

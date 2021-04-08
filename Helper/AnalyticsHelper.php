@@ -304,15 +304,6 @@ class AnalyticsHelper
         return true;
     }
 
-    public function isClickAnalyticsEnabled()
-    {
-        if (!$this->configHelper->isClickConversionAnalyticsEnabled()) {
-            return false;
-        }
-
-        return true;
-    }
-
     /**
      * Pass through method for handling API Versions
      *

@@ -179,26 +179,10 @@ class Overview implements \Magento\Framework\View\Element\Block\ArgumentInterfac
         $searches = $this->getSearchesByDates();
         $users = $this->getUsersCountByDates();
         $rates = $this->getResultRateByDates();
-        $clickPosition = null;
-        $conversion = null;
-        $ctr = null;
-
-        if ($this->isClickAnalyticsEnabled()) {
-            $clickPosition = $this->getClickPositionByDates();
-            $ctr = $this->getClickThroughRateByDates();
-            $conversion = $this->getConversionRateByDates();
-        }
 
         foreach ($searches as &$search) {
             $search['users'] = $this->getDateValue($users, $search['date'], 'count');
             $search['rate'] = $this->getDateValue($rates, $search['date'], 'rate');
-
-            if ($this->isClickAnalyticsEnabled()) {
-                $search['clickPos'] = $this->getDateValue($clickPosition, $search['date'], 'average');
-                $search['ctr'] = $this->getDateValue($ctr, $search['date'], 'rate');
-                $search['conversion'] = $this->getDateValue($conversion, $search['date'], 'rate');
-            }
-
             $search['formatted'] = date('M, d', strtotime($search['date']));
         }
 
@@ -394,15 +378,6 @@ class Overview implements \Magento\Framework\View\Element\Block\ArgumentInterfac
     /**
      * @return string
      */
-    public function getAnalyticsConfigurationUrl()
-    {
-        return $this->getBackendView()->getUrlInterface()
-            ->getUrl('adminhtml/system_config/edit/section/algoliasearch_cc_analytics');
-    }
-
-    /**
-     * @return string
-     */
     public function getDailyChartHtml()
     {
         $block = $this->getBackendView()->getLayout()->createBlock(\Magento\Backend\Block\Template::class);
@@ -442,14 +417,6 @@ class Overview implements \Magento\Framework\View\Element\Block\ArgumentInterfac
     public function isAnalyticsApiEnabled()
     {
         return $this->analyticsHelper->isAnalyticsApiEnabled();
-    }
-
-    /**
-     * @return bool|int
-     */
-    public function isClickAnalyticsEnabled()
-    {
-        return $this->analyticsHelper->isClickAnalyticsEnabled();
     }
 
     /**

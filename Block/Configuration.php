@@ -98,11 +98,6 @@ class Configuration extends Algolia implements CollectionDataSourceInterface
             }
         }
 
-        $productId = null;
-        if ($config->isClickConversionAnalyticsEnabled() && $request->getFullActionName() === 'catalog_product_view') {
-            $productId = $this->getCurrentProduct()->getId();
-        }
-
         /**
          * Handle search
          */
@@ -173,7 +168,6 @@ class Configuration extends Algolia implements CollectionDataSourceInterface
             'isSearchPage' => $this->isSearchPage(),
             'isCategoryPage' => $isCategoryPage,
             'removeBranding' => (bool) $config->isRemoveBranding(),
-            'productId' => $productId,
             'priceKey' => $priceKey,
             'currencyCode' => $currencyCode,
             'currencySymbol' => $currencySymbol,
@@ -195,13 +189,6 @@ class Configuration extends Algolia implements CollectionDataSourceInterface
             'useAdaptiveImage' => $config->useAdaptiveImage(),
             'urls' => [
                 'logo' => $this->getViewFileUrl('Algolia_AlgoliaSearch::images/search-by-algolia.svg'),
-            ],
-            'ccAnalytics' => [
-                'enabled' => $config->isClickConversionAnalyticsEnabled(),
-                'ISSelector' => $config->getClickConversionAnalyticsISSelector(),
-                'conversionAnalyticsMode' => $config->getConversionAnalyticsMode(),
-                'addToCartSelector' => $config->getConversionAnalyticsAddToCartSelector(),
-                'orderedProductIds' => $this->getOrderedProductIds($config, $request),
             ],
             'analytics' => $config->getAnalyticsConfig(),
             'now' => $this->getTimestamp(),
@@ -260,28 +247,5 @@ class Configuration extends Algolia implements CollectionDataSourceInterface
         }
 
         return $urlTrackedParameters;
-    }
-
-    private function getOrderedProductIds(ConfigHelper $configHelper, Http $request)
-    {
-        $ids = [];
-
-        if ($configHelper->getConversionAnalyticsMode() === 'disabled'
-            || $request->getFrontName() !== 'checkout'
-            || $request->getActionName() !== 'success') {
-            return $ids;
-        }
-
-        $lastOrder = $this->getLastOrder();
-        if (!$lastOrder) {
-            return $ids;
-        }
-
-        $items = $lastOrder->getItems();
-        foreach ($items as $item) {
-            $ids[] = $item->getProductId();
-        }
-
-        return $ids;
     }
 }

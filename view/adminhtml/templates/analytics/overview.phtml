@@ -34,40 +34,6 @@ $view = $block->getViewModel();
                     <div class="stat"><?php echo $view->getTotalResultRates() ?></div>
                 </div>
             </div>
-            <?php if ($view->isClickAnalyticsEnabled()) : ?>
-                <div class="row thirds top-thirds">
-                    <div class="one-third col-1">
-                        <div class="title">
-                            <h4><?php echo $block->escapeHtml(__('CTR')) ?>
-                                <?php echo $view->getTooltipHtml(__('Click-Through Rate: percentage of tracked searches (searches with clickAnalytics=true) where at least one results was clicked on by the user.')) ?>
-                            </h4>
-                        </div>
-                        <?php $ctr = $view->getClickThroughRate() ?>
-                        <div class="stat"><?php echo round($ctr['rate'] * 100, 2) . '%'; ?></div>
-                        <div class="sub"><?php echo $block->escapeHtml(__('from %1 tracked searches', $ctr['trackedSearchCount'])) ?></div>
-                    </div>
-                    <div class="one-third col-2">
-                        <div class="title">
-                            <h4><?php echo $block->escapeHtml(__('Conversion rate')) ?>
-                                <?php echo $view->getTooltipHtml(__('Percentage of tracked searches (searches with clickAnalytics=true) where you signaled to us that it led to a successful conversion. Settings to determine conversion can be found in your <a href="%1">Magento Algolia Configuration</a> for Click Analytics.', $view->getAnalyticsConfigurationUrl())) ?>
-                            </h4>
-                        </div>
-                        <?php $conversion = $view->getConversionRate() ?>
-                        <div class="stat"><?php echo round($conversion['rate'] * 100, 2) . '%'; ?></div>
-                        <div class="sub"><?php echo $block->escapeHtml(__('from %1 tracked searches', $conversion['trackedSearchCount'])) ?></div>
-                    </div>
-                    <div class="one-third col-3">
-                        <div class="title">
-                            <h4><?php echo $block->escapeHtml(__('Click position')) ?>
-                                <?php echo $view->getTooltipHtml(__('Average position of the clicks performed on the search results. A value of one would mean all users clicked on the first results. Smaller values are better.')) ?>
-                            </h4>
-                        </div>
-                        <?php $click = $view->getClickPosition() ?>
-                        <div class="stat"><?php echo round($click['average'], 2); ?></div>
-                        <div class="sub"><?php echo $block->escapeHtml(__('from %1 tracked clicks', $click['clickCount'])) ?></div>
-                    </div>
-                </div>
-            <?php endif ?>
         </div>
         <div class="row section daily-search-section">
             <div class="title">
@@ -183,13 +149,3 @@ $view = $block->getViewModel();
             </div>
         </div>
     </div>
-
-<?php if (!$view->isClickAnalyticsEnabled()) : ?>
-    <div class="algolia_block blue icon-stars">
-        Enhance your Analytics with <b>Algolia Click Analytics</b> that provide you even more insights
-        like Click-through Rate, Conversion Rate from searches and average click position.
-        Click Analytics are only available for higher plans and require only minor additional settings.
-        <br><br>
-        Find more information in <a href="https://www.algolia.com/doc/integration/magento-2/how-it-works/click-and-conversion-analytics/?utm_source=magento&utm_medium=extension&utm_campaign=magento_2&utm_term=shop-owner&utm_content=doc-link" class="algolia-analytics-overview-docs" target="_blank">documentation</a>.
-    </div>
-<?php endif ?>
