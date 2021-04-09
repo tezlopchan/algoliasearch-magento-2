@@ -133,43 +133,6 @@ class Overview implements \Magento\Framework\View\Element\Block\ArgumentInterfac
     }
 
     /**
-     * Click Analytics
-     *
-     * @throws NoSuchEntityException
-     *
-     * @return mixed
-     */
-    public function getClickThroughRate()
-    {
-        return $this->analyticsHelper->getClickThroughRate($this->getAnalyticsParams());
-    }
-
-    public function getClickThroughRateByDates()
-    {
-        return $this->analyticsHelper->getClickThroughRateByDates($this->getAnalyticsParams());
-    }
-
-    public function getConversionRate()
-    {
-        return $this->analyticsHelper->getConversionRate($this->getAnalyticsParams());
-    }
-
-    public function getConversionRateByDates()
-    {
-        return $this->analyticsHelper->getConversionRateByDates($this->getAnalyticsParams());
-    }
-
-    public function getClickPosition()
-    {
-        return $this->analyticsHelper->getAverageClickPosition($this->getAnalyticsParams());
-    }
-
-    public function getClickPositionByDates()
-    {
-        return $this->analyticsHelper->getAverageClickPositionByDates($this->getAnalyticsParams());
-    }
-
-    /**
      * Get aggregated Daily data from separate calls
      *
      * @return array
