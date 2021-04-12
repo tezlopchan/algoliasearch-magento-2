@@ -615,6 +615,8 @@ requirejs(['algoliaBundle', 'Magento_Catalog/js/price-utils'], function (algolia
 							input.value = '';
 						});
 					}
+
+					input.value = renderOptions.query;
 				}
 			});
 
