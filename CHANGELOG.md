@@ -1,6 +1,6 @@
 # CHANGE LOG
 
-## 3.5.0
+## 3.6.0
 
 ### UPDATES
 - Implemented DB schema using the Declarative schema(#1196)
