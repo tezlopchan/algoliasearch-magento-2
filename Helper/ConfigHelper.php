@@ -14,100 +14,100 @@ use Magento\Store\Model\StoreManagerInterface;
 
 class ConfigHelper
 {
-    const ENABLE_FRONTEND = 'algoliasearch_credentials/credentials/enable_frontend';
-    const ENABLE_BACKEND = 'algoliasearch_credentials/credentials/enable_backend';
-    const LOGGING_ENABLED = 'algoliasearch_credentials/credentials/debug';
-    const APPLICATION_ID = 'algoliasearch_credentials/credentials/application_id';
-    const API_KEY = 'algoliasearch_credentials/credentials/api_key';
-    const SEARCH_ONLY_API_KEY = 'algoliasearch_credentials/credentials/search_only_api_key';
-    const INDEX_PREFIX = 'algoliasearch_credentials/credentials/index_prefix';
+    public const ENABLE_FRONTEND = 'algoliasearch_credentials/credentials/enable_frontend';
+    public const ENABLE_BACKEND = 'algoliasearch_credentials/credentials/enable_backend';
+    public const LOGGING_ENABLED = 'algoliasearch_credentials/credentials/debug';
+    public const APPLICATION_ID = 'algoliasearch_credentials/credentials/application_id';
+    public const API_KEY = 'algoliasearch_credentials/credentials/api_key';
+    public const SEARCH_ONLY_API_KEY = 'algoliasearch_credentials/credentials/search_only_api_key';
+    public const INDEX_PREFIX = 'algoliasearch_credentials/credentials/index_prefix';
 
-    const IS_INSTANT_ENABLED = 'algoliasearch_instant/instant/is_instant_enabled';
-    const REPLACE_CATEGORIES = 'algoliasearch_instant/instant/replace_categories';
-    const INSTANT_SELECTOR = 'algoliasearch_instant/instant/instant_selector';
-    const NUMBER_OF_PRODUCT_RESULTS = 'algoliasearch_instant/instant/number_product_results';
-    const FACETS = 'algoliasearch_instant/instant/facets';
-    const MAX_VALUES_PER_FACET = 'algoliasearch_instant/instant/max_values_per_facet';
-    const SORTING_INDICES = 'algoliasearch_instant/instant/sorts';
-    const SHOW_SUGGESTIONS_NO_RESULTS = 'algoliasearch_instant/instant/show_suggestions_on_no_result_page';
-    const XML_ADD_TO_CART_ENABLE = 'algoliasearch_instant/instant/add_to_cart_enable';
-    const INFINITE_SCROLL_ENABLE = 'algoliasearch_instant/instant/infinite_scroll_enable';
+    public const IS_INSTANT_ENABLED = 'algoliasearch_instant/instant/is_instant_enabled';
+    public const REPLACE_CATEGORIES = 'algoliasearch_instant/instant/replace_categories';
+    public const INSTANT_SELECTOR = 'algoliasearch_instant/instant/instant_selector';
+    public const NUMBER_OF_PRODUCT_RESULTS = 'algoliasearch_instant/instant/number_product_results';
+    public const FACETS = 'algoliasearch_instant/instant/facets';
+    public const MAX_VALUES_PER_FACET = 'algoliasearch_instant/instant/max_values_per_facet';
+    public const SORTING_INDICES = 'algoliasearch_instant/instant/sorts';
+    public const SHOW_SUGGESTIONS_NO_RESULTS = 'algoliasearch_instant/instant/show_suggestions_on_no_result_page';
+    public const XML_ADD_TO_CART_ENABLE = 'algoliasearch_instant/instant/add_to_cart_enable';
+    public const INFINITE_SCROLL_ENABLE = 'algoliasearch_instant/instant/infinite_scroll_enable';
 
-    const IS_POPUP_ENABLED = 'algoliasearch_autocomplete/autocomplete/is_popup_enabled';
-    const NB_OF_PRODUCTS_SUGGESTIONS = 'algoliasearch_autocomplete/autocomplete/nb_of_products_suggestions';
-    const NB_OF_CATEGORIES_SUGGESTIONS = 'algoliasearch_autocomplete/autocomplete/nb_of_categories_suggestions';
-    const NB_OF_QUERIES_SUGGESTIONS = 'algoliasearch_autocomplete/autocomplete/nb_of_queries_suggestions';
-    const AUTOCOMPLETE_SECTIONS = 'algoliasearch_autocomplete/autocomplete/sections';
-    const EXCLUDED_PAGES = 'algoliasearch_autocomplete/autocomplete/excluded_pages';
-    const MIN_POPULARITY = 'algoliasearch_autocomplete/autocomplete/min_popularity';
-    const MIN_NUMBER_OF_RESULTS = 'algoliasearch_autocomplete/autocomplete/min_number_of_results';
-    const RENDER_TEMPLATE_DIRECTIVES = 'algoliasearch_autocomplete/autocomplete/render_template_directives';
-    const AUTOCOMPLETE_MENU_DEBUG = 'algoliasearch_autocomplete/autocomplete/debug';
+    public const IS_POPUP_ENABLED = 'algoliasearch_autocomplete/autocomplete/is_popup_enabled';
+    public const NB_OF_PRODUCTS_SUGGESTIONS = 'algoliasearch_autocomplete/autocomplete/nb_of_products_suggestions';
+    public const NB_OF_CATEGORIES_SUGGESTIONS = 'algoliasearch_autocomplete/autocomplete/nb_of_categories_suggestions';
+    public const NB_OF_QUERIES_SUGGESTIONS = 'algoliasearch_autocomplete/autocomplete/nb_of_queries_suggestions';
+    public const AUTOCOMPLETE_SECTIONS = 'algoliasearch_autocomplete/autocomplete/sections';
+    public const EXCLUDED_PAGES = 'algoliasearch_autocomplete/autocomplete/excluded_pages';
+    public const MIN_POPULARITY = 'algoliasearch_autocomplete/autocomplete/min_popularity';
+    public const MIN_NUMBER_OF_RESULTS = 'algoliasearch_autocomplete/autocomplete/min_number_of_results';
+    public const RENDER_TEMPLATE_DIRECTIVES = 'algoliasearch_autocomplete/autocomplete/render_template_directives';
+    public const AUTOCOMPLETE_MENU_DEBUG = 'algoliasearch_autocomplete/autocomplete/debug';
 
-    const PRODUCT_ATTRIBUTES = 'algoliasearch_products/products/product_additional_attributes';
-    const PRODUCT_CUSTOM_RANKING = 'algoliasearch_products/products/custom_ranking_product_attributes';
-    const USE_ADAPTIVE_IMAGE = 'algoliasearch_products/products/use_adaptive_image';
-    const INDEX_OUT_OF_STOCK_OPTIONS = 'algoliasearch_products/products/index_out_of_stock_options';
+    public const PRODUCT_ATTRIBUTES = 'algoliasearch_products/products/product_additional_attributes';
+    public const PRODUCT_CUSTOM_RANKING = 'algoliasearch_products/products/custom_ranking_product_attributes';
+    public const USE_ADAPTIVE_IMAGE = 'algoliasearch_products/products/use_adaptive_image';
+    public const INDEX_OUT_OF_STOCK_OPTIONS = 'algoliasearch_products/products/index_out_of_stock_options';
 
-    const CATEGORY_ATTRIBUTES = 'algoliasearch_categories/categories/category_additional_attributes';
-    const INDEX_PRODUCT_COUNT = 'algoliasearch_categories/categories/index_product_count';
-    const CATEGORY_CUSTOM_RANKING = 'algoliasearch_categories/categories/custom_ranking_category_attributes';
-    const SHOW_CATS_NOT_INCLUDED_IN_NAV = 'algoliasearch_categories/categories/show_cats_not_included_in_navigation';
-    const INDEX_EMPTY_CATEGORIES = 'algoliasearch_categories/categories/index_empty_categories';
+    public const CATEGORY_ATTRIBUTES = 'algoliasearch_categories/categories/category_additional_attributes';
+    public const INDEX_PRODUCT_COUNT = 'algoliasearch_categories/categories/index_product_count';
+    public const CATEGORY_CUSTOM_RANKING = 'algoliasearch_categories/categories/custom_ranking_category_attributes';
+    public const SHOW_CATS_NOT_INCLUDED_IN_NAV = 'algoliasearch_categories/categories/show_cats_not_included_in_navigation';
+    public const INDEX_EMPTY_CATEGORIES = 'algoliasearch_categories/categories/index_empty_categories';
 
-    const IS_ACTIVE = 'algoliasearch_queue/queue/active';
-    const NUMBER_OF_JOB_TO_RUN = 'algoliasearch_queue/queue/number_of_job_to_run';
-    const RETRY_LIMIT = 'algoliasearch_queue/queue/number_of_retries';
+    public const IS_ACTIVE = 'algoliasearch_queue/queue/active';
+    public const NUMBER_OF_JOB_TO_RUN = 'algoliasearch_queue/queue/number_of_job_to_run';
+    public const RETRY_LIMIT = 'algoliasearch_queue/queue/number_of_retries';
 
-    const XML_PATH_IMAGE_WIDTH = 'algoliasearch_images/image/width';
-    const XML_PATH_IMAGE_HEIGHT = 'algoliasearch_images/image/height';
-    const XML_PATH_IMAGE_TYPE = 'algoliasearch_images/image/type';
+    public const XML_PATH_IMAGE_WIDTH = 'algoliasearch_images/image/width';
+    public const XML_PATH_IMAGE_HEIGHT = 'algoliasearch_images/image/height';
+    public const XML_PATH_IMAGE_TYPE = 'algoliasearch_images/image/type';
 
-    const ENABLE_SYNONYMS = 'algoliasearch_synonyms/synonyms_group/enable_synonyms';
-    const SYNONYMS = 'algoliasearch_synonyms/synonyms_group/synonyms';
-    const ONEWAY_SYNONYMS = 'algoliasearch_synonyms/synonyms_group/oneway_synonyms';
-    const SYNONYMS_FILE = 'algoliasearch_synonyms/synonyms_group/synonyms_file';
+    public const ENABLE_SYNONYMS = 'algoliasearch_synonyms/synonyms_group/enable_synonyms';
+    public const SYNONYMS = 'algoliasearch_synonyms/synonyms_group/synonyms';
+    public const ONEWAY_SYNONYMS = 'algoliasearch_synonyms/synonyms_group/oneway_synonyms';
+    public const SYNONYMS_FILE = 'algoliasearch_synonyms/synonyms_group/synonyms_file';
 
-    const CC_ANALYTICS_ENABLE = 'algoliasearch_cc_analytics/cc_analytics_group/enable';
-    const CC_ANALYTICS_IS_SELECTOR = 'algoliasearch_cc_analytics/cc_analytics_group/is_selector';
-    const CC_CONVERSION_ANALYTICS_MODE = 'algoliasearch_cc_analytics/cc_analytics_group/conversion_analytics_mode';
-    const CC_ADD_TO_CART_SELECTOR = 'algoliasearch_cc_analytics/cc_analytics_group/add_to_cart_selector';
+    public const CC_ANALYTICS_ENABLE = 'algoliasearch_cc_analytics/cc_analytics_group/enable';
+    public const CC_ANALYTICS_IS_SELECTOR = 'algoliasearch_cc_analytics/cc_analytics_group/is_selector';
+    public const CC_CONVERSION_ANALYTICS_MODE = 'algoliasearch_cc_analytics/cc_analytics_group/conversion_analytics_mode';
+    public const CC_ADD_TO_CART_SELECTOR = 'algoliasearch_cc_analytics/cc_analytics_group/add_to_cart_selector';
 
-    const GA_ENABLE = 'algoliasearch_analytics/analytics_group/enable';
-    const GA_DELAY = 'algoliasearch_analytics/analytics_group/delay';
-    const GA_TRIGGER_ON_UI_INTERACTION = 'algoliasearch_analytics/analytics_group/trigger_on_ui_interaction';
-    const GA_PUSH_INITIAL_SEARCH = 'algoliasearch_analytics/analytics_group/push_initial_search';
+    public const GA_ENABLE = 'algoliasearch_analytics/analytics_group/enable';
+    public const GA_DELAY = 'algoliasearch_analytics/analytics_group/delay';
+    public const GA_TRIGGER_ON_UI_INTERACTION = 'algoliasearch_analytics/analytics_group/trigger_on_ui_interaction';
+    public const GA_PUSH_INITIAL_SEARCH = 'algoliasearch_analytics/analytics_group/push_initial_search';
 
-    const NUMBER_OF_ELEMENT_BY_PAGE = 'algoliasearch_advanced/advanced/number_of_element_by_page';
-    const REMOVE_IF_NO_RESULT = 'algoliasearch_advanced/advanced/remove_words_if_no_result';
-    const PARTIAL_UPDATES = 'algoliasearch_advanced/advanced/partial_update';
-    const CUSTOMER_GROUPS_ENABLE = 'algoliasearch_advanced/advanced/customer_groups_enable';
-    const REMOVE_PUB_DIR_IN_URL = 'algoliasearch_advanced/advanced/remove_pub_dir_in_url';
-    const MAKE_SEO_REQUEST = 'algoliasearch_advanced/advanced/make_seo_request';
-    const REMOVE_BRANDING = 'algoliasearch_advanced/advanced/remove_branding';
-    const AUTOCOMPLETE_SELECTOR = 'algoliasearch_advanced/advanced/autocomplete_selector';
-    const IDX_PRODUCT_ON_CAT_PRODUCTS_UPD = 'algoliasearch_advanced/advanced/index_product_on_category_products_update';
-    const PREVENT_BACKEND_RENDERING = 'algoliasearch_advanced/advanced/prevent_backend_rendering';
-    const PREVENT_BACKEND_RENDERING_DISPLAY_MODE =
+    public const NUMBER_OF_ELEMENT_BY_PAGE = 'algoliasearch_advanced/advanced/number_of_element_by_page';
+    public const REMOVE_IF_NO_RESULT = 'algoliasearch_advanced/advanced/remove_words_if_no_result';
+    public const PARTIAL_UPDATES = 'algoliasearch_advanced/advanced/partial_update';
+    public const CUSTOMER_GROUPS_ENABLE = 'algoliasearch_advanced/advanced/customer_groups_enable';
+    public const REMOVE_PUB_DIR_IN_URL = 'algoliasearch_advanced/advanced/remove_pub_dir_in_url';
+    public const MAKE_SEO_REQUEST = 'algoliasearch_advanced/advanced/make_seo_request';
+    public const REMOVE_BRANDING = 'algoliasearch_advanced/advanced/remove_branding';
+    public const AUTOCOMPLETE_SELECTOR = 'algoliasearch_advanced/advanced/autocomplete_selector';
+    public const IDX_PRODUCT_ON_CAT_PRODUCTS_UPD = 'algoliasearch_advanced/advanced/index_product_on_category_products_update';
+    public const PREVENT_BACKEND_RENDERING = 'algoliasearch_advanced/advanced/prevent_backend_rendering';
+    public const PREVENT_BACKEND_RENDERING_DISPLAY_MODE =
         'algoliasearch_advanced/advanced/prevent_backend_rendering_display_mode';
-    const BACKEND_RENDERING_ALLOWED_USER_AGENTS =
+    public const BACKEND_RENDERING_ALLOWED_USER_AGENTS =
         'algoliasearch_advanced/advanced/backend_rendering_allowed_user_agents';
-    const NON_CASTABLE_ATTRIBUTES = 'algoliasearch_advanced/advanced/non_castable_attributes';
-    const MAX_RECORD_SIZE_LIMIT = 'algoliasearch_advanced/advanced/max_record_size_limit';
-    const ARCHIVE_LOG_CLEAR_LIMIT = 'algoliasearch_advanced/advanced/archive_clear_limit';
+    public const NON_CASTABLE_ATTRIBUTES = 'algoliasearch_advanced/advanced/non_castable_attributes';
+    public const MAX_RECORD_SIZE_LIMIT = 'algoliasearch_advanced/advanced/max_record_size_limit';
+    public const ARCHIVE_LOG_CLEAR_LIMIT = 'algoliasearch_advanced/advanced/archive_clear_limit';
 
-    const SHOW_OUT_OF_STOCK = 'cataloginventory/options/show_out_of_stock';
+    public const SHOW_OUT_OF_STOCK = 'cataloginventory/options/show_out_of_stock';
 
-    const USE_SECURE_IN_FRONTEND = 'web/secure/use_in_frontend';
+    public const USE_SECURE_IN_FRONTEND = 'web/secure/use_in_frontend';
 
-    const EXTRA_SETTINGS_PRODUCTS = 'algoliasearch_extra_settings/extra_settings/products_extra_settings';
-    const EXTRA_SETTINGS_CATEGORIES = 'algoliasearch_extra_settings/extra_settings/categories_extra_settings';
-    const EXTRA_SETTINGS_PAGES = 'algoliasearch_extra_settings/extra_settings/pages_extra_settings';
-    const EXTRA_SETTINGS_SUGGESTIONS = 'algoliasearch_extra_settings/extra_settings/suggestions_extra_settings';
-    const EXTRA_SETTINGS_ADDITIONAL_SECTIONS =
+    public const EXTRA_SETTINGS_PRODUCTS = 'algoliasearch_extra_settings/extra_settings/products_extra_settings';
+    public const EXTRA_SETTINGS_CATEGORIES = 'algoliasearch_extra_settings/extra_settings/categories_extra_settings';
+    public const EXTRA_SETTINGS_PAGES = 'algoliasearch_extra_settings/extra_settings/pages_extra_settings';
+    public const EXTRA_SETTINGS_SUGGESTIONS = 'algoliasearch_extra_settings/extra_settings/suggestions_extra_settings';
+    public const EXTRA_SETTINGS_ADDITIONAL_SECTIONS =
         'algoliasearch_extra_settings/extra_settings/additional_sections_extra_settings';
 
-    const DEFAULT_MAX_RECORD_SIZE = 10000;
+    public const DEFAULT_MAX_RECORD_SIZE = 10000;
 
     private $configInterface;
     private $objectManager;
@@ -750,7 +750,7 @@ class ConfigHelper
 
         $value = $this->configInterface->getValue(constant('self::' . $constant), ScopeInterface::SCOPE_STORE, $storeId);
 
-        return trim($value);
+        return trim((string) $value);
     }
 
     public function preventBackendRendering($storeId = null)

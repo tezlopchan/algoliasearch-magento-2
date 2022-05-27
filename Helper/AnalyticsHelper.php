@@ -9,10 +9,10 @@ use Algolia\AlgoliaSearch\RequestOptions\RequestOptionsFactory;
 
 class AnalyticsHelper
 {
-    const ANALYTICS_SEARCH_PATH = '/2/searches';
-    const ANALYTICS_HITS_PATH = '/2/hits';
-    const ANALYTICS_FILTER_PATH = '/2/filters';
-    const ANALYTICS_CLICKS_PATH = '/2/clicks';
+    public const ANALYTICS_SEARCH_PATH = '/2/searches';
+    public const ANALYTICS_HITS_PATH = '/2/hits';
+    public const ANALYTICS_FILTER_PATH = '/2/filters';
+    public const ANALYTICS_CLICKS_PATH = '/2/clicks';
 
     /** @var AlgoliaHelper */
     private $algoliaHelper;

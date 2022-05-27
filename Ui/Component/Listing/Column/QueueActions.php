@@ -9,7 +9,7 @@ use Magento\Ui\Component\Listing\Columns\Column;
 
 class QueueActions extends Column
 {
-    const URL_PATH_VIEW = 'algolia_algoliasearch/queue/view';
+    public const URL_PATH_VIEW = 'algolia_algoliasearch/queue/view';
 
     /** @var UrlInterface */
     protected $urlBuilder;

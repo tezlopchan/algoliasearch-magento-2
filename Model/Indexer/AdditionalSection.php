@@ -42,7 +42,7 @@ class AdditionalSection implements \Magento\Framework\Indexer\ActionInterface, \
     public function executeFull()
     {
         if (!$this->configHelper->credentialsAreConfigured()) {
-            $errorMessage = 'Algolia reindexing failed: 
+            $errorMessage = 'Algolia reindexing failed:
             You need to configure your Algolia credentials in Stores > Configuration > Algolia Search.';
 
             if (php_sapi_name() === 'cli') {
@@ -66,7 +66,7 @@ class AdditionalSection implements \Magento\Framework\Indexer\ActionInterface, \
             $this->queue->addToQueue(
                 $this->fullAction,
                 'rebuildStoreAdditionalSectionsIndex',
-                ['store_id' => $storeId],
+                ['storeId' => $storeId],
                 1
             );
         }

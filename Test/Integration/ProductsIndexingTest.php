@@ -97,8 +97,8 @@ class ProductsIndexingTest extends IndexingTestCase
         }
 
         $this->assertEquals(32, $algoliaProduct['price']['USD']['default']);
-        $this->assertFalse($algoliaProduct['price']['USD']['special_from_date']);
-        $this->assertFalse($algoliaProduct['price']['USD']['special_to_date']);
+        $this->assertEquals('', $algoliaProduct['price']['USD']['special_from_date']);
+        $this->assertEquals('', $algoliaProduct['price']['USD']['special_to_date']);
     }
 
     public function deprecatedTestSpecialPrice()

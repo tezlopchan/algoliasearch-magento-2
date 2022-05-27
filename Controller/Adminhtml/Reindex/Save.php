@@ -17,7 +17,7 @@ use Magento\Store\Model\StoreManagerInterface;
 
 class Save extends \Magento\Backend\App\Action
 {
-    const MAX_SKUS = 10;
+    public const MAX_SKUS = 10;
 
     /** @var ProductRepositoryInterface */
     private $productRepository;

@@ -7,7 +7,7 @@ use Magento\Framework\DataObject\IdentityInterface;
 
 class Run extends \Magento\Framework\Model\AbstractModel implements IdentityInterface, RunInterface
 {
-    const CACHE_TAG = 'algoliasearch_queue_run';
+    public const CACHE_TAG = 'algoliasearch_queue_run';
 
     protected $_cacheTag = 'algoliasearch_queue_run';
 

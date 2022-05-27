@@ -164,7 +164,7 @@ class NoticeHelper extends \Magento\Framework\App\Helper\AbstractHelper
 
         $noticeTitle = 'Algolia Extension update';
         $noticeContent = 'You are using old version of Algolia extension. Latest version of the extension is v <b>' . $newVersion['version'] . '</b><br />
-							It is highly recommended to update your version to avoid any unexpecting issues and to get new features.<br />
+							It is highly recommended to update your version to avoid any unexpected issues and to get new features.<br />
 							See details on our <a target="_blank" href="' . $newVersion['url'] . '">Github repository</a>.';
 
         $this->notices[] = [

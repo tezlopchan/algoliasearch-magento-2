@@ -134,7 +134,7 @@ class QueueTest extends TestCase
 
         $this->setConfig('algoliasearch_queue/queue/active', '1');
 
-        $this->connection->query('TRUNCATE TABLE algoliasearch_queue');
+        $this->connection->query('DELETE FROM algoliasearch_queue');
 
         // Reindex products multiple times
         /** @var Product $indexer */
@@ -169,7 +169,7 @@ class QueueTest extends TestCase
         $this->setConfig('algoliasearch_queue/queue/number_of_job_to_run', 1);
         $this->setConfig('algoliasearch_advanced/advanced/number_of_element_by_page', 300);
 
-        $this->connection->query('TRUNCATE TABLE algoliasearch_queue');
+        $this->connection->query('DELETE FROM algoliasearch_queue');
 
         /** @var Product $productIndexer */
         $productIndexer = $this->getObjectManager()->create(Product::class);
@@ -204,7 +204,7 @@ class QueueTest extends TestCase
 
     public function testMerging()
     {
-        $this->connection->query('TRUNCATE TABLE algoliasearch_queue');
+        $this->connection->query('DELETE FROM algoliasearch_queue');
 
         $data = [
             [
@@ -350,7 +350,7 @@ class QueueTest extends TestCase
         $jobs = $this->jobsCollectionFactory->create()->getItems();
         // $jobs = $this->connection->query('SELECT * FROM algoliasearch_queue')->fetchAll();
 
-        $mergedJobs = array_values($this->invokeMethod($queue, 'mergeJobs', ['jobs' => $jobs]));
+        $mergedJobs = array_values($this->invokeMethod($queue, 'mergeJobs', [$jobs]));
         $this->assertEquals(6, count($mergedJobs));
 
         $expectedCategoryJob = [
@@ -547,7 +547,7 @@ class QueueTest extends TestCase
         /** @var Job[] $jobs */
         $jobs = $this->jobsCollectionFactory->create()->getItems();
 
-        $jobs = array_values($this->invokeMethod($queue, 'mergeJobs', ['jobs' => $jobs]));
+        $jobs = array_values($this->invokeMethod($queue, 'mergeJobs', [$jobs]));
         $this->assertEquals(12, count($jobs));
 
         $this->assertEquals('rebuildStoreCategoryIndex', $jobs[0]->getMethod());
@@ -710,7 +710,7 @@ class QueueTest extends TestCase
         $queue = $this->getObjectManager()->create(Queue::class);
 
         $pid = getmypid();
-        $jobs = $this->invokeMethod($queue, 'getJobs', ['maxJobs' => 10, 'pid' => $pid]);
+        $jobs = $this->invokeMethod($queue, 'getJobs', ['maxJobs' => 10]);
         $this->assertEquals(6, count($jobs));
 
         $expectedFirstJob = [
@@ -799,7 +799,7 @@ class QueueTest extends TestCase
 
         $pid = getmypid();
         /** @var Job[] $jobs */
-        $jobs = $this->invokeMethod($queue, 'getJobs', ['maxJobs' => 10, 'pid' => $pid]);
+        $jobs = $this->invokeMethod($queue, 'getJobs', ['maxJobs' => 10]);
 
         $this->assertEquals(1, count($jobs));
 
@@ -838,7 +838,7 @@ class QueueTest extends TestCase
         $pid = getmypid();
 
         /** @var Job[] $jobs */
-        $jobs = $this->invokeMethod($queue, 'getJobs', ['maxJobs' => 10, 'pid' => $pid]);
+        $jobs = $this->invokeMethod($queue, 'getJobs', ['maxJobs' => 10]);
 
         $this->assertEquals(2, count($jobs));
 

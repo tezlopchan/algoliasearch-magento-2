@@ -1,5 +1,11 @@
 # CHANGE LOG
 
+## 3.5.0
+
+### UPDATES
+- Implemented DB schema using the Declarative schema(#1196)
+- Updated to support the latest released Magento 2.4.4 with PHP 8.1(#1196)
+
 ## 3.4.0
 
 ### UPDATES

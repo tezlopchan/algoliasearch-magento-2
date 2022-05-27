@@ -15,7 +15,7 @@
                 </item>
             </argument>
             <htmlContent name="html_content">
-                <argument name="block" xsi:type="object">Algolia\AlgoliaSearch\Block\Adminhtml\Category\Merchandising</argument>
+                <block class="Algolia\AlgoliaSearch\Block\Adminhtml\Category\Merchandising" name="category-merchandising" />
             </htmlContent>
         </container>
     </fieldset>

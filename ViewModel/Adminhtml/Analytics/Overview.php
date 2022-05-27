@@ -11,11 +11,11 @@ use Magento\Store\Api\Data\StoreInterface;
 
 class Overview implements \Magento\Framework\View\Element\Block\ArgumentInterface
 {
-    const LIMIT_RESULTS = 5;
+    public const LIMIT_RESULTS = 5;
 
-    const DEFAULT_TYPE = 'products';
+    public const DEFAULT_TYPE = 'products';
 
-    const DEFAULT_RETENTION_DAYS = 7;
+    public const DEFAULT_RETENTION_DAYS = 7;
 
     /** @var BackendView */
     private $backendView;

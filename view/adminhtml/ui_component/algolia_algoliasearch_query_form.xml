@@ -1,42 +1,42 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<form xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
-    <argument name="data" xsi:type="array">
-        <item name="js_config" xsi:type="array">
-            <item name="provider" xsi:type="string">algolia_algoliasearch_query_form.query_form_data_source</item>
-            <item name="deps" xsi:type="string">algolia_algoliasearch_query_form.query_form_data_source</item>
-        </item>
-        <item name="label" xsi:type="string" translate="true">Main Information</item>
-        <item name="config" xsi:type="array">
-            <item name="dataScope" xsi:type="string">data</item>
-            <item name="namespace" xsi:type="string">algolia_algoliasearch_query_form</item>
-        </item>
-        <item name="template" xsi:type="string">templates/form/collapsible</item>
-        <item name="buttons" xsi:type="array">
-            <item name="save_and_continue" xsi:type="string">Algolia\AlgoliaSearch\Block\Adminhtml\Query\Edit\SaveAndContinueButton</item>
-            <item name="save" xsi:type="string">Algolia\AlgoliaSearch\Block\Adminhtml\Query\Edit\SaveButton</item>
-            <item name="view" xsi:type="string">Algolia\AlgoliaSearch\Block\Adminhtml\Query\Edit\ViewButton</item>
-            <item name="delete" xsi:type="string">Algolia\AlgoliaSearch\Block\Adminhtml\Query\Edit\DeleteButton</item>
-            <item name="back" xsi:type="string">Algolia\AlgoliaSearch\Block\Adminhtml\Query\Edit\BackButton</item>
-        </item>
-    </argument>
-    <dataSource name="query_form_data_source">
-        <argument name="dataProvider" xsi:type="configurableObject">
-            <argument name="class" xsi:type="string">Algolia\AlgoliaSearch\DataProvider\Query\QueryDataProvider</argument>
-            <argument name="name" xsi:type="string">query_form_data_source</argument>
-            <argument name="primaryFieldName" xsi:type="string">query_id</argument>
-            <argument name="requestFieldName" xsi:type="string">id</argument>
-            <argument name="data" xsi:type="array">
-                <item name="config" xsi:type="array">
-                    <item name="submit_url" xsi:type="url" path="algolia_algoliasearch/query/save"/>
-                </item>
-            </argument>
-        </argument>
+    <form xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
         <argument name="data" xsi:type="array">
             <item name="js_config" xsi:type="array">
-                <item name="component" xsi:type="string">Magento_Ui/js/form/provider</item>
+                <item name="provider" xsi:type="string">algolia_algoliasearch_query_form.query_form_data_source</item>
+                <item name="deps" xsi:type="string">algolia_algoliasearch_query_form.query_form_data_source</item>
+            </item>
+            <item name="label" xsi:type="string" translate="true">Main Information</item>
+            <item name="config" xsi:type="array">
+                <item name="dataScope" xsi:type="string">data</item>
+                <item name="namespace" xsi:type="string">algolia_algoliasearch_query_form</item>
+            </item>
+            <item name="template" xsi:type="string">templates/form/collapsible</item>
+            <item name="buttons" xsi:type="array">
+                <item name="save_and_continue" xsi:type="string">Algolia\AlgoliaSearch\Block\Adminhtml\Query\Edit\SaveAndContinueButton</item>
+                <item name="save" xsi:type="string">Algolia\AlgoliaSearch\Block\Adminhtml\Query\Edit\SaveButton</item>
+                <item name="view" xsi:type="string">Algolia\AlgoliaSearch\Block\Adminhtml\Query\Edit\ViewButton</item>
+                <item name="delete" xsi:type="string">Algolia\AlgoliaSearch\Block\Adminhtml\Query\Edit\DeleteButton</item>
+                <item name="back" xsi:type="string">Algolia\AlgoliaSearch\Block\Adminhtml\Query\Edit\BackButton</item>
             </item>
         </argument>
-    </dataSource>
+        <dataSource name="query_form_data_source">
+            <argument name="dataProvider" xsi:type="configurableObject">
+                <argument name="class" xsi:type="string">Algolia\AlgoliaSearch\DataProvider\Query\QueryDataProvider</argument>
+                <argument name="name" xsi:type="string">query_form_data_source</argument>
+                <argument name="primaryFieldName" xsi:type="string">query_id</argument>
+                <argument name="requestFieldName" xsi:type="string">id</argument>
+                <argument name="data" xsi:type="array">
+                    <item name="config" xsi:type="array">
+                        <item name="submit_url" xsi:type="url" path="algolia_algoliasearch/query/save"/>
+                    </item>
+                </argument>
+            </argument>
+            <argument name="data" xsi:type="array">
+                <item name="js_config" xsi:type="array">
+                    <item name="component" xsi:type="string">Magento_Ui/js/form/provider</item>
+                </item>
+            </argument>
+        </dataSource>
     <fieldset name="main_information">
         <argument name="data" xsi:type="array">
             <item name="config" xsi:type="array">
@@ -95,7 +95,7 @@
         </field>
         <container name="algolia_merchandising_query" >
             <htmlContent name="html_content">
-                <argument name="block" xsi:type="object">Algolia\AlgoliaSearch\Block\Adminhtml\Query\Merchandising</argument>
+                <block class="Algolia\AlgoliaSearch\Block\Adminhtml\Query\Merchandising" name="merchandising"/>
             </htmlContent>
         </container>
         <container name="js_container">
@@ -116,7 +116,7 @@
         </argument>
         <container name="algolia_notice_container" >
             <htmlContent name="html_content">
-                <argument name="block" xsi:type="object">Algolia\AlgoliaSearch\Block\Adminhtml\Query\BannerNotice</argument>
+                <block class="Algolia\AlgoliaSearch\Block\Adminhtml\Query\BannerNotice" name="bannernotice"/>
             </htmlContent>
         </container>
         <field name="banner_image">
@@ -167,19 +167,5 @@
                 </item>
             </argument>
         </field>
-        <!--<field name="banner_content">-->
-            <!--<argument name="data" xsi:type="array">-->
-                <!--<item name="config" xsi:type="array">-->
-                    <!--<item name="source" xsi:type="string">query</item>-->
-                    <!--<item name="label" xsi:type="string" translate="true">Content</item>-->
-                    <!--<item name="dataType" xsi:type="string">text</item>-->
-                    <!--<item name="formElement" xsi:type="string">textarea</item>-->
-                    <!--<item name="template" xsi:type="string">ui/form/field</item>-->
-                    <!--<item name="wysiwyg" xsi:type="boolean">false</item>-->
-                    <!--<item name="dataScope" xsi:type="string">banner_content</item>-->
-                    <!--<item name="placeholder" xsi:type="string" translate="true">Additional text displayed below the banner</item>-->
-                <!--</item>-->
-            <!--</argument>-->
-        <!--</field>-->
     </fieldset>
-</form>
+    </form>

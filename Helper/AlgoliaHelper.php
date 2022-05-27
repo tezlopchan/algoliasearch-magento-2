@@ -583,14 +583,15 @@ class AlgoliaHelper extends AbstractHelper
             $data = $this->castAttribute($data);
 
             if (is_array($data) === false) {
-                $data = explode('|', $data);
-
-                if (count($data) === 1) {
-                    $data = $data[0];
-                    $data = $this->castAttribute($data);
-                } else {
-                    foreach ($data as &$element) {
-                        $element = $this->castAttribute($element);
+                if ($data != null) {
+                    $data = explode('|', $data);
+                    if (count($data) === 1) {
+                        $data = $data[0];
+                        $data = $this->castAttribute($data);
+                    } else {
+                        foreach ($data as &$element) {
+                            $element = $this->castAttribute($element);
+                        }
                     }
                 }
             }
