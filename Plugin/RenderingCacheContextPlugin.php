@@ -15,9 +15,9 @@ use Magento\Store\Model\StoreManagerInterface;
  */
 class RenderingCacheContextPlugin
 {
-    const RENDERING_CONTEXT = 'rendering_context';
-    const RENDERING_WITH_BACKEND = 'with_backend';
-    const RENDERING_WITHOUT_BACKEND = 'without_backend';
+    public const RENDERING_CONTEXT = 'rendering_context';
+    public const RENDERING_WITH_BACKEND = 'with_backend';
+    public const RENDERING_WITHOUT_BACKEND = 'without_backend';
 
     private $configHelper;
     private $storeManager;

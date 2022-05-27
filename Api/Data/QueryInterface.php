@@ -9,19 +9,19 @@ namespace Algolia\AlgoliaSearch\Api\Data;
  */
 interface QueryInterface
 {
-    const TABLE_NAME = 'algoliasearch_query';
+    public const TABLE_NAME = 'algoliasearch_query';
 
     /**#@+
      * Constants for keys of data array. Identical to the name of the getter in snake case
      */
-    const FIELD_QUERY_ID = 'query_id';
-    const FIELD_STORE_ID = 'store_id';
-    const FIELD_QUERY_TEXT = 'query_text';
-    const FIELD_BANNER_IMAGE = 'banner_image';
-    const FIELD_BANNER_URL = 'banner_url';
-    const FIELD_BANNER_ALT = 'banner_alt';
-    const FIELD_BANNER_CONTENT = 'banner_content';
-    const FIELD_CREATED_AT = 'created_at';
+    public const FIELD_QUERY_ID = 'query_id';
+    public const FIELD_STORE_ID = 'store_id';
+    public const FIELD_QUERY_TEXT = 'query_text';
+    public const FIELD_BANNER_IMAGE = 'banner_image';
+    public const FIELD_BANNER_URL = 'banner_url';
+    public const FIELD_BANNER_ALT = 'banner_alt';
+    public const FIELD_BANNER_CONTENT = 'banner_content';
+    public const FIELD_CREATED_AT = 'created_at';
     /**#@-*/
 
     /**

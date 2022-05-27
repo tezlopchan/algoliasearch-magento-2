@@ -2,7 +2,7 @@
 
 /** @var PhpCsFixer\Config $config */
 if (isset($_SERVER['argv']) && $_SERVER['argv'][3]) {
-    $config = require dirname($_SERVER['argv'][3], 3) . '/.php-cs-fixer.dist.php';
+   $config = require dirname($_SERVER['argv'][3], 3) . '/.php-cs-fixer.dist.php';
 } else {
     $config = require __DIR__ . '/../../../.php-cs-fixer.dist.php';
 }
@@ -37,7 +37,7 @@ $extensionRules = [
     'not_operator_with_space' => false,
     'object_operator_without_whitespace' => true,
     'phpdoc_annotation_without_dot' => true,
-    'general_phpdoc_tag_rename' => true, 
+    'general_phpdoc_tag_rename' => true,
     'phpdoc_inline_tag_normalizer' => true,
     'phpdoc_tag_type' => true,
     'phpdoc_order' => true,

@@ -11,9 +11,9 @@ use Magento\Ui\Component\Listing\Columns\Column;
 
 class QueryActions extends Column
 {
-    const URL_PATH_EDIT = 'algolia_algoliasearch/query/edit';
-    const URL_PATH_DELETE = 'algolia_algoliasearch/query/delete';
-    const URL_PATH_VIEW = 'catalogsearch/result/?q=';
+    public const URL_PATH_EDIT = 'algolia_algoliasearch/query/edit';
+    public const URL_PATH_DELETE = 'algolia_algoliasearch/query/delete';
+    public const URL_PATH_VIEW = 'catalogsearch/result/?q=';
 
     /** @var UrlInterface */
     protected $urlBuilder;

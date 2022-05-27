@@ -10,7 +10,7 @@ class LandingPageUrlRewriteGenerator
     /**
      * Entity type code
      */
-    const ENTITY_TYPE = 'landing-page';
+    public const ENTITY_TYPE = 'landing-page';
 
     /**
      * @var \Magento\UrlRewrite\Service\V1\Data\UrlRewriteFactory

@@ -12,7 +12,7 @@ class DefaultRenderer extends Template implements FilterRendererInterface
     /** @var bool */
     private $isSearchable = true;
 
-    const JS_COMPONENT = 'Algolia_AlgoliaSearch/navigation/attribute-filter';
+    public const JS_COMPONENT = 'Algolia_AlgoliaSearch/navigation/attribute-filter';
 
     /**
      * Path to template file.

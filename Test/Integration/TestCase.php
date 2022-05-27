@@ -5,7 +5,8 @@ namespace Algolia\AlgoliaSearch\Test\Integration;
 use Algolia\AlgoliaSearch\Exceptions\AlgoliaException;
 use Algolia\AlgoliaSearch\Helper\AlgoliaHelper;
 use Algolia\AlgoliaSearch\Helper\ConfigHelper;
-use Algolia\AlgoliaSearch\Setup\UpgradeSchema;
+use Algolia\AlgoliaSearch\Setup\Patch\Schema\ConfigPatch;
+use Algolia\AlgoliaSearch\Test\Integration\AssertValues\Magento244;
 use Algolia\AlgoliaSearch\Test\Integration\AssertValues\Magento_2_01;
 use Algolia\AlgoliaSearch\Test\Integration\AssertValues\Magento_2_2;
 use Algolia\AlgoliaSearch\Test\Integration\AssertValues\Magento_2_3;
@@ -52,8 +53,8 @@ abstract class TestCase extends \TC
 
     protected function resetConfigs($configs = [])
     {
-        /** @var UpgradeSchema $installClass */
-        $installClass = $this->getObjectManager()->get(\Algolia\AlgoliaSearch\Setup\UpgradeSchema::class);
+        /** @var ConfigPatch $installClass */
+        $installClass = $this->getObjectManager()->get(ConfigPatch::class);
         $defaultConfigData = $installClass->getDefaultConfigData();
 
         foreach ($configs as $config) {

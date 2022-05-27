@@ -12,11 +12,11 @@ use Magento\Indexer\Model\IndexerFactory;
 
 class Status extends Template
 {
-    const CRON_QUEUE_FREQUENCY = 330;
+    public const CRON_QUEUE_FREQUENCY = 330;
 
-    const QUEUE_NOT_PROCESSED_LIMIT = 3600;
+    public const QUEUE_NOT_PROCESSED_LIMIT = 3600;
 
-    const QUEUE_FAST_LIMIT = 220;
+    public const QUEUE_FAST_LIMIT = 220;
 
     /** @var IndexerFactory */
     private $indexerFactory;

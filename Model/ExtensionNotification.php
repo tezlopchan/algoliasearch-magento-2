@@ -11,11 +11,11 @@ use Psr\Log\LogLevel;
 
 class ExtensionNotification
 {
-    const CHECK_FREQUENCY = 86400; // one day
+    public const CHECK_FREQUENCY = 86400; // one day
 
-    const REPOSITORY_URI = '/repos/algolia/algoliasearch-magento-2/releases/latest';
+    public const REPOSITORY_URI = '/repos/algolia/algoliasearch-magento-2/releases/latest';
 
-    const APPLICATION_JSON_HEADER = ['Content-Type' => 'application/json'];
+    public const APPLICATION_JSON_HEADER = ['Content-Type' => 'application/json'];
 
     /** @var CacheInterface */
     protected $cacheManager;

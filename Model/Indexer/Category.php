@@ -46,7 +46,7 @@ class Category implements \Magento\Framework\Indexer\ActionInterface, \Magento\F
         if (!$this->configHelper->getApplicationID()
             || !$this->configHelper->getAPIKey()
             || !$this->configHelper->getSearchOnlyAPIKey()) {
-            $errorMessage = 'Algolia reindexing failed: 
+            $errorMessage = 'Algolia reindexing failed:
                 You need to configure your Algolia credentials in Stores > Configuration > Algolia Search.';
 
             if (php_sapi_name() === 'cli') {
@@ -112,8 +112,8 @@ class Category implements \Magento\Framework\Indexer\ActionInterface, \Magento\F
                     Data::class,
                     'rebuildStoreProductIndex',
                     [
-                        'store_id' => $storeId,
-                        'product_ids' => $chunk,
+                        'storeId' => $storeId,
+                        'productIds' => $chunk,
                     ],
                     count($chunk)
                 );
@@ -134,8 +134,8 @@ class Category implements \Magento\Framework\Indexer\ActionInterface, \Magento\F
                 Data::class,
                 'rebuildStoreCategoryIndex',
                 [
-                    'store_id' => $storeId,
-                    'category_ids' => $chunk,
+                    'storeId' => $storeId,
+                    'categoryIds' => $chunk,
                 ],
                 count($chunk)
             );
@@ -152,7 +152,7 @@ class Category implements \Magento\Framework\Indexer\ActionInterface, \Magento\F
     private function processFullReindex($storeId, $categoriesPerPage)
     {
         /** @uses IndicesConfigurator::saveConfigurationToAlgolia() */
-        $this->queue->addToQueue(IndicesConfigurator::class, 'saveConfigurationToAlgolia', ['store_id' => $storeId]);
+        $this->queue->addToQueue(IndicesConfigurator::class, 'saveConfigurationToAlgolia', ['storeId' => $storeId]);
 
         $collection = $this->categoryHelper->getCategoryCollectionQuery($storeId);
         $size = $collection->getSize();
@@ -161,9 +161,9 @@ class Category implements \Magento\Framework\Indexer\ActionInterface, \Magento\F
 
         for ($i = 1; $i <= $pages; $i++) {
             $data = [
-                'store_id' => $storeId,
+                'storeId' => $storeId,
                 'page' => $i,
-                'page_size' => $categoriesPerPage,
+                'pageSize' => $categoriesPerPage,
             ];
 
             /** @uses Data::rebuildCategoryIndex() */

@@ -9,26 +9,26 @@ namespace Algolia\AlgoliaSearch\Api\Data;
  */
 interface JobInterface
 {
-    const TABLE_NAME = 'algoliasearch_queue';
+    public const TABLE_NAME = 'algoliasearch_queue';
 
-    const STATUS_NEW = 'new';
-    const STATUS_PROCESSING = 'processing';
-    const STATUS_ERROR = 'error';
-    const STATUS_COMPLETE = 'complete';
+    public const STATUS_NEW = 'new';
+    public const STATUS_PROCESSING = 'processing';
+    public const STATUS_ERROR = 'error';
+    public const STATUS_COMPLETE = 'complete';
 
     /**#@+
      * Constants for keys of data array. Identical to the name of the getter in snake case
      */
-    const FIELD_JOB_ID = 'job_id';
-    const FIELD_CREATED = 'created';
-    const FIELD_PID = 'pid';
-    const FIELD_CLASS = 'class';
-    const FIELD_METHOD = 'method';
-    const FIELD_DATA = 'data';
-    const FIELD_MAX_RETRIES = 'max_retries';
-    const FIELD_RETRIES = 'retries';
-    const FIELD_ERROR_LOG = 'error_log';
-    const FIELD_DATA_SIZE = 'data_size';
+    public const FIELD_JOB_ID = 'job_id';
+    public const FIELD_CREATED = 'created';
+    public const FIELD_PID = 'pid';
+    public const FIELD_CLASS = 'class';
+    public const FIELD_METHOD = 'method';
+    public const FIELD_DATA = 'data';
+    public const FIELD_MAX_RETRIES = 'max_retries';
+    public const FIELD_RETRIES = 'retries';
+    public const FIELD_ERROR_LOG = 'error_log';
+    public const FIELD_DATA_SIZE = 'data_size';
 
     /**
      * @return string

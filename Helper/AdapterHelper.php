@@ -8,8 +8,8 @@ use Magento\CatalogSearch\Helper\Data as CatalogSearchDataHelper;
 
 class AdapterHelper
 {
-    const INSTANTSEARCH_ORDER_PARAM = 'sortBy';
-    const BACKEND_ORDER_PARAM = 'product_list_order';
+    public const INSTANTSEARCH_ORDER_PARAM = 'sortBy';
+    public const BACKEND_ORDER_PARAM = 'product_list_order';
 
     /** @var CatalogSearchDataHelper */
     private $catalogSearchHelper;

@@ -11,9 +11,9 @@ use Magento\Ui\Component\Listing\Columns\Column;
 
 class LandingPageActions extends Column
 {
-    const URL_PATH_EDIT = 'algolia_algoliasearch/landingpage/edit';
-    const URL_PATH_DELETE = 'algolia_algoliasearch/landingpage/delete';
-    const URL_PATH_DUPLICATE = 'algolia_algoliasearch/landingpage/duplicate';
+    public const URL_PATH_EDIT = 'algolia_algoliasearch/landingpage/edit';
+    public const URL_PATH_DELETE = 'algolia_algoliasearch/landingpage/delete';
+    public const URL_PATH_DUPLICATE = 'algolia_algoliasearch/landingpage/duplicate';
 
     /** @var UrlInterface */
     protected $urlBuilder;

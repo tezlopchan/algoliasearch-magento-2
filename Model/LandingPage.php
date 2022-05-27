@@ -7,7 +7,7 @@ use Magento\Framework\DataObject\IdentityInterface;
 
 class LandingPage extends \Magento\Framework\Model\AbstractModel implements IdentityInterface, LandingPageInterface
 {
-    const CACHE_TAG = 'algoliasearch_landing_page';
+    public const CACHE_TAG = 'algoliasearch_landing_page';
 
     protected $_cacheTag = 'algoliasearch_landing_page';
 

@@ -7,7 +7,7 @@ use Magento\Framework\DataObject\IdentityInterface;
 
 class Query extends \Magento\Framework\Model\AbstractModel implements IdentityInterface, QueryInterface
 {
-    const CACHE_TAG = 'algoliasearch_query';
+    public const CACHE_TAG = 'algoliasearch_query';
 
     protected $_cacheTag = 'algoliasearch_query';
 
