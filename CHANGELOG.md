@@ -1,19 +1,16 @@
 # CHANGE LOG
 
+## 3.6.1
+
+### UPDATES
+- Updated Algolia Php Client version 2.5.1 to 3.2.0(#1200)
+
 ## 3.6.0
 
 ### UPDATES
 - Implemented DB schema using the Declarative schema(#1196)
 - Updated to support the latest released Magento 2.4.4 with PHP 8.1(#1196)
-
-## 3.4.0
-
-### UPDATES
 - Updated to support Guzzle Http version with 6.3 and 7.4 for compatibility with Magento 2.4.x  (#1187)
-
-## 3.3.0
-
-### UPDATES
 - Updated to support the latest released Magento 2.4.4 with PHP 7.4 (#1173)
 - Updated PHP Unit Integration Test for magento 2.4.4 (#1176)
 - Release Notes Automation using github release.yml (#1174)

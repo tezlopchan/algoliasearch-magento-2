@@ -1,7 +1,7 @@
 Algolia Search for Magento 2
 ==================
 
-![Latest version](https://img.shields.io/badge/latest-3.6.0-green)
+![Latest version](https://img.shields.io/badge/latest-3.6.1-green)
 ![Magento 2](https://img.shields.io/badge/Magento-2.4.x-orange)
 
 ![PHP](https://img.shields.io/badge/PHP-7.4%2C8.1-blue)
@@ -111,11 +111,12 @@ The extension does most of the heavy lifting when it comes to gathering and prep
 
 Depending on the extension version you are using, you could have a different PHP API client version powering the extension's backend functionality.
 
-| Extension Version | API Client Version |
-| --- | --- |
-| v1.x | [1.28.0](https://github.com/algolia/algoliasearch-client-php/tree/1.28.0) |
-| v2.x | [2.5.1](https://github.com/algolia/algoliasearch-client-php/tree/2.5.1) |
-| v3.x | [2.5.1](https://github.com/algolia/algoliasearch-client-php/tree/2.5.1) |
+| Extension Version | API Client Version                                                        |
+|-------------------|---------------------------------------------------------------------------|
+| v1.x              | [1.28.0](https://github.com/algolia/algoliasearch-client-php/tree/1.28.0) |
+| v2.x              | [2.5.1](https://github.com/algolia/algoliasearch-client-php/tree/2.5.1)   |
+| v3.x              | [2.5.1](https://github.com/algolia/algoliasearch-client-php/tree/2.5.1)   |
+| v3.6.x            | [3.2.0](https://github.com/algolia/algoliasearch-client-php/tree/3.2.0)   |
 
 Refer to these docs when customising your Algolia Magento extension backend:
 - [Indexing](https://www.algolia.com/doc/integration/magento-2/how-it-works/indexing/)
