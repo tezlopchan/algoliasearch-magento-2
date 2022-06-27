@@ -244,6 +244,8 @@ requirejs(['algoliaBundle'], function(algoliaBundle) {
 							return template;
 						},
 						suggestion: function (hit, payload) {
+                            var toEscape = hit._highlightResult.name.value;
+                            hit._highlightResult.name.value = algoliaBundle.autocomplete.escapeHighlightedString(toEscape);
 							hit.__indexName = algoliaConfig.indexName + "_" + section.name;
 							hit.__queryID = payload.queryID;
 							hit.__position = payload.hits.indexOf(hit) + 1;
