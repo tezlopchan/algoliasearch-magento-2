@@ -6,15 +6,17 @@ use Magento\Framework\Indexer\IndexerInterfaceFactory;
 use Magento\Framework\Mview\View\SubscriptionFactory;
 use Magento\Framework\Setup\ModuleDataSetupInterface;
 use Magento\Framework\Setup\Patch\DataPatchInterface;
-use Magento\Framework\Setup\Patch\PatchVersionInterface;
 
-class UpdateMviewPatch implements DataPatchInterface, PatchVersionInterface
+class UpdateMviewPatch implements DataPatchInterface
 {
     /**
      * @var SubscriptionFactory
      */
     private $subscriptionFactory;
 
+    /**
+     * @var IndexerInterfaceFactory
+     */
     private $indexerFactory;
 
     /**
@@ -22,6 +24,11 @@ class UpdateMviewPatch implements DataPatchInterface, PatchVersionInterface
      */
     private $moduleDataSetup;
 
+    /**
+     * @param SubscriptionFactory $subscriptionFactory
+     * @param ModuleDataSetupInterface $moduleDataSetup
+     * @param IndexerInterfaceFactory $indexerFactory
+     */
     public function __construct(
         SubscriptionFactory $subscriptionFactory,
         ModuleDataSetupInterface $moduleDataSetup,
@@ -35,33 +42,28 @@ class UpdateMviewPatch implements DataPatchInterface, PatchVersionInterface
     public function apply()
     {
         $this->moduleDataSetup->getConnection()->startSetup();
-        /** @var \Magento\Framework\Indexer\IndexerInterface $indexer */
         $indexer = $this->indexerFactory->create()->load('algolia_products');
-        $subscriptionInstance = $this->subscriptionFactory->create(
-            [
-                'view' => $indexer->getView(),
-                'tableName' => 'catalog_product_index_price',
-                'columnName' => 'entity_id',
-            ]
-        );
-        $subscriptionInstance->remove();
+        try {
+            $subscriptionInstance = $this->subscriptionFactory->create(
+                [
+                    'view' => $indexer->getView(),
+                    'tableName' => 'catalog_product_index_price',
+                    'columnName' => 'entity_id',
+                ]
+            );
+            $subscriptionInstance->remove();
+        } catch (\Exception $e) {
+            // Skip
+        }
         $this->moduleDataSetup->getConnection()->endSetup();
-    }
-
-    /**
-      * @inheritdoc
-      */
-    public static function getDependencies()
-    {
-        return [];
     }
 
     /**
      * @inheritdoc
      */
-    public static function getVersion()
+    public static function getDependencies()
     {
-        return '1.12.0';
+        return [];
     }
 
     /**
