@@ -42,8 +42,10 @@ class UpdateMviewPatch implements DataPatchInterface
     public function apply()
     {
         $this->moduleDataSetup->getConnection()->startSetup();
-        $indexer = $this->indexerFactory->create()->load('algolia_products');
+
         try {
+            /** @var \Magento\Framework\Indexer\IndexerInterface $indexer */
+            $indexer = $this->indexerFactory->create()->load('algolia_products');
             $subscriptionInstance = $this->subscriptionFactory->create(
                 [
                     'view' => $indexer->getView(),
