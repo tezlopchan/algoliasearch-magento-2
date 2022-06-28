@@ -1,5 +1,15 @@
 # CHANGE LOG
 
+## 3.7.0
+
+### UPDATES
+- Updated instantsearch.js(#1203)
+
+### FIXES
+- Fixed the autocomplete.js vulnerability issues (#1205)
+- Fixed the issue with PHP 8.1: Deprecated Functionality: explode() on category page (#1208)
+- Fixed the issue with Mview update by patch (#1210)
+
 ## 3.6.1
 
 ### UPDATES
