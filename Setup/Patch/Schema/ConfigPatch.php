@@ -320,17 +320,6 @@ class ConfigPatch implements SchemaPatchInterface
             $this->config->saveConfig($path, $value, 'default', 0);
         }
 
-        /** @var \Magento\Framework\Indexer\IndexerInterface $indexer */
-        $indexer = $this->indexerFactory->create()->load('algolia_products');
-        $subscriptionInstance = $this->subscriptionFactory->create(
-            [
-                'view' => $indexer->getView(),
-                'tableName' => 'catalog_product_index_price',
-                'columnName' => 'entity_id',
-            ]
-        );
-        $subscriptionInstance->remove();
-
         $this->moduleDataSetup->getConnection()->endSetup();
     }
 
