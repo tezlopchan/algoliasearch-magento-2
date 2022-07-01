@@ -146,12 +146,11 @@ requirejs(['algoliaBundle'], function(algoliaBundle) {
 
             if (Array.isArray(hit.price))
                 hit.price = hit.price[0];
-
             if (hit['price'] !== undefined && price_key !== '.' + algoliaConfig.currencyCode + '.default' && hit['price'][algoliaConfig.currencyCode][price_key.substr(1) + '_formated'] !== hit['price'][algoliaConfig.currencyCode]['default_formated']) {
                 hit['price'][algoliaConfig.currencyCode][price_key.substr(1) + '_original_formated'] = hit['price'][algoliaConfig.currencyCode]['default_formated'];
             }
 
-            if (hit['price'][algoliaConfig.currencyCode]['default_original_formated']
+            if (    hit['price'][algoliaConfig.currencyCode]['default_original_formated']
                 && hit['price'][algoliaConfig.currencyCode]['special_to_date']) {
                 var priceExpiration = hit['price'][algoliaConfig.currencyCode]['special_to_date'];
 
@@ -222,7 +221,7 @@ requirejs(['algoliaBundle'], function(algoliaBundle) {
                     name: section.name,
                     paramName:algolia_client.initIndex(algoliaConfig.indexName + "_" + section.name),
                     templates: {
-                        empty: function (query) {
+                        /*empty: function (query) {
                             var template = '<div class="aa-no-results-products">' +
                                 '<div class="title">' + algoliaConfig.translations.noProducts + ' "' + $("<div>").text(query.query).html() + '"</div>';
 
@@ -240,26 +239,71 @@ requirejs(['algoliaBundle'], function(algoliaBundle) {
                             }
 
                             template +=         '<div class="see-all">' + (suggestions.length > 0 ? algoliaConfig.translations.or + ' ' : '') + '<a href="' + algoliaConfig.baseUrl + '/catalogsearch/result/?q=__empty__">' + algoliaConfig.translations.seeAll + '</a></div>' +
-                                '</div>';
+                            '</div>';
 
                             return template;
+                        },*/
+                        noResults() {
+                            return 'No results.';
                         },
-                        item({ item, createElement, components }) {
-                            console.log(item)
-                        },
-                        suggestion: function (hit, payload) {
+                        item({ item, html }) {
+                            var _data = transformHit(item, algoliaConfig.priceKey);
+                            var origFormatedVar = algoliaConfig.origFormatedVar;
+                            var tierFormatedvar = algoliaConfig.tierFormatedVar;
+                            if (algoliaConfig.priceGroup == null) {
+                                return html`<div class="col9"><a class="algoliasearch-autocomplete-hit" href="${_data.url || ''}">
+                                    <div class="thumb"><img src="${_data.thumbnail_url || ''}" alt="${_data.name || ''}" /></div>
+                                        <div class="info">
+                                            ${components.Highlight({hit: _data, attribute: 'name'}) || ''}
+                                        <div class="algoliasearch-autocomplete-category">
+                                            in ${components.Highlight({hit: _data, attribute: 'categories_without_path'})}
+                                        </div>
+                                        <div class="algoliasearch-autocomplete-price">
+                                            <span class="after_special ${origFormatedVar != null ? 'promotion' : ''}">
+                                                ${_data['price'][algoliaConfig.currencyCode]['default_formated']}
+                                            </span>
+
+                                            ${_data['price'][algoliaConfig.currencyCode]['default_original_formated'] != null ?
+                                                html `<span class="before_special">${_data['price'][algoliaConfig.currencyCode]['default_original_formated']}</span>` : ''}
+                                        </div>
+                                    </div>
+                                </a></div>`;
+                            } else {
+                                return html`<div class="col9"><a class="algoliasearch-autocomplete-hit" href="${_data.url || ''}">
+                                    <div class="thumb"><img src="${_data.thumbnail_url || ''}" alt="${_data.name || ''}" /></div>
+                                        <div class="info">
+                                            ${_data['price'][algoliaConfig.currencyCode]['default_formated']}
+                                        <div class="algoliasearch-autocomplete-category">
+                                            in ${components.Highlight({hit: _data, attribute: 'categories_without_path'})}
+                                        </div>
+                                        <div class="algoliasearch-autocomplete-price">
+                                            <span class="after_special ${origFormatedVar != null ? 'promotion' : ''}">
+                                                ${_data['price'][algoliaConfig.currencyCode][algoliaConfig.priceGroup+'_formated']}
+                                            </span>
+
+                                            ${_data['price'][algoliaConfig.currencyCode][algoliaConfig.priceGroup+'_original_formated'] != null ?
+                                                html `<span class="before_special">${_data['price'][algoliaConfig.currencyCode][algoliaConfig.priceGroup+'_original_formated']}</span>` : ''}
+
+                                            ${_data['price'][algoliaConfig.currencyCode][algoliaConfig.priceGroup+'_tier_formated'] != null ?
+                                                html ` <span class="tier_price">As low as ${_data['price'][algoliaConfig.currencyCode][algoliaConfig.priceGroup+'_tier_formated']}</span>` : '' }
+                                        </div>
+                                    </div>
+                                </a></div>`;
+                            }
+                        }/*,
+						suggestion: function (hit, payload) {
                             var toEscape = hit._highlightResult.name.value;
                             hit._highlightResult.name.value = algoliaBundle.autocomplete.escapeHighlightedString(toEscape);
-                            hit.__indexName = algoliaConfig.indexName + "_" + section.name;
-                            hit.__queryID = payload.queryID;
-                            hit.__position = payload.hits.indexOf(hit) + 1;
+							hit.__indexName = algoliaConfig.indexName + "_" + section.name;
+							hit.__queryID = payload.queryID;
+							hit.__position = payload.hits.indexOf(hit) + 1;
 
-                            hit = transformHit(hit, algoliaConfig.priceKey);
+							hit = transformHit(hit, algoliaConfig.priceKey);
 
-                            hit.displayKey = hit.displayKey || hit.name;
+							hit.displayKey = hit.displayKey || hit.name;
 
-                            return algoliaConfig.autocomplete.templates[section.name].render(hit);
-                        }
+							return algoliaConfig.autocomplete.templates[section.name].render(hit);
+						}*/
                     }
                 };
             }
@@ -273,39 +317,40 @@ requirejs(['algoliaBundle'], function(algoliaBundle) {
                     name: i,
                     paramName:algolia_client.initIndex(algoliaConfig.indexName + "_" + section.name),
                     templates: {
-                        empty: '<div class="aa-no-results">' + algoliaConfig.translations.noResults + '</div>',
-                        item({ item, createElement, components }) {
-                            console.log(item)
-                        },
-                        suggestion: function (hit, payload) {
-                            if (section.name === 'categories') {
-                                hit.displayKey = hit.path;
-                            }
+                        //empty: '<div class="aa-no-results">' + algoliaConfig.translations.noResults + '</div>',
+                        item({ item, html }) {
+                            console.log('Product Item =========',item);
+                            return html`${algoliaConfig.autocomplete.templates[section.name].render(item)}`;
+                        }/*,
+						suggestion: function (hit, payload) {
+							if (section.name === 'categories') {
+								hit.displayKey = hit.path;
+							}
 
-                            if (hit._snippetResult && hit._snippetResult.content && hit._snippetResult.content.value.length > 0) {
-                                hit.content = hit._snippetResult.content.value;
+							if (hit._snippetResult && hit._snippetResult.content && hit._snippetResult.content.value.length > 0) {
+								hit.content = hit._snippetResult.content.value;
 
-                                if (hit.content.charAt(0).toUpperCase() !== hit.content.charAt(0)) {
-                                    hit.content = '&#8230; ' + hit.content;
-                                }
+								if (hit.content.charAt(0).toUpperCase() !== hit.content.charAt(0)) {
+									hit.content = '&#8230; ' + hit.content;
+								}
 
-                                if ($.inArray(hit.content.charAt(hit.content.length - 1), ['.', '!', '?'])) {
-                                    hit.content = hit.content + ' &#8230;';
-                                }
+								if ($.inArray(hit.content.charAt(hit.content.length - 1), ['.', '!', '?'])) {
+									hit.content = hit.content + ' &#8230;';
+								}
 
-                                if (hit.content.indexOf('<em>') === -1) {
-                                    hit.content = '';
-                                }
-                            }
+								if (hit.content.indexOf('<em>') === -1) {
+									hit.content = '';
+								}
+							}
 
-                            hit.displayKey = hit.displayKey || hit.name;
+							hit.displayKey = hit.displayKey || hit.name;
 
-                            hit.__indexName = algoliaConfig.indexName + "_" + section.name;
-                            hit.__queryID = payload.queryID;
-                            hit.__position = payload.hits.indexOf(hit) + 1;
+							hit.__indexName = algoliaConfig.indexName + "_" + section.name;
+							hit.__queryID = payload.queryID;
+							hit.__position = payload.hits.indexOf(hit) + 1;
 
-                            return algoliaConfig.autocomplete.templates[section.name].render(hit);
-                        }
+							return algoliaConfig.autocomplete.templates[section.name].render(hit);
+						}*/
                     }
                 };
             }
@@ -358,10 +403,9 @@ requirejs(['algoliaBundle'], function(algoliaBundle) {
                 var index = algolia_client.initIndex(algoliaConfig.indexName + "_section_" + section.name);
 
                 source = {
-                    name: i,
-                    paramName:algolia_client.initIndex(algoliaConfig.indexName + "_" + section.name),
-                    //source: algoliaBundle.autocomplete.sources.hits(index, options),
+                    source: algoliaBundle.autocomplete.sources.hits(index, options),
                     displayKey: 'value',
+                    name: i,
                     templates: {
                         suggestion: function (hit, payload) {
                             hit.url = algoliaConfig.baseUrl + '/catalogsearch/result/?q=' + hit.value + '&refinement_key=' + encodeURIComponent(section.name);
@@ -376,11 +420,11 @@ requirejs(['algoliaBundle'], function(algoliaBundle) {
                 };
             }
 
-            if (section.name === 'products') {
+            if (section.name === 'products-----') {
                 source.templates.footer = function (query, content) {
                     var keys = [];
                     for (var i = 0; i<algoliaConfig.facets.length; i++) {
-                        if (algoliaConfig.facets[i].attribute == "categories") {
+                        if (algoliaConfig.facets[i].attribute == "categories" && content) {
                             for (var key in content.facets['categories.level0']) {
                                 var url = algoliaConfig.baseUrl + '/catalogsearch/result/?q=' + encodeURIComponent(query.query) + '#q=' + encodeURIComponent(query.query) + '&hFR[categories.level0][0]=' + encodeURIComponent(key) + '&idx=' + algoliaConfig.indexName + '_products';
                                 keys.push({
@@ -408,6 +452,7 @@ requirejs(['algoliaBundle'], function(algoliaBundle) {
 
                     var allUrl = algoliaConfig.baseUrl + '/catalogsearch/result/?q=' + encodeURIComponent(query.query);
                     var returnFooter = '<div id="autocomplete-products-footer">' + algoliaConfig.translations.seeIn + ' <span><a href="' + allUrl +  '">' + algoliaConfig.translations.allDepartments + '</a></span> (' + content.nbHits + ')';
+
 
                     if(ors && algoliaConfig.instant.enabled) {
                         returnFooter += ' ' + algoliaConfig.translations.orIn + ' ' + ors;
