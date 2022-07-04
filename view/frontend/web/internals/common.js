@@ -146,11 +146,12 @@ requirejs(['algoliaBundle'], function(algoliaBundle) {
 
             if (Array.isArray(hit.price))
                 hit.price = hit.price[0];
+
             if (hit['price'] !== undefined && price_key !== '.' + algoliaConfig.currencyCode + '.default' && hit['price'][algoliaConfig.currencyCode][price_key.substr(1) + '_formated'] !== hit['price'][algoliaConfig.currencyCode]['default_formated']) {
                 hit['price'][algoliaConfig.currencyCode][price_key.substr(1) + '_original_formated'] = hit['price'][algoliaConfig.currencyCode]['default_formated'];
             }
 
-            if (    hit['price'][algoliaConfig.currencyCode]['default_original_formated']
+            if (hit['price'][algoliaConfig.currencyCode]['default_original_formated']
                 && hit['price'][algoliaConfig.currencyCode]['special_to_date']) {
                 var priceExpiration = hit['price'][algoliaConfig.currencyCode]['special_to_date'];
 
@@ -246,7 +247,7 @@ requirejs(['algoliaBundle'], function(algoliaBundle) {
                         noResults() {
                             return 'No results.';
                         },
-                        item({ item, html }) {
+                        item({ item, components, html }) {
                             var _data = transformHit(item, algoliaConfig.priceKey);
                             var origFormatedVar = algoliaConfig.origFormatedVar;
                             var tierFormatedvar = algoliaConfig.tierFormatedVar;
@@ -264,7 +265,7 @@ requirejs(['algoliaBundle'], function(algoliaBundle) {
                                             </span>
 
                                             ${_data['price'][algoliaConfig.currencyCode]['default_original_formated'] != null ?
-                                                html `<span class="before_special">${_data['price'][algoliaConfig.currencyCode]['default_original_formated']}</span>` : ''}
+                                    html `<span class="before_special">${_data['price'][algoliaConfig.currencyCode]['default_original_formated']}</span>` : ''}
                                         </div>
                                     </div>
                                 </a></div>`;
@@ -282,15 +283,16 @@ requirejs(['algoliaBundle'], function(algoliaBundle) {
                                             </span>
 
                                             ${_data['price'][algoliaConfig.currencyCode][algoliaConfig.priceGroup+'_original_formated'] != null ?
-                                                html `<span class="before_special">${_data['price'][algoliaConfig.currencyCode][algoliaConfig.priceGroup+'_original_formated']}</span>` : ''}
+                                    html `<span class="before_special">${_data['price'][algoliaConfig.currencyCode][algoliaConfig.priceGroup+'_original_formated']}</span>` : ''}
 
                                             ${_data['price'][algoliaConfig.currencyCode][algoliaConfig.priceGroup+'_tier_formated'] != null ?
-                                                html ` <span class="tier_price">As low as ${_data['price'][algoliaConfig.currencyCode][algoliaConfig.priceGroup+'_tier_formated']}</span>` : '' }
+                                    html ` <span class="tier_price">As low as ${_data['price'][algoliaConfig.currencyCode][algoliaConfig.priceGroup+'_tier_formated']}</span>` : '' }
                                         </div>
                                     </div>
                                 </a></div>`;
                             }
-                        }/*,
+                        }
+                        /*,
 						suggestion: function (hit, payload) {
                             var toEscape = hit._highlightResult.name.value;
                             hit._highlightResult.name.value = algoliaBundle.autocomplete.escapeHighlightedString(toEscape);
