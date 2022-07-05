@@ -110,7 +110,6 @@ requirejs(['algoliaBundle'], function(algoliaBundle) {
                 container: '#algoliaAutocomplete',
                 placeholder: 'Search for products, categories, ...',
                 detachedMediaQuery: 'none',
-                //debug: true,
                 getSources() {
                     return [
                         {
@@ -118,17 +117,12 @@ requirejs(['algoliaBundle'], function(algoliaBundle) {
                             getItems({ query }) {
                                 return algoliaBundle.getAlgoliaResults({
                                     searchClient,
-                                    /*transformResponse({ hits }) {
-                                      console.log('hits');
-                                      console.log(hits);
-                                      return hits;
-                                    },*/
                                     queries: [
                                         {
                                             indexName: sources[0].paramName.indexName,
                                             query,
                                             params: {
-                                                hitsPerPage: 6,
+                                                hitsPerPage: algoliaConfig.autocomplete.nbOfCategoriesSuggestions,
                                                 distinct: true,
                                             },
                                         },
@@ -143,8 +137,6 @@ requirejs(['algoliaBundle'], function(algoliaBundle) {
                                     return 'Categories';
                                 },
                                 item({ item, components, html }) {
-                                    /*console.log('Category ========== 0');
-                                    console.log(item);*/
                                     return html`<a class="algoliasearch-autocomplete-hit" href="${item.url}">${components.Highlight({ hit: item, attribute: 'path' })} (${item.product_count})</span>`
                                 }
                             },
@@ -154,17 +146,12 @@ requirejs(['algoliaBundle'], function(algoliaBundle) {
                             getItems({ query }) {
                                 return algoliaBundle.getAlgoliaResults({
                                     searchClient,
-                                    /*transformResponse({ hits }) {
-                                      console.log('hits');
-                                      console.log(hits);
-                                      return hits;
-                                    },*/
                                     queries: [
                                         {
                                             indexName: sources[2].paramName.indexName,
                                             query,
                                             params: {
-                                                hitsPerPage: 6,
+                                                hitsPerPage: algoliaConfig.autocomplete.nbOfCategoriesSuggestions,
                                                 distinct: true,
                                             },
                                         },
@@ -179,8 +166,6 @@ requirejs(['algoliaBundle'], function(algoliaBundle) {
                                     return 'Pages';
                                 },
                                 item({ item, components, html }) {
-                                    /*console.log('Pages ========== 0');
-                                    console.log(item);*/
                                     return html`<a class="algoliasearch-autocomplete-hit" href="${item.url}">
 									<div class="info-without-thumb">
 										${components.Highlight({ hit: item, attribute: 'name' })}
@@ -198,17 +183,12 @@ requirejs(['algoliaBundle'], function(algoliaBundle) {
                             getItems({ query }) {
                                 return algoliaBundle.getAlgoliaResults({
                                     searchClient,
-                                    /*transformResponse({ hits }) {
-                                      console.log('hits');
-                                      console.log(hits);
-                                      return hits;
-                                    },*/
                                     queries: [
                                         {
                                             indexName: sources[1].paramName.indexName,
                                             query,
                                             params: {
-                                                hitsPerPage: 6,
+                                                hitsPerPage: algoliaConfig.autocomplete.nbOfProductsSuggestions,
                                                 distinct: true,
                                             },
                                         },

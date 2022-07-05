@@ -252,7 +252,7 @@ requirejs(['algoliaBundle'], function(algoliaBundle) {
                             var origFormatedVar = algoliaConfig.origFormatedVar;
                             var tierFormatedvar = algoliaConfig.tierFormatedVar;
                             if (algoliaConfig.priceGroup == null) {
-                                return html`<div class="col9"><a class="algoliasearch-autocomplete-hit" href="${_data.url || ''}">
+                                return html`<a class="algoliasearch-autocomplete-hit" href="${_data.url || ''}">
                                     <div class="thumb"><img src="${_data.thumbnail_url || ''}" alt="${_data.name || ''}" /></div>
                                         <div class="info">
                                             ${components.Highlight({hit: _data, attribute: 'name'}) || ''}
@@ -268,12 +268,12 @@ requirejs(['algoliaBundle'], function(algoliaBundle) {
                                     html `<span class="before_special">${_data['price'][algoliaConfig.currencyCode]['default_original_formated']}</span>` : ''}
                                         </div>
                                     </div>
-                                </a></div>`;
+                                </a>`;
                             } else {
-                                return html`<div class="col9"><a class="algoliasearch-autocomplete-hit" href="${_data.url || ''}">
+                                return html`<a class="algoliasearch-autocomplete-hit" href="${_data.url || ''}">
                                     <div class="thumb"><img src="${_data.thumbnail_url || ''}" alt="${_data.name || ''}" /></div>
                                         <div class="info">
-                                            ${_data['price'][algoliaConfig.currencyCode]['default_formated']}
+                                            ${components.Highlight({hit: _data, attribute: 'name'}) || ''}
                                         <div class="algoliasearch-autocomplete-category">
                                             in ${components.Highlight({hit: _data, attribute: 'categories_without_path'})}
                                         </div>
@@ -289,7 +289,7 @@ requirejs(['algoliaBundle'], function(algoliaBundle) {
                                     html ` <span class="tier_price">As low as ${_data['price'][algoliaConfig.currencyCode][algoliaConfig.priceGroup+'_tier_formated']}</span>` : '' }
                                         </div>
                                     </div>
-                                </a></div>`;
+                                </a>`;
                             }
                         }
                         /*,
