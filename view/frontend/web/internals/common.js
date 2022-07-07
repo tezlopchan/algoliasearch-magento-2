@@ -248,6 +248,13 @@ requirejs(['algoliaBundle'], function(algoliaBundle) {
                             return 'No results.';
                         },
                         item({ item, components, html }) {
+                            if(suggestionSection){
+                                algoliaAutocomplete.$('.aa-Panel').addClass('productColumn2');
+                                algoliaAutocomplete.$('.aa-Panel').removeClass('productColumn1');
+                            }else{
+                                algoliaAutocomplete.$('.aa-Panel').removeClass('productColumn2');
+                                algoliaAutocomplete.$('.aa-Panel').addClass('productColumn1');
+                            }
                             var _data = transformHit(item, algoliaConfig.priceKey);
                             var origFormatedVar = algoliaConfig.origFormatedVar;
                             var tierFormatedvar = algoliaConfig.tierFormatedVar;
@@ -273,7 +280,7 @@ requirejs(['algoliaBundle'], function(algoliaBundle) {
                                 return html`<a class="algoliasearch-autocomplete-hit" href="${_data.url || ''}">
                                     <div class="thumb"><img src="${_data.thumbnail_url || ''}" alt="${_data.name || ''}" /></div>
                                         <div class="info">
-                                            ${components.Highlight({hit: _data, attribute: 'name'}) || ''}
+											${components.Highlight({hit: _data, attribute: 'name'}) || ''}
                                         <div class="algoliasearch-autocomplete-category">
                                             in ${components.Highlight({hit: _data, attribute: 'categories_without_path'})}
                                         </div>
@@ -309,20 +316,84 @@ requirejs(['algoliaBundle'], function(algoliaBundle) {
                     }
                 };
             }
-            else if (section.name === "categories" || section.name === "pages")
+            else if (section.name === "categories")
             {
                 if (section.name === "categories" && algoliaConfig.showCatsNotIncludedInNavigation === false) {
                     options.numericFilters = 'include_in_menu=1';
                 }
                 source =  {
                     //source: algoliaBundle.autocomplete.sources.hits(algolia_client.initIndex(algoliaConfig.indexName + "_" + section.name), options),
-                    name: i,
+                    name: section.name || i,
                     paramName:algolia_client.initIndex(algoliaConfig.indexName + "_" + section.name),
                     templates: {
                         //empty: '<div class="aa-no-results">' + algoliaConfig.translations.noResults + '</div>',
-                        item({ item, html }) {
-                            console.log('Product Item =========',item);
-                            return html`${algoliaConfig.autocomplete.templates[section.name].render(item)}`;
+                        noResults() {
+                            return 'No results.';
+                        },
+                        header() {
+                            return section.name;
+                        },
+                        item({ item, components, html }) {
+                            /*console.log('Category ========== 0');
+                            console.log(item);*/
+                            return html`<a class="algoliasearch-autocomplete-hit" href="${item.url}">${components.Highlight({ hit: item, attribute: 'path' })} (${item.product_count})</span>`
+                        }/*,
+						suggestion: function (hit, payload) {
+							if (section.name === 'categories') {
+								hit.displayKey = hit.path;
+							}
+
+							if (hit._snippetResult && hit._snippetResult.content && hit._snippetResult.content.value.length > 0) {
+								hit.content = hit._snippetResult.content.value;
+
+								if (hit.content.charAt(0).toUpperCase() !== hit.content.charAt(0)) {
+									hit.content = '&#8230; ' + hit.content;
+								}
+
+								if ($.inArray(hit.content.charAt(hit.content.length - 1), ['.', '!', '?'])) {
+									hit.content = hit.content + ' &#8230;';
+								}
+
+								if (hit.content.indexOf('<em>') === -1) {
+									hit.content = '';
+								}
+							}
+
+							hit.displayKey = hit.displayKey || hit.name;
+
+							hit.__indexName = algoliaConfig.indexName + "_" + section.name;
+							hit.__queryID = payload.queryID;
+							hit.__position = payload.hits.indexOf(hit) + 1;
+
+							return algoliaConfig.autocomplete.templates[section.name].render(hit);
+						}*/
+                    }
+                };
+            }
+            else if (section.name === "pages")
+            {
+                source =  {
+                    //source: algoliaBundle.autocomplete.sources.hits(algolia_client.initIndex(algoliaConfig.indexName + "_" + section.name), options),
+                    name: section.name || i,
+                    paramName:algolia_client.initIndex(algoliaConfig.indexName + "_" + section.name),
+                    templates: {
+                        //empty: '<div class="aa-no-results">' + algoliaConfig.translations.noResults + '</div>',
+                        noResults() {
+                            return 'No results.';
+                        },
+                        header() {
+                            return section.name;
+                        },
+                        item({ item, components, html }) {
+                            return html`<a class="algoliasearch-autocomplete-hit" href="${item.url}">
+                            <div class="info-without-thumb">
+                                ${components.Highlight({ hit: item, attribute: 'name' })}
+                                <div class="details">
+                                    ${item.content}
+                                </div>
+                            </div>
+                            <div class="algolia-clearfix"></div>
+                        </a>`;
                         }/*,
 						suggestion: function (hit, payload) {
 							if (section.name === 'categories') {
@@ -363,7 +434,7 @@ requirejs(['algoliaBundle'], function(algoliaBundle) {
                 var products_index = algolia_client.initIndex(algoliaConfig.indexName + "_products");
 
                 source = {
-                    source: algoliaBundle.autocomplete.sources.popularIn(suggestions_index, options, {
+                    /*source: algoliaBundle.autocomplete.sources.popularIn(suggestions_index, options, {
                         source: 'query',
                         index: products_index,
                         facets: ['categories.level0'],
@@ -374,11 +445,16 @@ requirejs(['algoliaBundle'], function(algoliaBundle) {
                     }, {
                         includeAll: true,
                         allTitle: algoliaConfig.translations.allDepartments
-                    }),
+                    }),*/
                     displayKey: 'query',
                     name: section.name,
+                    paramName: suggestions_index,
                     templates: {
-                        suggestion: function (hit, payload) {
+                        item({ item, html }) {
+                            console.log('suggestions Item =========',item);
+                            return html`<div>Suggestion List</div>`;
+                        }
+                        /*suggestion: function (hit, payload) {
                             if (hit.facet) {
                                 hit.category = hit.facet.value;
                             }
@@ -397,7 +473,7 @@ requirejs(['algoliaBundle'], function(algoliaBundle) {
                             hit.__position = payload.hits.indexOf(hit) + 1;
 
                             return algoliaConfig.autocomplete.templates.suggestions.render(hit);
-                        }
+                        }*/
                     }
                 };
             } else {
@@ -405,11 +481,21 @@ requirejs(['algoliaBundle'], function(algoliaBundle) {
                 var index = algolia_client.initIndex(algoliaConfig.indexName + "_section_" + section.name);
 
                 source = {
-                    source: algoliaBundle.autocomplete.sources.hits(index, options),
+                    //source: algoliaBundle.autocomplete.sources.hits(index, options),
+                    paramName: algolia_client.initIndex(algoliaConfig.indexName + "_section_" + section.name),
                     displayKey: 'value',
-                    name: i,
+                    name: section.name || i,
                     templates: {
-                        suggestion: function (hit, payload) {
+                        noResults() {
+                            return 'No results.';
+                        },
+                        header() {
+                            return section.name;
+                        },
+                        item({ item, components, html }) {
+                            return html`${components.Highlight({ hit: item, attribute: 'value' })}`;
+                        }
+                        /*suggestion: function (hit, payload) {
                             hit.url = algoliaConfig.baseUrl + '/catalogsearch/result/?q=' + hit.value + '&refinement_key=' + encodeURIComponent(section.name);
 
                             hit.__indexName = algoliaConfig.indexName + "_section_" + section.name;
@@ -417,7 +503,7 @@ requirejs(['algoliaBundle'], function(algoliaBundle) {
                             hit.__position = payload.hits.indexOf(hit) + 1;
 
                             return algoliaConfig.autocomplete.templates.additionalSection.render(hit);
-                        }
+                        }*/
                     }
                 };
             }
@@ -467,7 +553,7 @@ requirejs(['algoliaBundle'], function(algoliaBundle) {
             }
 
             if (section.name !== 'suggestions' && section.name !== 'products') {
-                source.templates.header = '<div class="category">' + (section.label ? section.label : section.name) + '</div>';
+                //source.templates.header = '<div class="category">' + (section.label ? section.label : section.name) + '</div>';
             }
 
             return source;
