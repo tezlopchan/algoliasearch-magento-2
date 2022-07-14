@@ -42,5 +42,11 @@
                 </personalization_conversion_events_group>
             </personalization_group>
         </algoliasearch_personalization>
+        <algoliasearch_recommend>
+            <recommend>
+                <nb_of_frequently_bought_together_products>6</nb_of_frequently_bought_together_products>
+                <nb_of_related_products>6</nb_of_related_products>
+            </recommend>
+        </algoliasearch_recommend>
     </default>
 </config>
