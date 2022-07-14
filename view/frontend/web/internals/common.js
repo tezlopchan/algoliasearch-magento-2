@@ -198,6 +198,134 @@ requirejs(['algoliaBundle'], function(algoliaBundle) {
             return hit;
         };
 
+        window.transformAutocompleteHit = function (hit, price_key, helper) {
+            if (Array.isArray(hit.categories))
+                hit.categories = hit.categories.join(', ');
+
+            if (hit._highlightResult.categories_without_path && Array.isArray(hit.categories_without_path)) {
+                hit.categories_without_path = $.map(hit._highlightResult.categories_without_path, function (category) {
+                    return category.value;
+                });
+
+                hit.categories_without_path = hit.categories_without_path.join(', ');
+            }
+
+            var matchedColors = [];
+
+            if (helper && algoliaConfig.useAdaptiveImage === true) {
+                if (hit.images_data && helper.state.facetsRefinements.color) {
+                    matchedColors = helper.state.disjunctiveFacetsRefinements.color.slice(0); // slice to clone
+                }
+
+                if (hit.images_data && helper.state.disjunctiveFacetsRefinements.color) {
+                    matchedColors = helper.state.disjunctiveFacetsRefinements.color.slice(0); // slice to clone
+                }
+            }
+
+            if (Array.isArray(hit.color)) {
+                var colors = [];
+
+                $.each(hit._highlightResult.color, function (i, color) {
+                    if (color.matchLevel === undefined || color.matchLevel === 'none') {
+                        return;
+                    }
+
+                    colors.push(color.value);
+
+                    if (algoliaConfig.useAdaptiveImage === true) {
+                        var matchedColor = color.matchedWords.join(' ');
+                        if (hit.images_data && color.fullyHighlighted && color.fullyHighlighted === true) {
+                            matchedColors.push(matchedColor);
+                        }
+                    }
+                });
+
+                colors = colors.join(', ');
+
+                hit._highlightResult.color = { value: colors };
+            }
+            else {
+                if (hit._highlightResult.color && hit._highlightResult.color.matchLevel === 'none') {
+                    hit._highlightResult.color = { value: '' };
+                }
+            }
+
+            if (algoliaConfig.useAdaptiveImage === true) {
+                $.each(matchedColors, function (i, color) {
+                    color = color.toLowerCase();
+
+                    if (hit.images_data[color]) {
+                        hit.image_url = hit.images_data[color];
+                        hit.thumbnail_url = hit.images_data[color];
+
+                        return false;
+                    }
+                });
+            }
+
+            if (hit._highlightResult.color && hit._highlightResult.color.value && hit.categories_without_path) {
+                if (hit.categories_without_path.indexOf('<em>') === -1 && hit._highlightResult.color.value.indexOf('<em>') !== -1) {
+                    hit.categories_without_path = '';
+                }
+            }
+
+            if (Array.isArray(hit._highlightResult.name))
+                hit._highlightResult.name = hit._highlightResult.name[0];
+
+            if (Array.isArray(hit.price))
+                hit.price = hit.price[0];
+
+            if (hit['price'] !== undefined && price_key !== '.' + algoliaConfig.currencyCode + '.default' && hit['price'][algoliaConfig.currencyCode][price_key.substr(1) + '_formated'] !== hit['price'][algoliaConfig.currencyCode]['default_formated']) {
+                hit['price'][algoliaConfig.currencyCode][price_key.substr(1) + '_original_formated'] = hit['price'][algoliaConfig.currencyCode]['default_formated'];
+            }
+
+            if (hit['price'][algoliaConfig.currencyCode]['default_original_formated']
+                && hit['price'][algoliaConfig.currencyCode]['special_to_date']) {
+                var priceExpiration = hit['price'][algoliaConfig.currencyCode]['special_to_date'];
+
+                if (algoliaConfig.now > priceExpiration + 1) {
+                    hit['price'][algoliaConfig.currencyCode]['default_formated'] = hit['price'][algoliaConfig.currencyCode]['default_original_formated'];
+                    hit['price'][algoliaConfig.currencyCode]['default_original_formated'] = false;
+                }
+            }
+
+            // Add to cart parameters
+            var action = algoliaConfig.instant.addToCartParams.action + 'product/' + hit.objectID + '/';
+
+            var correctFKey = getCookie('form_key');
+
+            if(correctFKey != "" && algoliaConfig.instant.addToCartParams.formKey != correctFKey) {
+                algoliaConfig.instant.addToCartParams.formKey = correctFKey;
+            }
+
+            hit.addToCart = {
+                'action': action,
+                'uenc': AlgoliaBase64.mageEncode(action),
+                'formKey': algoliaConfig.instant.addToCartParams.formKey
+            };
+
+            if (hit.__autocomplete_queryID) {
+
+                hit.urlForInsights = hit.url;
+
+                if (algoliaConfig.ccAnalytics.enabled
+                    && algoliaConfig.ccAnalytics.conversionAnalyticsMode !== 'disabled') {
+                    var insightsDataUrlString = $.param({
+                        queryID: hit.__autocomplete_queryID,
+                        objectID: hit.objectID,
+                        indexName: hit.__autocomplete_indexName
+                    });
+                    if (hit.url.indexOf('?') > -1) {
+                        hit.urlForInsights += insightsDataUrlString
+                    } else {
+                        hit.urlForInsights += '?' + insightsDataUrlString;
+                    }
+                }
+            }
+
+            return hit;
+        };
+
         window.getAutocompleteSource = function (section, algolia_client, $, i) {
             if (section.hitsPerPage <= 0)
                 return null;
@@ -220,6 +348,7 @@ requirejs(['algoliaBundle'], function(algoliaBundle) {
                 source =  {
                     //source: algoliaBundle.autocomplete.sources.hits(algolia_client.initIndex(algoliaConfig.indexName + "_" + section.name), options),
                     name: section.name,
+                    hitsPerPage: section.hitsPerPage,
                     paramName:algolia_client.initIndex(algoliaConfig.indexName + "_" + section.name),
                     templates: {
                         /*empty: function (query) {
@@ -255,11 +384,11 @@ requirejs(['algoliaBundle'], function(algoliaBundle) {
                                 algoliaAutocomplete.$('.aa-Panel').removeClass('productColumn2');
                                 algoliaAutocomplete.$('.aa-Panel').addClass('productColumn1');
                             }
-                            var _data = transformHit(item, algoliaConfig.priceKey);
+                            var _data = transformAutocompleteHit(item, algoliaConfig.priceKey);
                             var origFormatedVar = algoliaConfig.origFormatedVar;
                             var tierFormatedvar = algoliaConfig.tierFormatedVar;
                             if (algoliaConfig.priceGroup == null) {
-                                return html`<a class="algoliasearch-autocomplete-hit" href="${_data.url || ''}">
+                                return html`<a class="algoliasearch-autocomplete-hit" href="${_data.__autocomplete_queryID !=null ? _data.urlForInsights : _data.url }">
                                     <div class="thumb"><img src="${_data.thumbnail_url || ''}" alt="${_data.name || ''}" /></div>
                                         <div class="info">
                                             ${components.Highlight({hit: _data, attribute: 'name'}) || ''}
@@ -277,7 +406,7 @@ requirejs(['algoliaBundle'], function(algoliaBundle) {
                                     </div>
                                 </a>`;
                             } else {
-                                return html`<a class="algoliasearch-autocomplete-hit" href="${_data.url || ''}">
+                                return html`<a class="algoliasearch-autocomplete-hit" href="${_data.__autocomplete_queryID !=null ? _data.urlForInsights : _data.url }">
                                     <div class="thumb"><img src="${_data.thumbnail_url || ''}" alt="${_data.name || ''}" /></div>
                                         <div class="info">
 											${components.Highlight({hit: _data, attribute: 'name'}) || ''}
@@ -324,6 +453,7 @@ requirejs(['algoliaBundle'], function(algoliaBundle) {
                 source =  {
                     //source: algoliaBundle.autocomplete.sources.hits(algolia_client.initIndex(algoliaConfig.indexName + "_" + section.name), options),
                     name: section.name || i,
+                    hitsPerPage: section.hitsPerPage,
                     paramName:algolia_client.initIndex(algoliaConfig.indexName + "_" + section.name),
                     templates: {
                         //empty: '<div class="aa-no-results">' + algoliaConfig.translations.noResults + '</div>',
@@ -375,6 +505,7 @@ requirejs(['algoliaBundle'], function(algoliaBundle) {
                 source =  {
                     //source: algoliaBundle.autocomplete.sources.hits(algolia_client.initIndex(algoliaConfig.indexName + "_" + section.name), options),
                     name: section.name || i,
+                    hitsPerPage: section.hitsPerPage,
                     paramName:algolia_client.initIndex(algoliaConfig.indexName + "_" + section.name),
                     templates: {
                         //empty: '<div class="aa-no-results">' + algoliaConfig.translations.noResults + '</div>',
@@ -448,6 +579,7 @@ requirejs(['algoliaBundle'], function(algoliaBundle) {
                     }),*/
                     displayKey: 'query',
                     name: section.name,
+                    hitsPerPage: section.hitsPerPage,
                     paramName: suggestions_index,
                     templates: {
                         item({ item, html }) {
@@ -485,6 +617,7 @@ requirejs(['algoliaBundle'], function(algoliaBundle) {
                     paramName: algolia_client.initIndex(algoliaConfig.indexName + "_section_" + section.name),
                     displayKey: 'value',
                     name: section.name || i,
+                    hitsPerPage: section.hitsPerPage,
                     templates: {
                         noResults() {
                             return 'No results.';

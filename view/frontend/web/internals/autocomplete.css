@@ -533,3 +533,18 @@
   .aa-Panel .aa-PanelLayout section .aa-SourceNoResults{
     padding: 5px;
   }
+
+
+  #relatedProducts .auc-Recommend-list, #frequentlyBoughtTogether .auc-Recommend-list{
+    flex-wrap: wrap;
+    justify-content: flex-start;
+  }
+  #relatedProducts li, #frequentlyBoughtTogether li {
+    display: flex;
+    justify-content: center;
+    width: 16.66666667%;
+  }
+  #relatedProducts .product-name, #frequentlyBoughtTogether .product-name{
+    text-align: center;
+    width: 150px;
+  }
