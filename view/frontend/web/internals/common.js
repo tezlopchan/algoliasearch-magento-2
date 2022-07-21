@@ -362,18 +362,24 @@ requirejs(['algoliaBundle'], function(algoliaBundle) {
                                 algoliaAutocomplete.$('.aa-Panel').addClass('productColumn1');
                             }
                             if(algoliaFooter && algoliaFooter !== undefined && algoliaFooter !== null && algoliaAutocomplete.$('#algoliaFooter').length === 0){
-                                algoliaAutocomplete.$('.aa-Panel section:last').append(algoliaFooter);
+                                algoliaAutocomplete.$('.aa-PanelLayout').append(algoliaFooter);
                             }
                             var _data = transformAutocompleteHit(item, algoliaConfig.priceKey);
+                            var color = '';
+                            if (_data._highlightResult.color !== undefined)
+                            {
+                                color = _data._highlightResult.color.value;
+                            }
                             var origFormatedVar = algoliaConfig.origFormatedVar;
                             var tierFormatedvar = algoliaConfig.tierFormatedVar;
                             if (algoliaConfig.priceGroup == null) {
                                 return html`<a class="algoliasearch-autocomplete-hit" href="${_data.__autocomplete_queryID !=null ? _data.urlForInsights : _data.url }">
                                     <div class="thumb"><img src="${_data.thumbnail_url || ''}" alt="${_data.name || ''}" /></div>
-                                        <div class="info">
-                                            ${components.Highlight({hit: _data, attribute: 'name'}) || ''}
+                                    <div class="info">
+                                        ${components.Highlight({hit: _data, attribute: 'name'}) || ''}
                                         <div class="algoliasearch-autocomplete-category">
-                                            in ${components.Highlight({hit: _data, attribute: 'categories_without_path'})}
+                                            ${color != '' ? html `color : ${components.Highlight({hit: _data, attribute: 'color'})}` :
+                                    html `in ${components.Highlight({hit: _data, attribute: 'categories_without_path'})}`}
                                         </div>
                                         <div class="algoliasearch-autocomplete-price">
                                             <span class="after_special ${origFormatedVar != null ? 'promotion' : ''}">
@@ -388,10 +394,11 @@ requirejs(['algoliaBundle'], function(algoliaBundle) {
                             } else {
                                 return html`<a class="algoliasearch-autocomplete-hit" href="${_data.__autocomplete_queryID !=null ? _data.urlForInsights : _data.url }">
                                     <div class="thumb"><img src="${_data.thumbnail_url || ''}" alt="${_data.name || ''}" /></div>
-                                        <div class="info">
-											${components.Highlight({hit: _data, attribute: 'name'}) || ''}
+                                    <div class="info">
+                                        ${components.Highlight({hit: _data, attribute: 'name'}) || ''}
                                         <div class="algoliasearch-autocomplete-category">
-                                            in ${components.Highlight({hit: _data, attribute: 'categories_without_path'})}
+                                            ${color != '' ? html `color : ${components.Highlight({hit: _data, attribute: 'color'})}` :
+                                    html `in ${components.Highlight({hit: _data, attribute: 'categories_without_path'})}`}
                                         </div>
                                         <div class="algoliasearch-autocomplete-price">
                                             <span class="after_special ${origFormatedVar != null ? 'promotion' : ''}">
@@ -399,10 +406,10 @@ requirejs(['algoliaBundle'], function(algoliaBundle) {
                                             </span>
 
                                             ${_data['price'][algoliaConfig.currencyCode][algoliaConfig.priceGroup+'_original_formated'] != null ?
-                                                html `<span class="before_special">${_data['price'][algoliaConfig.currencyCode][algoliaConfig.priceGroup+'_original_formated']}</span>` : ''}
+                                    html `<span class="before_special">${_data['price'][algoliaConfig.currencyCode][algoliaConfig.priceGroup+'_original_formated']}</span>` : ''}
 
                                             ${_data['price'][algoliaConfig.currencyCode][algoliaConfig.priceGroup+'_tier_formated'] != null ?
-                                                html ` <span class="tier_price">As low as ${_data['price'][algoliaConfig.currencyCode][algoliaConfig.priceGroup+'_tier_formated']}</span>` : '' }
+                                    html ` <span class="tier_price">As low as ${_data['price'][algoliaConfig.currencyCode][algoliaConfig.priceGroup+'_tier_formated']}</span>` : '' }
                                         </div>
                                     </div>
                                 </a>`;
@@ -445,9 +452,9 @@ requirejs(['algoliaBundle'], function(algoliaBundle) {
                             if(orsTab && orsTab.length > 0 && algoliaConfig.instant.enabled) {
                                 return html `<div id="autocomplete-products-footer">${algoliaConfig.translations.seeIn} <span><a href="${allUrl}">${algoliaConfig.translations.allDepartments}</a></span> (${productResult[0].nbHits}) ${algoliaConfig.translations.orIn}
                                     ${orsTab.map(
-                                        (list, index) =>
+                                    (list, index) =>
                                         index === 0 ? html` <span><a href="${list.url}">${list.name}</a></span>` : html`, <span><a href="${list.url}">${list.name}</a></span>`
-                                      )}
+                                )}
                                 </div>`;
                             }else{
                                 return html `<div id="autocomplete-products-footer">${algoliaConfig.translations.seeIn} <span><a href="${allUrl}">${algoliaConfig.translations.allDepartments}</a></span> (${productResult[0].nbHits})</div>`;
@@ -493,14 +500,14 @@ requirejs(['algoliaBundle'], function(algoliaBundle) {
                         },
                         item({ item, components, html }) {
                             return html`<a class="algoliasearch-autocomplete-hit" href="${item.url}">
-                            <div class="info-without-thumb">
-                                ${components.Highlight({ hit: item, attribute: 'name' })}
-                                <div class="details">
-                                    ${item.content}
+                                <div class="info-without-thumb">
+                                    ${components.Highlight({ hit: item, attribute: 'name' })}
+                                    <div class="details">
+                                        ${item.content}
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="algolia-clearfix"></div>
-                        </a>`;
+                                <div class="algolia-clearfix"></div>
+                            </a>`;
                         }
                     }
                 };
