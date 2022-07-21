@@ -1,13 +1,9 @@
 let algoliaAutocomplete;
 let suggestionSection = false;
+let algoliaFooter;
+let productResult = [];
 requirejs(['algoliaBundle'], function(algoliaBundle) {
     algoliaAutocomplete = algoliaBundle;
-    if(!document.getElementById('algoliaAutocomplete')){
-        let acContainer = document.createElement('div');
-        acContainer.setAttribute('id', 'algoliaAutocomplete');
-        acContainer.setAttribute('class', 'block block-search algolia-search-block');
-        document.querySelector('header').appendChild(acContainer);
-    }
     algoliaBundle.$(function ($) {
 
         /** We have nothing to do here if autocomplete is disabled **/
@@ -89,7 +85,7 @@ requirejs(['algoliaBundle'], function(algoliaBundle) {
             }
 
             if (algoliaConfig.removeBranding === false) {
-                options.templates.footer = '<div class="footer_algolia"><a href="https://www.algolia.com/?utm_source=magento&utm_medium=link&utm_campaign=magento_autocompletion_menu" title="Search by Algolia" target="_blank"><img src="' +algoliaConfig.urls.logo + '"  alt="Search by Algolia" /></a></div>';
+                algoliaFooter = '<div id="algoliaFooter" class="footer_algolia"><a href="https://www.algolia.com/?utm_source=magento&utm_medium=link&utm_campaign=magento_autocompletion_menu" title="Search by Algolia" target="_blank"><img src="' +algoliaConfig.urls.logo + '"  alt="Search by Algolia" /></a></div>';
             }
 
             sources = algolia.triggerHooks('beforeAutocompleteSources', sources, algolia_client, algoliaBundle);
@@ -144,11 +140,6 @@ requirejs(['algoliaBundle'], function(algoliaBundle) {
                         getItems({ query }) {
                             return algoliaBundle.getAlgoliaResults({
                                 searchClient,
-                                /*transformResponse({ hits }) {
-                                    console.log('hits');
-                                    console.log(hits);
-                                    return hits;
-                                },*/
                                 queries: [
                                     {
                                         indexName: data.paramName.indexName,
@@ -164,6 +155,10 @@ requirejs(['algoliaBundle'], function(algoliaBundle) {
                                         },
                                     },
                                 ],
+                                transformResponse({ results, hits }) {
+                                    productResult = results;
+                                    return hits;
+                                  },
                             });
                         },
                         templates: data.templates,
@@ -174,11 +169,6 @@ requirejs(['algoliaBundle'], function(algoliaBundle) {
                         getItems({ query }) {
                             return algoliaBundle.getAlgoliaResults({
                                 searchClient,
-                                /*transformResponse({ hits }) {
-                                    console.log('hits');
-                                    console.log(hits);
-                                    return hits;
-                                },*/
                                 queries: [
                                     {
                                         indexName: data.paramName.indexName,
@@ -201,59 +191,15 @@ requirejs(['algoliaBundle'], function(algoliaBundle) {
                 placeholder: 'Search for products, categories, ...',
                 detachedMediaQuery: 'none',
                 plugins: [querySuggestionsPlugin],
-                debug: true,
-                getSources() {
+				onSubmit(data){
+					if(data.state.query && data.state.query !== null && data.state.query !== ""){
+						window.location.href = `/catalogsearch/result/?q=${data.state.query}`;
+					}
+				},
+                getSources({query, setContext}) {
                     return autocompleteConfig;
                 },
             });
-            /** Bind autocomplete feature to the input */
-            /*try{
-                var algoliaAutocompleteInstance = algoliaBundle.autocomplete(options, sources);
-                algoliaAutocompleteInstance = algolia.triggerHooks('afterAutocompleteStart', algoliaAutocompleteInstance);
-
-
-                algoliaAutocompleteInstance
-                    .parent()
-                    .attr('id', 'algolia-autocomplete-tt')
-                    .on('autocomplete:updated', function (e) {
-                        fixAutocompleteCssSticky(menu);
-                        fixAutocompleteCssHeight(menu);
-                    }).on('autocomplete:selected', function (e, suggestion, dataset) {
-                        location.assign(suggestion.url);
-                    });
-
-                $(window).resize(function () {
-                    fixAutocompleteCssSticky(menu);
-                });
-            }catch(e){
-                console.log(e.message);
-            }*/
         });
-
-        // Hack to handle buggy onclick event on iOS
-        /*$(algoliaConfig.autocomplete.selector).each(function () {
-            try{
-                var data = $(this).data('aaAutocomplete');
-                var dropdown = data.dropdown;
-                var suggestionClass = '.' + dropdown.cssClasses.prefix + dropdown.cssClasses.suggestion;
-
-                var touchmoved;
-                dropdown.$menu.on('touchend', suggestionClass, function (e) {
-                    if(touchmoved === false) {
-                        e.preventDefault();
-                        e.stopPropagation();
-
-                        var url = $(this).find('a').attr('href');
-                        location.assign(url);
-                    }
-                }).on('touchmove', function (){
-                    touchmoved = true;
-                }).on('touchstart', function(){
-                    touchmoved = false;
-                });
-            }catch(e){
-                console.log(e.message);
-            }
-        });*/
     });
 });

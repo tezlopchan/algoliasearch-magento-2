@@ -346,33 +346,10 @@ requirejs(['algoliaBundle'], function(algoliaBundle) {
                 options = algolia.triggerHooks('beforeAutocompleteProductSourceOptions', options);
 
                 source =  {
-                    //source: algoliaBundle.autocomplete.sources.hits(algolia_client.initIndex(algoliaConfig.indexName + "_" + section.name), options),
                     name: section.name,
                     hitsPerPage: section.hitsPerPage,
                     paramName:algolia_client.initIndex(algoliaConfig.indexName + "_" + section.name),
                     templates: {
-                        /*empty: function (query) {
-                            var template = '<div class="aa-no-results-products">' +
-                                '<div class="title">' + algoliaConfig.translations.noProducts + ' "' + $("<div>").text(query.query).html() + '"</div>';
-
-                            var suggestions = [];
-
-                            if (algoliaConfig.showSuggestionsOnNoResultsPage && algoliaConfig.popularQueries.length > 0) {
-                                $.each(algoliaConfig.popularQueries.slice(0, Math.min(3, algoliaConfig.popularQueries.length)), function (i, query) {
-                                    query = $('<div>').html(query).text(); // Avoid xss
-                                    suggestions.push('<a href="' + algoliaConfig.baseUrl + '/catalogsearch/result/?q=' + encodeURIComponent(query) + '">' + query + '</a>');
-                                });
-
-                                template +=     '<div class="suggestions"><div>' + algoliaConfig.translations.popularQueries + '</div>';
-                                template +=        '<div>' + suggestions.join(', ') + '</div>';
-                                template +=     '</div>';
-                            }
-
-                            template +=         '<div class="see-all">' + (suggestions.length > 0 ? algoliaConfig.translations.or + ' ' : '') + '<a href="' + algoliaConfig.baseUrl + '/catalogsearch/result/?q=__empty__">' + algoliaConfig.translations.seeAll + '</a></div>' +
-                            '</div>';
-
-                            return template;
-                        },*/
                         noResults() {
                             return 'No results.';
                         },
@@ -383,6 +360,9 @@ requirejs(['algoliaBundle'], function(algoliaBundle) {
                             }else{
                                 algoliaAutocomplete.$('.aa-Panel').removeClass('productColumn2');
                                 algoliaAutocomplete.$('.aa-Panel').addClass('productColumn1');
+                            }
+                            if(algoliaFooter && algoliaFooter !== undefined && algoliaFooter !== null && algoliaAutocomplete.$('#algoliaFooter').length === 0){
+                                algoliaAutocomplete.$('.aa-Panel section:last').append(algoliaFooter);
                             }
                             var _data = transformAutocompleteHit(item, algoliaConfig.priceKey);
                             var origFormatedVar = algoliaConfig.origFormatedVar;
@@ -419,29 +399,60 @@ requirejs(['algoliaBundle'], function(algoliaBundle) {
                                             </span>
 
                                             ${_data['price'][algoliaConfig.currencyCode][algoliaConfig.priceGroup+'_original_formated'] != null ?
-                                    html `<span class="before_special">${_data['price'][algoliaConfig.currencyCode][algoliaConfig.priceGroup+'_original_formated']}</span>` : ''}
+                                                html `<span class="before_special">${_data['price'][algoliaConfig.currencyCode][algoliaConfig.priceGroup+'_original_formated']}</span>` : ''}
 
                                             ${_data['price'][algoliaConfig.currencyCode][algoliaConfig.priceGroup+'_tier_formated'] != null ?
-                                    html ` <span class="tier_price">As low as ${_data['price'][algoliaConfig.currencyCode][algoliaConfig.priceGroup+'_tier_formated']}</span>` : '' }
+                                                html ` <span class="tier_price">As low as ${_data['price'][algoliaConfig.currencyCode][algoliaConfig.priceGroup+'_tier_formated']}</span>` : '' }
                                         </div>
                                     </div>
                                 </a>`;
                             }
+                        },
+                        footer({html}) {
+                            var keys = [];
+                            for (var i = 0; i<algoliaConfig.facets.length; i++) {
+                                if (algoliaConfig.facets[i].attribute == "categories" && productResult[0]) {
+                                    for (var key in productResult[0].facets['categories.level0']) {
+                                        var url = algoliaConfig.baseUrl + '/catalogsearch/result/?q=' + encodeURIComponent(productResult[0].query) + '#q=' + encodeURIComponent(productResult[0].query) + '&hFR[categories.level0][0]=' + encodeURIComponent(key) + '&idx=' + algoliaConfig.indexName + '_products';
+                                        keys.push({
+                                            key: key,
+                                            value: productResult[0].facets['categories.level0'][key],
+                                            url: url
+                                        });
+                                    }
+                                }
+                            }
+
+                            keys.sort(function (a, b) {
+                                return b.value - a.value;
+                            });
+
+                            var orsTab = [];
+
+                            if (keys.length > 0) {
+                                orsTab = [];
+                                for (var i = 0; i < keys.length && i < 2; i++) {
+                                    orsTab.push(
+                                        {
+                                            url:keys[i].url,
+                                            name:keys[i].key
+                                        }
+                                    );
+                                }
+                            }
+
+                            var allUrl = algoliaConfig.baseUrl + '/catalogsearch/result/?q=' + encodeURIComponent(productResult[0].query);
+                            if(orsTab && orsTab.length > 0 && algoliaConfig.instant.enabled) {
+                                return html `<div id="autocomplete-products-footer">${algoliaConfig.translations.seeIn} <span><a href="${allUrl}">${algoliaConfig.translations.allDepartments}</a></span> (${productResult[0].nbHits}) ${algoliaConfig.translations.orIn}
+                                    ${orsTab.map(
+                                        (list, index) =>
+                                        index === 0 ? html` <span><a href="${list.url}">${list.name}</a></span>` : html`, <span><a href="${list.url}">${list.name}</a></span>`
+                                      )}
+                                </div>`;
+                            }else{
+                                return html `<div id="autocomplete-products-footer">${algoliaConfig.translations.seeIn} <span><a href="${allUrl}">${algoliaConfig.translations.allDepartments}</a></span> (${productResult[0].nbHits})</div>`;
+                            }
                         }
-                        /*,
-						suggestion: function (hit, payload) {
-                            var toEscape = hit._highlightResult.name.value;
-                            hit._highlightResult.name.value = algoliaBundle.autocomplete.escapeHighlightedString(toEscape);
-							hit.__indexName = algoliaConfig.indexName + "_" + section.name;
-							hit.__queryID = payload.queryID;
-							hit.__position = payload.hits.indexOf(hit) + 1;
-
-							hit = transformHit(hit, algoliaConfig.priceKey);
-
-							hit.displayKey = hit.displayKey || hit.name;
-
-							return algoliaConfig.autocomplete.templates[section.name].render(hit);
-						}*/
                     }
                 };
             }
@@ -451,12 +462,10 @@ requirejs(['algoliaBundle'], function(algoliaBundle) {
                     options.numericFilters = 'include_in_menu=1';
                 }
                 source =  {
-                    //source: algoliaBundle.autocomplete.sources.hits(algolia_client.initIndex(algoliaConfig.indexName + "_" + section.name), options),
                     name: section.name || i,
                     hitsPerPage: section.hitsPerPage,
                     paramName:algolia_client.initIndex(algoliaConfig.indexName + "_" + section.name),
                     templates: {
-                        //empty: '<div class="aa-no-results">' + algoliaConfig.translations.noResults + '</div>',
                         noResults() {
                             return 'No results.';
                         },
@@ -464,51 +473,18 @@ requirejs(['algoliaBundle'], function(algoliaBundle) {
                             return section.name;
                         },
                         item({ item, components, html }) {
-                            /*console.log('Category ========== 0');
-                            console.log(item);*/
                             return html`<a class="algoliasearch-autocomplete-hit" href="${item.url}">${components.Highlight({ hit: item, attribute: 'path' })} (${item.product_count})</span>`
-                        }/*,
-						suggestion: function (hit, payload) {
-							if (section.name === 'categories') {
-								hit.displayKey = hit.path;
-							}
-
-							if (hit._snippetResult && hit._snippetResult.content && hit._snippetResult.content.value.length > 0) {
-								hit.content = hit._snippetResult.content.value;
-
-								if (hit.content.charAt(0).toUpperCase() !== hit.content.charAt(0)) {
-									hit.content = '&#8230; ' + hit.content;
-								}
-
-								if ($.inArray(hit.content.charAt(hit.content.length - 1), ['.', '!', '?'])) {
-									hit.content = hit.content + ' &#8230;';
-								}
-
-								if (hit.content.indexOf('<em>') === -1) {
-									hit.content = '';
-								}
-							}
-
-							hit.displayKey = hit.displayKey || hit.name;
-
-							hit.__indexName = algoliaConfig.indexName + "_" + section.name;
-							hit.__queryID = payload.queryID;
-							hit.__position = payload.hits.indexOf(hit) + 1;
-
-							return algoliaConfig.autocomplete.templates[section.name].render(hit);
-						}*/
+                        }
                     }
                 };
             }
             else if (section.name === "pages")
             {
                 source =  {
-                    //source: algoliaBundle.autocomplete.sources.hits(algolia_client.initIndex(algoliaConfig.indexName + "_" + section.name), options),
                     name: section.name || i,
                     hitsPerPage: section.hitsPerPage,
                     paramName:algolia_client.initIndex(algoliaConfig.indexName + "_" + section.name),
                     templates: {
-                        //empty: '<div class="aa-no-results">' + algoliaConfig.translations.noResults + '</div>',
                         noResults() {
                             return 'No results.';
                         },
@@ -525,87 +501,24 @@ requirejs(['algoliaBundle'], function(algoliaBundle) {
                             </div>
                             <div class="algolia-clearfix"></div>
                         </a>`;
-                        }/*,
-						suggestion: function (hit, payload) {
-							if (section.name === 'categories') {
-								hit.displayKey = hit.path;
-							}
-
-							if (hit._snippetResult && hit._snippetResult.content && hit._snippetResult.content.value.length > 0) {
-								hit.content = hit._snippetResult.content.value;
-
-								if (hit.content.charAt(0).toUpperCase() !== hit.content.charAt(0)) {
-									hit.content = '&#8230; ' + hit.content;
-								}
-
-								if ($.inArray(hit.content.charAt(hit.content.length - 1), ['.', '!', '?'])) {
-									hit.content = hit.content + ' &#8230;';
-								}
-
-								if (hit.content.indexOf('<em>') === -1) {
-									hit.content = '';
-								}
-							}
-
-							hit.displayKey = hit.displayKey || hit.name;
-
-							hit.__indexName = algoliaConfig.indexName + "_" + section.name;
-							hit.__queryID = payload.queryID;
-							hit.__position = payload.hits.indexOf(hit) + 1;
-
-							return algoliaConfig.autocomplete.templates[section.name].render(hit);
-						}*/
+                        }
                     }
                 };
             }
             else if (section.name === "suggestions")
             {
-                /// popular queries/suggestions
                 var suggestions_index = algolia_client.initIndex(algoliaConfig.indexName + "_suggestions");
                 var products_index = algolia_client.initIndex(algoliaConfig.indexName + "_products");
 
                 source = {
-                    /*source: algoliaBundle.autocomplete.sources.popularIn(suggestions_index, options, {
-                        source: 'query',
-                        index: products_index,
-                        facets: ['categories.level0'],
-                        hitsPerPage: 0,
-                        typoTolerance: false,
-                        maxValuesPerFacet: 1,
-                        analytics: false
-                    }, {
-                        includeAll: true,
-                        allTitle: algoliaConfig.translations.allDepartments
-                    }),*/
                     displayKey: 'query',
                     name: section.name,
                     hitsPerPage: section.hitsPerPage,
                     paramName: suggestions_index,
                     templates: {
                         item({ item, html }) {
-                            console.log('suggestions Item =========',item);
                             return html`<div>Suggestion List</div>`;
                         }
-                        /*suggestion: function (hit, payload) {
-                            if (hit.facet) {
-                                hit.category = hit.facet.value;
-                            }
-
-                            if (hit.facet && hit.facet.value !== algoliaConfig.translations.allDepartments) {
-                                hit.url = algoliaConfig.baseUrl + '/catalogsearch/result/?q=' + hit.query + '#q=' + hit.query + '&hFR[categories.level0][0]=' + encodeURIComponent(hit.category) + '&idx=' + algoliaConfig.indexName + '_products';
-                            } else {
-                                hit.url = algoliaConfig.baseUrl + '/catalogsearch/result/?q=' + hit.query;
-                            }
-
-                            var toEscape = hit._highlightResult.query.value;
-                            hit._highlightResult.query.value = algoliaBundle.autocomplete.escapeHighlightedString(toEscape);
-
-                            hit.__indexName = algoliaConfig.indexName + "_" + section.name;
-                            hit.__queryID = payload.queryID;
-                            hit.__position = payload.hits.indexOf(hit) + 1;
-
-                            return algoliaConfig.autocomplete.templates.suggestions.render(hit);
-                        }*/
                     }
                 };
             } else {
@@ -613,7 +526,6 @@ requirejs(['algoliaBundle'], function(algoliaBundle) {
                 var index = algolia_client.initIndex(algoliaConfig.indexName + "_section_" + section.name);
 
                 source = {
-                    //source: algoliaBundle.autocomplete.sources.hits(index, options),
                     paramName: algolia_client.initIndex(algoliaConfig.indexName + "_section_" + section.name),
                     displayKey: 'value',
                     name: section.name || i,
@@ -628,65 +540,8 @@ requirejs(['algoliaBundle'], function(algoliaBundle) {
                         item({ item, components, html }) {
                             return html`${components.Highlight({ hit: item, attribute: 'value' })}`;
                         }
-                        /*suggestion: function (hit, payload) {
-                            hit.url = algoliaConfig.baseUrl + '/catalogsearch/result/?q=' + hit.value + '&refinement_key=' + encodeURIComponent(section.name);
-
-                            hit.__indexName = algoliaConfig.indexName + "_section_" + section.name;
-                            hit.__queryID = payload.queryID;
-                            hit.__position = payload.hits.indexOf(hit) + 1;
-
-                            return algoliaConfig.autocomplete.templates.additionalSection.render(hit);
-                        }*/
                     }
                 };
-            }
-
-            if (section.name === 'products-----') {
-                source.templates.footer = function (query, content) {
-                    var keys = [];
-                    for (var i = 0; i<algoliaConfig.facets.length; i++) {
-                        if (algoliaConfig.facets[i].attribute == "categories" && content) {
-                            for (var key in content.facets['categories.level0']) {
-                                var url = algoliaConfig.baseUrl + '/catalogsearch/result/?q=' + encodeURIComponent(query.query) + '#q=' + encodeURIComponent(query.query) + '&hFR[categories.level0][0]=' + encodeURIComponent(key) + '&idx=' + algoliaConfig.indexName + '_products';
-                                keys.push({
-                                    key: key,
-                                    value: content.facets['categories.level0'][key],
-                                    url: url
-                                });
-                            }
-                        }
-                    }
-
-                    keys.sort(function (a, b) {
-                        return b.value - a.value;
-                    });
-
-                    var ors = '';
-
-                    if (keys.length > 0) {
-                        var orsTab = [];
-                        for (var i = 0; i < keys.length && i < 2; i++) {
-                            orsTab.push('<span><a href="' + keys[i].url + '">' + keys[i].key + '</a></span>');
-                        }
-                        ors = orsTab.join(', ');
-                    }
-
-                    var allUrl = algoliaConfig.baseUrl + '/catalogsearch/result/?q=' + encodeURIComponent(query.query);
-                    var returnFooter = '<div id="autocomplete-products-footer">' + algoliaConfig.translations.seeIn + ' <span><a href="' + allUrl +  '">' + algoliaConfig.translations.allDepartments + '</a></span> (' + content.nbHits + ')';
-
-
-                    if(ors && algoliaConfig.instant.enabled) {
-                        returnFooter += ' ' + algoliaConfig.translations.orIn + ' ' + ors;
-                    }
-
-                    returnFooter += '</div>';
-
-                    return returnFooter;
-                }
-            }
-
-            if (section.name !== 'suggestions' && section.name !== 'products') {
-                //source.templates.header = '<div class="category">' + (section.label ? section.label : section.name) + '</div>';
             }
 
             return source;
