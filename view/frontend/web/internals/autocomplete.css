@@ -88,7 +88,7 @@
     }
 }
 
-.aa-Panel.productColumn2 section:nth-child(2) .aa-List li:hover{
+.aa-Panel.productColumn2 section:nth-child(2) .aa-List li:hover, .aa-Panel.productColumn1 section .aa-List li:hover{
     background-color: #f2f2f2;
 }
 
