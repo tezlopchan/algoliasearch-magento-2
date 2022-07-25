@@ -101,10 +101,6 @@ jobs:
           key: composer-v4-{{ checksum "composer.json" }}
           paths:
             - vendor
-      - run:
-          name: Quality tools
-          command: |
-            sudo ~/.composer/vendor/bin/magento2-test ~/magento_directory/vendor/algolia/algoliasearch-magento-2 ~/.composer/vendor/bin/
 
 workflows:
   version: 2

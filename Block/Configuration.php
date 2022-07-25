@@ -162,6 +162,12 @@ class Configuration extends Algolia implements CollectionDataSourceInterface
                 'query' => $this->getLandingPageQuery(),
                 'configuration' => $this->getLandingPageConfiguration(),
             ],
+            'recommend' => [
+                'enabledFBT' => $config->isRecommendFrequentlyBroughtTogetherEnabled(),
+                'enabledRelated' => $config->isRecommendRelatedProductsEnabled(),
+                'limitFBTProducts' => $config->getNumberOfFrequentlyBoughtTogetherProducts(),
+                'limitRelatedProducts' => $config->getNumberOfRelatedProducts(),
+            ],
             'extensionVersion' => $config->getExtensionVersion(),
             'applicationId' => $config->getApplicationID(),
             'indexName' => $coreHelper->getBaseIndexName(),
