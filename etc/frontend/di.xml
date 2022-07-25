@@ -16,4 +16,8 @@
             </argument>
         </arguments>
     </type>
+
+    <type name="Magento\Framework\View\Element\AbstractBlock">
+        <plugin name="remove_related_upsell_block" type="Algolia\AlgoliaSearch\Plugin\RemovePdpProductsBlock" />
+    </type>
 </config>

@@ -1,0 +1,47 @@
+.product-img {
+    width: 180px;
+}
+.auc-Recommend-list {
+    display: flex;
+    justify-content: space-evenly;
+    list-style: none;
+}
+.product-name {
+    height: 50px;
+    width: 110px;
+    margin: 0 auto;
+}
+.recommend-component {
+    margin-bottom: 80px;
+}
+#relatedProducts .auc-Recommend-list, #frequentlyBoughtTogether .auc-Recommend-list{
+    flex-wrap: wrap;
+    justify-content: flex-start;
+}
+#relatedProducts li, #frequentlyBoughtTogether li {
+    display: flex;
+    justify-content: center;
+    width: 16.66666667%;
+}
+#relatedProducts li a, #frequentlyBoughtTogether li a {
+    color: inherit;
+    display: block;
+}
+#relatedProducts .product-name, #frequentlyBoughtTogether .product-name{
+    text-align: center;
+    width: 150px;
+}
+@media (min-width: 768px) and (max-width: 1023px) {
+    #relatedProducts li, #frequentlyBoughtTogether li {
+        width: 33.33333333%;
+    }
+}
+@media (max-width: 767px) {
+    #relatedProducts li, #frequentlyBoughtTogether li {
+        width: 50%;
+    }
+}
+h3.auc-Recommend-title {
+    padding: 20p;
+    padding-bottom: 20px;
+}
