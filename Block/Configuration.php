@@ -56,8 +56,7 @@ class Configuration extends Algolia implements CollectionDataSourceInterface
 
         $priceKey = $this->getPriceKey();
         $priceGroup = null;
-        if ($config->isCustomerGroupsEnabled())
-        {
+        if ($config->isCustomerGroupsEnabled()) {
             $pricegroupArray = explode('.', $priceKey);
             $priceGroup = $pricegroupArray[2];
         }
