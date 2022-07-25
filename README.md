@@ -32,6 +32,8 @@ Additionally, we are announcing the end of life for our legacy versions. We will
 
 - **Instantsearch results page:** Have your search results page, navigation and pagination updated in realtime, after each keystroke.
 
+- **Recommend:** Algolia Recommend lets you display recommendations on your website. Using recommed provided with this AlgoliaSerch extension you can enable the display of "Frequently Bought Together" and "Related Products" Algolia Recommend features on the product detail page.
+
 Official website: [https://www.algolia.com/solutions/magento/](https://www.algolia.com/solutions/magento/).
 
 *Note: if your store is running under Magento version 1.x, please check our [Algolia for Magento 1 extension](https://github.com/algolia/algoliasearch-magento).*
