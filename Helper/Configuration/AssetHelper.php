@@ -50,6 +50,11 @@ class AssetHelper extends \Magento\Framework\App\Helper\AbstractHelper
             'url' => 'https://www.youtube.com/watch?v=45NKJbrs1Z4',
             'thumbnail' => 'https://img.youtube.com/vi/45NKJbrs1Z4/mqdefault.jpg',
         ],
+        'algoliasearch_recommend' => [
+            'title' => 'Algolia eCommerce Recommendations',
+            'url' => 'https://www.youtube.com/watch?v=CmoNHmOMedQ',
+            'thumbnail' => 'https://img.youtube.com/vi/CmoNHmOMedQ/mqdefault.jpg',
+        ],
     ];
 
     /** @var array */
@@ -163,6 +168,18 @@ class AssetHelper extends \Magento\Framework\App\Helper\AbstractHelper
             [
                 'title' => 'List of possible settings',
                 'url' => 'https://www.algolia.com/doc/api-reference/settings-api-parameters/#index-settings-parameters',
+                'icon' => 'iconDocs',
+            ],
+        ],
+        'algoliasearch_recommend' => [
+            [
+                'title' => 'Algolia Recommend',
+                'url' => 'https://www.algolia.com/doc/guides/algolia-recommend/overview/',
+                'icon' => 'iconDocs',
+            ],
+            [
+                'title' => 'Setup Recommend',
+                'url' => 'https://www.algolia.com/doc/guides/algolia-recommend/how-to/set-up/',
                 'icon' => 'iconDocs',
             ],
         ],

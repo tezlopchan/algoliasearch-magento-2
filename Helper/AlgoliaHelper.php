@@ -35,7 +35,7 @@ class AlgoliaHelper extends AbstractHelper
     private $potentiallyLongAttributes = ['description', 'short_description', 'meta_description', 'content'];
 
     /** @var array */
-    private $nonCastableAttributes = ['sku', 'name', 'description'];
+    private $nonCastableAttributes = ['sku', 'name', 'description', 'query'];
 
     /** @var string */
     private static $lastUsedIndexName;
