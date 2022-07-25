@@ -109,6 +109,13 @@ class ConfigHelper
 
     public const DEFAULT_MAX_RECORD_SIZE = 10000;
 
+    public const IS_RECOMMEND_FREQUENTLY_BOUGHT_TOGETHER_ENABLED = 'algoliasearch_recommend/recommend/is_frequently_bought_together_enabled';
+    public const IS_RECOMMEND_RELATED_PRODUCTS_ENABLED = 'algoliasearch_recommend/recommend/is_related_products_enabled';
+    public const NUM_OF_RECOMMEND_FREQUENTLY_BOUGHT_TOGETHER_PRODUCTS = 'algoliasearch_recommend/recommend/num_of_frequently_bought_together_products';
+    public const NUM_OF_RECOMMEND_RELATED_PRODUCTS = 'algoliasearch_recommend/recommend/num_of_related_products';
+    public const IS_REMOVE_RELATED_PRODUCTS_BLOCK = 'algoliasearch_recommend/recommend/is_remove_core_related_products_block';
+    public const IS_REMOVE_UPSELL_PRODUCTS_BLOCK = 'algoliasearch_recommend/recommend/is_remove_core_upsell_products_block';
+
     private $configInterface;
     private $objectManager;
     private $currency;
@@ -423,6 +430,74 @@ class ConfigHelper
     public function isInstantEnabled($storeId = null)
     {
         return $this->configInterface->isSetFlag(self::IS_INSTANT_ENABLED, ScopeInterface::SCOPE_STORE, $storeId);
+    }
+
+    /**
+     * @param int $storeId
+     *
+     * @return int
+     */
+    public function isRecommendFrequentlyBroughtTogetherEnabled($storeId = null)
+    {
+        return $this->configInterface->isSetFlag(self::IS_RECOMMEND_FREQUENTLY_BOUGHT_TOGETHER_ENABLED, ScopeInterface::SCOPE_STORE, $storeId);
+    }
+
+    /**
+     * @param int $storeId
+     *
+     * @return int
+     */
+    public function isRecommendRelatedProductsEnabled($storeId = null)
+    {
+        return $this->configInterface->isSetFlag(self::IS_RECOMMEND_RELATED_PRODUCTS_ENABLED, ScopeInterface::SCOPE_STORE, $storeId);
+    }
+
+    /**
+     * @param int $storeId
+     *
+     * @return int
+     */
+    public function isRemoveCoreRelatedProductsBlock($storeId = null)
+    {
+        return $this->configInterface->isSetFlag(self::IS_REMOVE_RELATED_PRODUCTS_BLOCK, ScopeInterface::SCOPE_STORE, $storeId);
+    }
+
+    /**
+     * @param int $storeId
+     *
+     * @return int
+     */
+    public function isRemoveUpsellProductsBlock($storeId = null)
+    {
+        return $this->configInterface->isSetFlag(self::IS_REMOVE_UPSELL_PRODUCTS_BLOCK, ScopeInterface::SCOPE_STORE, $storeId);
+    }
+
+    /**
+     * @param int $storeId
+     *
+     * @return int
+     */
+    public function getNumberOfRelatedProducts($storeId = null)
+    {
+        return (int) $this->configInterface->getValue(
+            self::NUM_OF_RECOMMEND_RELATED_PRODUCTS,
+            ScopeInterface::SCOPE_STORE,
+            $storeId
+        );
+    }
+
+    /**
+     * @param int $storeId
+     *
+     * @return int
+     */
+    public function getNumberOfFrequentlyBoughtTogetherProducts($storeId = null)
+    {
+        return (int) $this->configInterface->getValue(
+            self::NUM_OF_RECOMMEND_FREQUENTLY_BOUGHT_TOGETHER_PRODUCTS,
+            ScopeInterface::SCOPE_STORE,
+            $storeId
+        );
     }
 
     public function useAdaptiveImage($storeId = null)
