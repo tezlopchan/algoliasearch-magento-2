@@ -43,7 +43,7 @@ $view = $block->getViewModel();
                             </h4>
                         </div>
                         <?php $ctr = $view->getClickThroughRate() ?>
-                        <div class="stat"><?php echo round($ctr['rate'] * 100, 2) . '%'; ?></div>
+                        <div class="stat"><?php echo ($ctr['rate'] ? round($ctr['rate'] * 100, 2) : 0) . '%'; ?></div>
                         <div class="sub"><?php echo $block->escapeHtml(__('from %1 tracked searches', $ctr['trackedSearchCount'])) ?></div>
                     </div>
                     <div class="one-third col-2">
@@ -53,7 +53,7 @@ $view = $block->getViewModel();
                             </h4>
                         </div>
                         <?php $conversion = $view->getConversionRate() ?>
-                        <div class="stat"><?php echo round($conversion['rate'] * 100, 2) . '%'; ?></div>
+                        <div class="stat"><?php echo ($conversion['rate'] ? round($conversion['rate'] * 100, 2) : 0) . '%'; ?></div>
                         <div class="sub"><?php echo $block->escapeHtml(__('from %1 tracked searches', $conversion['trackedSearchCount'])) ?></div>
                     </div>
                     <div class="one-third col-3">
@@ -63,7 +63,7 @@ $view = $block->getViewModel();
                             </h4>
                         </div>
                         <?php $click = $view->getClickPosition() ?>
-                        <div class="stat"><?php echo round($click['average'], 2); ?></div>
+                        <div class="stat"><?php echo $click['average'] ? round($click['average'], 2) : 0; ?></div>
                         <div class="sub"><?php echo $block->escapeHtml(__('from %1 tracked clicks', $click['clickCount'])) ?></div>
                     </div>
                 </div>

@@ -15,7 +15,7 @@ class Overview implements \Magento\Framework\View\Element\Block\ArgumentInterfac
 
     public const DEFAULT_TYPE = 'products';
 
-    public const DEFAULT_RETENTION_DAYS = 7;
+    public const DEFAULT_RETENTION_DAYS = 90;
 
     /** @var BackendView */
     private $backendView;
@@ -330,10 +330,6 @@ class Overview implements \Magento\Framework\View\Element\Block\ArgumentInterfac
     public function getAnalyticRetentionDays()
     {
         $retention = self::DEFAULT_RETENTION_DAYS;
-        $clientData = $this->analyticsHelper->getClientData();
-        if (isset($clientData['analytics_retention_days'])) {
-            $retention = (int) $clientData['analytics_retention_days'];
-        }
 
         return $retention;
     }
