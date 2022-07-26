@@ -1,5 +1,18 @@
 # CHANGE LOG
 
+## 3.8.0
+
+### New Features
+- Added Algolia Recommend(#1212)
+
+### UPDATES
+- Updated Autocomplete V1.6.3 (#1217)
+
+### FIXES
+- Fixed the analytics dashboard issue in the magento admin(#1215)
+- Fixed the compatibility issue with landing page (#1216)
+- Fixed the issue with in_numeric in search suggestion indexing(#1218)
+
 ## 3.7.0
 
 ### UPDATES
