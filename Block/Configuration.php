@@ -55,6 +55,11 @@ class Configuration extends Algolia implements CollectionDataSourceInterface
         $customerGroupId = $this->getGroupId();
 
         $priceKey = $this->getPriceKey();
+        $priceGroup = null;
+        if ($config->isCustomerGroupsEnabled()) {
+            $pricegroupArray = explode('.', $priceKey);
+            $priceGroup = $pricegroupArray[2];
+        }
 
         $query = '';
         $refinementKey = '';
@@ -188,6 +193,9 @@ class Configuration extends Algolia implements CollectionDataSourceInterface
             'removeBranding' => (bool) $config->isRemoveBranding(),
             'productId' => $productId,
             'priceKey' => $priceKey,
+            'priceGroup' => $priceGroup,
+            'origFormatedVar' => 'price' . $priceKey . '_original_formated',
+            'tierFormatedVar' => 'price' . $priceKey . '_tier_formated',
             'currencyCode' => $currencyCode,
             'currencySymbol' => $currencySymbol,
             'priceFormat' => $priceFormat,
