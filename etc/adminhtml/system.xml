@@ -484,8 +484,8 @@
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                     <comment>
                         <![CDATA[
-                            Do you want the frequently bought together products to display inside a product detail page after main product info?
-                            <br><span class="algolia-config-warning">&#9888;</span> Enabling frequently bought together products can potentially break your design on PDP page and some work will be required to have a good integration with your theme.
+                            Do you want the Frequently Bought Together products to display inside a product detail page after main product info?
+                            <br><span class="algolia-config-warning">&#9888;</span> Enabling Frequently Bought Rogether products can potentially break your design on PDP page and some work will be required to have a good integration with your theme.
                         ]]>
                     </comment>
                 </field>
@@ -506,8 +506,8 @@
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                     <comment>
                         <![CDATA[
-                            Do you want the related products to display inside a product detail page after main product info?
-                            <br><span class="algolia-config-warning">&#9888;</span> Enabling related products can potentially break your design on PDP page and some work will be required to have a good integration with your theme.
+                            Do you want the Related Products to display inside a product detail page after main product info?
+                            <br><span class="algolia-config-warning">&#9888;</span> Enabling Related Products can potentially break your design on PDP page and some work will be required to have a good integration with your theme.
                         ]]>
                     </comment>
                 </field>
@@ -517,7 +517,7 @@
                     <label>Number of Related Products</label>
                     <comment>
                         <![CDATA[
-                            How many products do you want to display in the related products? Default value is 6.
+                            How many products do you want to display in the Related Products? Default value is 6.
                         ]]>
                     </comment>
                     <depends>
