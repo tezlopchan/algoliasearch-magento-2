@@ -677,10 +677,17 @@ requirejs(['algoliaBundle'], function(algoliaBundle) {
                     const queryString = qsModule.stringify(routeState);
                     const portWithPrefix = port === '' ? '' : ':' + port;
                     // IE <= 11 has no location.origin or buggy. Therefore we don't rely on it
-                    if (!routeState || Object.keys(routeState).length === 0)
+                    if (!routeState || Object.keys(routeState).length === 0) {
                         return protocol + '//' + hostname + portWithPrefix + pathname;
-                    else
-                        return protocol + '//' + hostname + portWithPrefix + pathname + '?' + queryString;
+                    }
+                    else {
+                        if (queryString)
+                        {
+                            return protocol + '//' + hostname + portWithPrefix + pathname + '?' + queryString;
+                        } else {
+                            return protocol + '//' + hostname + portWithPrefix + pathname;
+                        }
+                    }
                 },
             }),
             stateMapping: {
