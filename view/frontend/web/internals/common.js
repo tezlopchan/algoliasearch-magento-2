@@ -681,8 +681,7 @@ requirejs(['algoliaBundle'], function(algoliaBundle) {
                         return protocol + '//' + hostname + portWithPrefix + pathname;
                     }
                     else {
-                        if (queryString)
-                        {
+                        if (queryString) {
                             return protocol + '//' + hostname + portWithPrefix + pathname + '?' + queryString;
                         } else {
                             return protocol + '//' + hostname + portWithPrefix + pathname;
