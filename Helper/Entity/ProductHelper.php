@@ -1000,8 +1000,12 @@ class ProductHelper
                 }
             } else {
                 $attribute = $facet['attribute'];
-                if (array_key_exists('searchable', $facet) && $facet['searchable'] === '1') {
-                    $attribute = 'searchable(' . $attribute . ')';
+                if (array_key_exists('searchable', $facet)) {
+                    if ($facet['searchable'] === '1') {
+                        $attribute = 'searchable(' . $attribute . ')';
+                    } elseif ($facet['searchable'] === '3') {
+                        $attribute = 'filterOnly(' . $attribute . ')';
+                    }
                 }
 
                 $attributesForFaceting[] = $attribute;
