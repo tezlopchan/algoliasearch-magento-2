@@ -55,6 +55,11 @@ class Configuration extends Algolia implements CollectionDataSourceInterface
         $customerGroupId = $this->getGroupId();
 
         $priceKey = $this->getPriceKey();
+        $priceGroup = null;
+        if ($config->isCustomerGroupsEnabled()) {
+            $pricegroupArray = explode('.', $priceKey);
+            $priceGroup = $pricegroupArray[2];
+        }
 
         $query = '';
         $refinementKey = '';
@@ -157,6 +162,12 @@ class Configuration extends Algolia implements CollectionDataSourceInterface
                 'query' => $this->getLandingPageQuery(),
                 'configuration' => $this->getLandingPageConfiguration(),
             ],
+            'recommend' => [
+                'enabledFBT' => $config->isRecommendFrequentlyBroughtTogetherEnabled(),
+                'enabledRelated' => $config->isRecommendRelatedProductsEnabled(),
+                'limitFBTProducts' => $config->getNumberOfFrequentlyBoughtTogetherProducts(),
+                'limitRelatedProducts' => $config->getNumberOfRelatedProducts(),
+            ],
             'extensionVersion' => $config->getExtensionVersion(),
             'applicationId' => $config->getApplicationID(),
             'indexName' => $coreHelper->getBaseIndexName(),
@@ -182,6 +193,9 @@ class Configuration extends Algolia implements CollectionDataSourceInterface
             'removeBranding' => (bool) $config->isRemoveBranding(),
             'productId' => $productId,
             'priceKey' => $priceKey,
+            'priceGroup' => $priceGroup,
+            'origFormatedVar' => 'price' . $priceKey . '_original_formated',
+            'tierFormatedVar' => 'price' . $priceKey . '_tier_formated',
             'currencyCode' => $currencyCode,
             'currencySymbol' => $currencySymbol,
             'priceFormat' => $priceFormat,

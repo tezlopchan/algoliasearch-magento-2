@@ -468,6 +468,82 @@
                 </field>
             </group>
         </section>
+        <section id="algoliasearch_recommend" translate="label" type="text" sortOrder="45" showInDefault="1" showInWebsite="1" showInStore="1">
+            <label>Recommend Products Settings</label>
+            <tab>algolia</tab>
+            <resource>Algolia_AlgoliaSearch::algolia_algoliasearch</resource>
+            <group id="recommend" translate="label" type="text" sortOrder="0" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Algolia Recommend Products Settings</label>
+                <comment>
+                    <![CDATA[
+                        <div class="algolia-admin-content"></div>
+                        ]]>
+                </comment>
+                <field id="is_frequently_bought_together_enabled" translate="label comment" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enable Frequently Bought Together</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>
+                        <![CDATA[
+                            Do you want the frequently bought together products to display inside a product detail page after main product info?
+                            <br><span class="algolia-config-warning">&#9888;</span> Enabling frequently bought together products can potentially break your design on PDP page and some work will be required to have a good integration with your theme.
+                        ]]>
+                    </comment>
+                </field>
+                <field id="num_of_frequently_bought_together_products" translate="label comment" type="text" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <validate>validate-digits</validate>
+                    <label>Number of Frequently Bought Together Products</label>
+                    <comment>
+                        <![CDATA[
+                            How many products do you want to display in the Frequently Bought Together? Default value is 6.
+                        ]]>
+                    </comment>
+                    <depends>
+                        <field id="is_frequently_bought_together_enabled">1</field>
+                    </depends>
+                </field>
+                <field id="is_related_products_enabled" translate="label comment" type="select" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enable Related Products</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>
+                        <![CDATA[
+                            Do you want the related products to display inside a product detail page after main product info?
+                            <br><span class="algolia-config-warning">&#9888;</span> Enabling related products can potentially break your design on PDP page and some work will be required to have a good integration with your theme.
+                        ]]>
+                    </comment>
+                </field>
+
+                <field id="num_of_related_products" translate="label comment" type="text" sortOrder="4" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <validate>validate-digits</validate>
+                    <label>Number of Related Products</label>
+                    <comment>
+                        <![CDATA[
+                            How many products do you want to display in the related products? Default value is 6.
+                        ]]>
+                    </comment>
+                    <depends>
+                        <field id="is_related_products_enabled">1</field>
+                    </depends>
+                </field>
+                <field id="is_remove_core_related_products_block" translate="label comment" type="select" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Remove The Magento Related Products Block</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>
+                        <![CDATA[
+                            Do you want to remove the magento default related products inside a product detail page?
+                        ]]>
+                    </comment>
+                </field>
+                <field id="is_remove_core_upsell_products_block" translate="label comment" type="select" sortOrder="6" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Remove The Magento Upsell Products Block</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>
+                        <![CDATA[
+                            Do you want to remove the magento default upsell products inside a product detail page?
+                        ]]>
+                    </comment>
+                </field>
+            </group>
+        </section>
         <section id="algoliasearch_images" translate="label" type="text" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1">
             <label>Images</label>
             <tab>algolia</tab>

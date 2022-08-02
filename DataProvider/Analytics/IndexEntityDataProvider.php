@@ -117,7 +117,6 @@ class IndexEntityDataProvider
 
         $collection
             ->setStoreId($storeId)
-            ->addStoreFilter($storeId)
             ->addAttributeToSelect('name')
             ->addAttributeToFilter('entity_id', ['in' => $objectIds]);
 
@@ -135,7 +134,6 @@ class IndexEntityDataProvider
         $collection = $this->pageCollection->create();
 
         $collection
-            ->setStoreId($storeId)
             ->addStoreFilter($storeId)
             ->addFieldToSelect(['page_id', 'title', 'identifier'])
             ->addFieldToFilter('page_id', ['in' => $objectIds]);
