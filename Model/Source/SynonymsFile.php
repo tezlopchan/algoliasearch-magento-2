@@ -5,9 +5,7 @@ namespace Algolia\AlgoliaSearch\Model\Source;
 use Magento\Config\Model\Config\Backend\File;
 use Magento\Framework\Filesystem;
 use Magento\Framework\Serialize\JsonValidator;
-use Magento\Framework\Filesystem\DriverInterface;
 use Magento\Framework\App\Config\ScopeConfigInterface;
-use function PHPUnit\Framework\throwException;
 
 class SynonymsFile extends File
 {
@@ -15,11 +13,6 @@ class SynonymsFile extends File
      * @var JsonValidator
      */
     protected $jsonValidator;
-
-    /**
-     * @var DriverInterface
-     */
-    protected $driver;
 
     /**
      * @param \Magento\Framework\Model\Context $context
@@ -32,7 +25,6 @@ class SynonymsFile extends File
      * @param \Magento\Framework\Model\ResourceModel\AbstractResource|null $resource
      * @param \Magento\Framework\Data\Collection\AbstractDb|null $resourceCollection
      * @param JsonValidator $jsonValidator
-     * @param DriverInterface $driver
      * @param array $data
      */
     public function __construct(
@@ -46,12 +38,10 @@ class SynonymsFile extends File
         \Magento\Framework\Model\ResourceModel\AbstractResource $resource = null,
         \Magento\Framework\Data\Collection\AbstractDb $resourceCollection = null,
         JsonValidator $jsonValidator,
-        DriverInterface $driver,
         array $data = []
     ) {
         parent::__construct($context, $registry, $config, $cacheTypeList, $uploaderFactory, $requestData, $filesystem, $resource, $resourceCollection, $data);
         $this->jsonValidator = $jsonValidator;
-        $this->driver = $driver;
     }
 
     protected function _getAllowedExtensions()
@@ -63,7 +53,7 @@ class SynonymsFile extends File
     {
         $file = $this->getFileData();
         if (!empty($file)) {
-            $data = $this->driver->fileGetContents(($file['tmp_name']));
+            $data = file_get_contents($file['tmp_name']);
             if (!$this->jsonValidator->isValid($data)) {
                 throw new \Magento\Framework\Exception\LocalizedException(
                     __('Json file is not valid. Please check the file')
