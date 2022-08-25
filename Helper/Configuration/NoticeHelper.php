@@ -43,6 +43,7 @@ class NoticeHelper extends \Magento\Framework\App\Helper\AbstractHelper
         'getVersionNotice',
         'getClickAnalyticsNotice',
         'getPersonalizationNotice',
+        'getRecommendNotice',
     ];
 
     /** @var array[] */
@@ -316,5 +317,27 @@ class NoticeHelper extends \Magento\Framework\App\Helper\AbstractHelper
     public function getNewVersionNotification()
     {
         return $this->extensionNotification->checkVersion();
+    }
+
+    /**
+     * @return void
+     */
+    protected function getRecommendNotice()
+    {
+        // If the integration is disabled  in Magento Admin, no need to display a notice
+        if ($this->configHelper->getApplicationID()) {
+            return;
+        }
+        $noticeContent = '<div class="algolia-perso-footer"><br/><h2>Recommend preferences</h2>
+        <p>Manage your Recommend further on the <a href="https://www.algolia.com/apps/'.$this->configHelper->getApplicationID().'/recommend/models" target="_blank`">Algolia Recommend Dashboard</a></p></div>';
+
+        $selector = '#algoliasearch_recommend_recommend';
+        $method = 'after';
+
+        $this->notices[] = [
+            'selector' => $selector,
+            'method' => $method,
+            'message' => $noticeContent,
+        ];
     }
 }
