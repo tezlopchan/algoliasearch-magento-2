@@ -485,7 +485,7 @@
                     <comment>
                         <![CDATA[
                             Do you want the Frequently Bought Together products to display inside a product detail page after main product info?
-                            <br><span class="algolia-config-warning">&#9888;</span> Enabling Frequently Bought Rogether products can potentially break your design on PDP page and some work will be required to have a good integration with your theme.
+                            <br><span class="algolia-config-warning">&#9888;</span> Enabling Frequently Bought Together products can potentially break your design on PDP page and some work will be required to have a good integration with your theme.
                         ]]>
                     </comment>
                 </field>
