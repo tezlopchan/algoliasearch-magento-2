@@ -325,11 +325,11 @@ class NoticeHelper extends \Magento\Framework\App\Helper\AbstractHelper
     protected function getRecommendNotice()
     {
         // If the integration is disabled  in Magento Admin, no need to display a notice
-        if ($this->configHelper->getApplicationID()) {
+        if (!$this->configHelper->getApplicationID()) {
             return;
         }
-        $noticeContent = '<div class="algolia-perso-footer"><br/><h2>Recommend preferences</h2>
-        <p>Manage your Recommend further on the <a href="https://www.algolia.com/apps/'.$this->configHelper->getApplicationID().'/recommend/models" target="_blank`">Algolia Recommend Dashboard</a></p></div>';
+        $noticeContent = '<div class="algolia-perso"><br/><h2>Algolia Dashboard</h2>
+        <p>Configure your Recommend models on the  <a href="https://www.algolia.com/apps/'.$this->configHelper->getApplicationID().'/recommend/models" target="_blank`">Algolia Dashboard</a></p></div>';
 
         $selector = '#algoliasearch_recommend_recommend';
         $method = 'after';
