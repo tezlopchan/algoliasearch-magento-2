@@ -12,17 +12,17 @@ class UpdateMviewPatch implements DataPatchInterface
     /**
      * @var SubscriptionFactory
      */
-    private $subscriptionFactory;
+    protected $subscriptionFactory;
 
     /**
      * @var IndexerInterfaceFactory
      */
-    private $indexerFactory;
+    protected $indexerFactory;
 
     /**
      * @var ModuleDataSetupInterface
      */
-    private $moduleDataSetup;
+    protected $moduleDataSetup;
 
     /**
      * @param SubscriptionFactory $subscriptionFactory
@@ -39,6 +39,9 @@ class UpdateMviewPatch implements DataPatchInterface
         $this->indexerFactory = $indexerFactory;
     }
 
+    /**
+     * @return UpdateMviewPatch|void
+     */
     public function apply()
     {
         $this->moduleDataSetup->getConnection()->startSetup();
@@ -49,7 +52,7 @@ class UpdateMviewPatch implements DataPatchInterface
             $subscriptionInstance = $this->subscriptionFactory->create(
                 [
                     'view' => $indexer->getView(),
-                    'tableName' => 'catalog_product_index_price',
+                    'tableName' => $this->moduleDataSetup->getTable('catalog_product_index_price'),
                     'columnName' => 'entity_id',
                 ]
             );
