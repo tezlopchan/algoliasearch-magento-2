@@ -115,6 +115,13 @@ class ConfigHelper
     public const NUM_OF_RECOMMEND_RELATED_PRODUCTS = 'algoliasearch_recommend/recommend/num_of_related_products';
     public const IS_REMOVE_RELATED_PRODUCTS_BLOCK = 'algoliasearch_recommend/recommend/is_remove_core_related_products_block';
     public const IS_REMOVE_UPSELL_PRODUCTS_BLOCK = 'algoliasearch_recommend/recommend/is_remove_core_upsell_products_block';
+    protected const IS_RECOMMEND_TRENDING_ITEMS_ENABLED = 'algoliasearch_recommend/recommend/is_trending_items_enabled';
+    protected const RECOMMEND_TRENDING_ITEMS_TYPE = 'algoliasearch_recommend/recommend/trending_items_type';
+    protected const NUM_OF_TRENDING_ITEMS = 'algoliasearch_recommend/recommend/num_of_trending_items';
+    protected const TREND_ITEMS_FACET_NAME = 'algoliasearch_recommend/recommend/facet_name';
+    protected const TREND_ITEMS_FACET_VALUE = 'algoliasearch_recommend/recommend/facet_value';
+    protected const IS_TREND_ITEMS_ENABLED_IN_PDP = 'algoliasearch_recommend/recommend/is_trending_items_enabled_on_pdp';
+    protected const IS_TREND_ITEMS_ENABLED_IN_SHOPPING_CART = 'algoliasearch_recommend/recommend/is_trending_items_enabled_on_cart_page';
 
     private $configInterface;
     private $objectManager;
@@ -495,6 +502,104 @@ class ConfigHelper
     {
         return (int) $this->configInterface->getValue(
             self::NUM_OF_RECOMMEND_FREQUENTLY_BOUGHT_TOGETHER_PRODUCTS,
+            ScopeInterface::SCOPE_STORE,
+            $storeId
+        );
+    }
+    
+     /**
+     * @param int $storeId
+     *
+     * @return int
+     */
+    public function isRecommendTrendingItemsEnabled($storeId = null)
+    {
+        return (int) $this->configInterface->getValue(
+            self::IS_RECOMMEND_TRENDING_ITEMS_ENABLED,
+            ScopeInterface::SCOPE_STORE,
+            $storeId
+        );
+    }
+
+    /**
+     * @param int $storeId
+     *
+     * @return int
+     */
+    public function getNumberOfTrendingItems($storeId = null)
+    {
+        return (int) $this->configInterface->getValue(
+            self::NUM_OF_TRENDING_ITEMS,
+            ScopeInterface::SCOPE_STORE,
+            $storeId
+        );
+    }
+
+    /**
+     * @param int $storeId
+     *
+     * @return string
+     */
+    public function getTrendingItemsType($storeId = null)
+    {
+        return $this->configInterface->getValue(
+            self::RECOMMEND_TRENDING_ITEMS_TYPE,
+            ScopeInterface::SCOPE_STORE,
+            $storeId
+        );
+    }
+
+    /**
+     * @param int $storeId
+     *
+     * @return string
+     */
+    public function getTrendingItemsFacetName($storeId = null)
+    {
+        return $this->configInterface->getValue(
+            self::TREND_ITEMS_FACET_NAME,
+            ScopeInterface::SCOPE_STORE,
+            $storeId
+        );
+    }
+
+    /**
+     * @param int $storeId
+     *
+     * @return string
+     */
+    public function getTrendingItemsFacetValue($storeId = null)
+    {
+        return $this->configInterface->getValue(
+            self::TREND_ITEMS_FACET_VALUE,
+            ScopeInterface::SCOPE_STORE,
+            $storeId
+        );
+    }
+
+    /**
+     * @param int $storeId
+     *
+     * @return int
+     */
+    public function isTrendItemsEnabledInPDP($storeId = null)
+    {
+        return (int) $this->configInterface->getValue(
+            self::IS_TREND_ITEMS_ENABLED_IN_PDP,
+            ScopeInterface::SCOPE_STORE,
+            $storeId
+        );
+    }
+
+    /**
+     * @param int $storeId
+     *
+     * @return int
+     */
+    public function isTrendItemsEnabledInShoppingCart($storeId = null)
+    {
+        return (int) $this->configInterface->getValue(
+            self::IS_TREND_ITEMS_ENABLED_IN_SHOPPING_CART,
             ScopeInterface::SCOPE_STORE,
             $storeId
         );

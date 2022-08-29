@@ -542,6 +542,85 @@
                         ]]>
                     </comment>
                 </field>
+                <field id="is_trending_items_enabled" translate="label comment" type="select" sortOrder="7" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enable Trending Items</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>
+                        <![CDATA[
+                            Do you want the trending items to display inside a product detail page after main product info?
+                        ]]>
+                    </comment>
+                </field>
+                <field id="trending_items_type" translate="label comment" type="select" sortOrder="7" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Trending Items Type</label>
+                    <source_model>Algolia\AlgoliaSearch\Model\Source\TrendingItemType</source_model>
+                    <comment>
+                        <![CDATA[
+                            What type of trending items do you want to display in the website.
+                        ]]>
+                    </comment>
+                </field>
+                <field id="num_of_trending_items" translate="label comment" type="text" sortOrder="8" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Number of Trending Items</label>
+                    <validate>required-entry validate-digits</validate>
+                    <comment>
+                        <![CDATA[
+                            How many products do you want to display in the trending items? Default value is 6.
+                        ]]>
+                    </comment>
+                    <depends>
+                        <field id="is_trending_items_enabled">1</field>
+                    </depends>
+                </field>
+                <field id="facet_name" translate="label comment" type="text" sortOrder="9" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Facet Name</label>
+                    <validate>required-entry</validate>
+<!--                    <source_model>Algolia\AlgoliaSearch\Model\Source\TrendsFacet</source_model>-->
+                    <comment>
+                        <![CDATA[
+                            Please Input Valid facet attribute name EX:- color,size etc.
+                        ]]>
+                    </comment>
+                    <depends>
+                        <field id="trending_items_type">trending_items_for_facets</field>
+                    </depends>
+                </field>
+                <field id="facet_value" translate="label comment" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Facet Value</label>
+                    <validate>required-entry</validate>
+                    <comment>
+                        <![CDATA[
+                            Please Enter Valid Facet Value.
+                        ]]>
+                    </comment>
+                    <depends>
+                        <field id="trending_items_type">trending_items_for_facets</field>
+                    </depends>
+                </field>
+                <field id="is_trending_items_enabled_on_pdp" translate="label comment" type="select" sortOrder="11" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enable Trending Items In Product Details Page</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>
+                        <![CDATA[
+                            Do you want the trending items to display inside a product detail page after main product info?
+                        ]]>
+                    </comment>
+                    <depends>
+                        <field id="is_trending_items_enabled">1</field>
+                    </depends>
+                </field>
+                <field id="is_trending_items_enabled_on_cart_page" translate="label comment" type="select" sortOrder="11" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enable Trending Items In Shopping Cart Page</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>
+                        <![CDATA[
+                            Do you want the trending items to display inside a cart page after cart item info?
+                        ]]>
+                    </comment>
+                    <depends>
+                        <field id="is_trending_items_enabled">1</field>
+                    </depends>
+                </field>
             </group>
         </section>
         <section id="algoliasearch_images" translate="label" type="text" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1">
