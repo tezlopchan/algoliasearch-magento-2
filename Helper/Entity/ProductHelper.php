@@ -391,7 +391,7 @@ class ProductHelper
 
         if ($this->configHelper->isEnabledSynonyms($storeId) === true) {
             if ($synonymsFile = $this->configHelper->getSynonymsFile($storeId)) {
-                $synonymsToSet = json_decode(file_get_contents($synonymsFile));
+                $synonymsToSet = json_decode(file_get_contents($synonymsFile), true);
             } else {
                 $synonymsToSet = [];
 
