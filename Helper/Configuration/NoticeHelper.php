@@ -320,11 +320,11 @@ class NoticeHelper extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
     /**
+     * Function created for adding the Algolia Dashboard link in the Magento recommend system configuration
      * @return void
      */
     protected function getRecommendNotice()
     {
-        // If the integration is disabled  in Magento Admin, no need to display a notice
         if (!$this->configHelper->getApplicationID()) {
             return;
         }
