@@ -229,8 +229,7 @@ requirejs(['algoliaBundle'], function(algoliaBundle) {
                     if (color.matchLevel === undefined || color.matchLevel === 'none') {
                         return;
                     }
-
-                    colors.push(color.value);
+                    colors.push(color);
 
                     if (algoliaConfig.useAdaptiveImage === true) {
                         var matchedColor = color.matchedWords.join(' ');
@@ -240,9 +239,7 @@ requirejs(['algoliaBundle'], function(algoliaBundle) {
                     }
                 });
 
-                colors = colors.join(', ');
-
-                hit._highlightResult.color = { value: colors };
+                hit._highlightResult.color = colors;
             }
             else {
                 if (hit._highlightResult.color && hit._highlightResult.color.matchLevel === 'none') {
