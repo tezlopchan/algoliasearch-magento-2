@@ -710,7 +710,7 @@
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                     <comment>
                         <![CDATA[
-                            To use this feature, you need to first activate it in your Algolia Application.
+                            Click Analytics is available for free! Getting direct and accurate feedback from your users about their behavior, interests, and expectations helps you measure the success of your search solution and improve customer retention.
                         ]]>
                     </comment>
                 </field>
