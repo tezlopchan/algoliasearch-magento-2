@@ -14,24 +14,22 @@ class ConfigPatch implements SchemaPatchInterface
     /**
      * @var ConfigInterface
      */
-    private $config;
+    protected $config;
 
     /**
      * @var ProductMetadataInterface
      */
-    private $productMetadata;
+    protected $productMetadata;
 
     /**
      * @var ModuleDataSetupInterface
      */
-    private $moduleDataSetup;
+    protected $moduleDataSetup;
 
     /**
-     * @var SubscriptionFactory
+     * @var string[]
      */
-    private $subscriptionFactory;
-
-    private $defaultConfigData = [
+    protected $defaultConfigData = [
         'algoliasearch_credentials/credentials/enable_backend' => '1',
         'algoliasearch_credentials/credentials/enable_frontend' => '1',
         'algoliasearch_credentials/credentials/application_id' => '',
@@ -97,7 +95,10 @@ class ConfigPatch implements SchemaPatchInterface
         'algoliasearch_advanced/advanced/archive_clear_limit' => '30',
     ];
 
-    private $defaultArrayConfigData = [
+    /**
+     * @var string[][][]
+     */
+    protected $defaultArrayConfigData = [
         'algoliasearch_autocomplete/autocomplete/sections' => [
             [
                 'name' => 'pages',
@@ -257,35 +258,43 @@ class ConfigPatch implements SchemaPatchInterface
         ],
     ];
 
-    private $indexerFactory;
-
+    /**
+     * @param ConfigInterface $config
+     * @param ProductMetadataInterface $productMetadata
+     * @param ModuleDataSetupInterface $moduleDataSetup Magento\Framework\App\ResourceConnection
+     */
     public function __construct(
         ConfigInterface $config,
         ProductMetadataInterface $productMetadata,
-        ModuleDataSetupInterface $moduleDataSetup,
-        SubscriptionFactory $subscriptionFactory,
-        IndexerInterfaceFactory $indexerFactory
+        ModuleDataSetupInterface $moduleDataSetup
     ) {
         $this->config = $config;
         $this->productMetadata = $productMetadata;
         $this->moduleDataSetup = $moduleDataSetup;
-        $this->subscriptionFactory = $subscriptionFactory;
 
         $this->serializeDefaultArrayConfigData();
         $this->mergeDefaultDataWithArrayData();
-        $this->indexerFactory = $indexerFactory;
     }
 
+    /**
+     * @return array|string[]
+     */
     public static function getDependencies()
     {
         return [];
     }
 
+    /**
+     * @return array|string[]
+     */
     public function getAliases()
     {
         return [];
     }
 
+    /**
+     * @return ConfigPatch|void
+     */
     public function apply()
     {
         $movedConfigDirectives = [
@@ -298,17 +307,16 @@ class ConfigPatch implements SchemaPatchInterface
 
         $this->moduleDataSetup->getConnection()->startSetup();
         $connection = $this->moduleDataSetup->getConnection();
-        $table = $connection->getTableName('core_config_data');
+        $table = $this->moduleDataSetup->getTable('core_config_data');
         foreach ($movedConfigDirectives as $from => $to) {
             try {
                 $connection->query('UPDATE ' . $table . ' SET path = "' . $to . '" WHERE path = "' . $from . '"');
             } catch (\Magento\Framework\DB\Adapter\DuplicateException $e) {
-                //
+                // Skip
             }
         }
 
         /* SET DEFAULT CONFIG DATA */
-
         $alreadyInserted = $connection->getConnection()
             ->query('SELECT path, value FROM ' . $table . ' WHERE path LIKE "algoliasearch_%"')
             ->fetchAll(\PDO::FETCH_KEY_PAIR);
@@ -323,12 +331,18 @@ class ConfigPatch implements SchemaPatchInterface
         $this->moduleDataSetup->getConnection()->endSetup();
     }
 
+    /**
+     * @return string[]
+     */
     public function getDefaultConfigData()
     {
         return $this->defaultConfigData;
     }
 
-    private function serializeDefaultArrayConfigData()
+    /**
+     * @return void
+     */
+    protected function serializeDefaultArrayConfigData()
     {
         $serializeMethod = 'serialize';
 
@@ -342,7 +356,10 @@ class ConfigPatch implements SchemaPatchInterface
         }
     }
 
-    private function mergeDefaultDataWithArrayData()
+    /**
+     * @return void
+     */
+    protected function mergeDefaultDataWithArrayData()
     {
         $this->defaultConfigData = array_merge($this->defaultConfigData, $this->defaultArrayConfigData);
     }
