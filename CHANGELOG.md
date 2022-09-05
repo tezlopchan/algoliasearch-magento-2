@@ -1,5 +1,19 @@
 # CHANGE LOG
 
+## 3.8.1
+
+### UPDATES
+- Updated the system configuration message for Click & Conversion Analytics 
+- Added validation in synonyms upload section (for Algolia Search) in the Magento admin(#1226)
+- Updated code to set "Filter Only" facets via the instantsearch/facets settings in the Magento admin panel(#1224)
+- Updated CSR policy to fix content security error for insights.io(#1228)
+
+### FIXES
+- Fixed the InstantSearch variant image issue(#1223)
+- Fixed the proper case for 'Related Products' in comment Magento Admin (#1221)
+- Fixed the code deploy error if the DB has tables with Prefix - patch not applied(#1229)
+- Fixed the Remove trailing ? url in category page(#1222)
+
 ## 3.8.0
 
 ### New Features
