@@ -1,0 +1,18 @@
+<?xml version="1.0" ?>
+<widgets xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:helloworld:Magento_Widget:etc/widget.xsd">
+    <widget class="Algolia\AlgoliaSearch\Block\Widget\TrendsItem" id="algoliasearch_recommend_trends_item">
+        <label>Algolia Recommend Trends Item</label>
+        <description>You can allow Algolia Recommend Trends item to appear anywhere you want</description>
+        <parameters>
+            <parameter name="numOfTrendsItem" sort_order="10" visible="true" xsi:type="text">
+                <label>Number Of Trends Items</label>
+            </parameter>
+            <parameter name="facetName" sort_order="20" visible="true" xsi:type="text">
+                <label>Facet Name</label>
+            </parameter>
+            <parameter name="facetValue" sort_order="30" visible="true" xsi:type="text">
+                <label>Facet Value</label>
+            </parameter>
+        </parameters>
+    </widget>
+</widgets>

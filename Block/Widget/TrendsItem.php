@@ -1,13 +1,15 @@
 <?php
+
 namespace Algolia\AlgoliaSearch\Block\Widget;
 
-use Magento\Framework\View\Element\Template;
-use Magento\Widget\Block\BlockInterface;
-use Magento\Framework\View\Element\Template\Context;
 use Magento\Framework\Math\Random;
+use Magento\Framework\View\Element\Template;
+use Magento\Framework\View\Element\Template\Context;
+use Magento\Widget\Block\BlockInterface;
 
-class TrendsItem extends Template implements BlockInterface {
-    protected $_template = "recommend/widget/trends-item.phtml";
+class TrendsItem extends Template implements BlockInterface
+{
+    protected $_template = 'recommend/widget/trends-item.phtml';
 
     public function __construct(
         Context $context,
@@ -25,5 +27,4 @@ class TrendsItem extends Template implements BlockInterface {
     {
         return $this->mathRandom->getRandomString(5);
     }
-
 }
