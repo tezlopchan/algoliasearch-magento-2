@@ -472,6 +472,7 @@
 }
 .aa-Panel li.aa-Item{
     list-style-type: none;
+    display: flex;
 }
 
 .aa-Panel .aa-PanelLayout{
@@ -509,6 +510,11 @@
     .aa-Panel .aa-PanelLayout section:nth-child(4),
     .aa-Panel .aa-PanelLayout section:nth-child(5){
         width: 220px !important;
+    }
+}
+@media (max-width: 768px) {
+    #algolia-autocomplete-container .aa-dropdown-menu .algoliasearch-autocomplete-hit .info, .aa-Panel .algoliasearch-autocomplete-hit .info{
+        padding-left: 15px;
     }
 }
 @media (min-width: 769px) {

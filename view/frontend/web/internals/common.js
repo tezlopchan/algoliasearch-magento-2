@@ -376,7 +376,7 @@ requirejs(['algoliaBundle'], function(algoliaBundle) {
                                         ${components.Highlight({hit: _data, attribute: 'name'}) || ''}
                                         <div class="algoliasearch-autocomplete-category">
                                             ${color != '' ? html `color : ${components.Highlight({hit: _data, attribute: 'color'})}` :
-                                    html `in ${components.Highlight({hit: _data, attribute: 'categories_without_path'})}`}
+                                                _data.categories_without_path.length != 0 ? html `in ${components.Highlight({hit: _data, attribute: 'categories_without_path'})}` : ''}
                                         </div>
                                         <div class="algoliasearch-autocomplete-price">
                                             <span class="after_special ${origFormatedVar != null ? 'promotion' : ''}">
@@ -395,7 +395,7 @@ requirejs(['algoliaBundle'], function(algoliaBundle) {
                                         ${components.Highlight({hit: _data, attribute: 'name'}) || ''}
                                         <div class="algoliasearch-autocomplete-category">
                                             ${color != '' ? html `color : ${components.Highlight({hit: _data, attribute: 'color'})}` :
-                                    html `in ${components.Highlight({hit: _data, attribute: 'categories_without_path'})}`}
+                                                _data.categories_without_path.length != 0 ? html `in ${components.Highlight({hit: _data, attribute: 'categories_without_path'})}` : ''}
                                         </div>
                                         <div class="algoliasearch-autocomplete-price">
                                             <span class="after_special ${origFormatedVar != null ? 'promotion' : ''}">
