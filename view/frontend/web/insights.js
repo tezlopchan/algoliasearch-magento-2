@@ -1,3 +1,4 @@
+var algoliaInsights;
 requirejs([
     'jquery',
     'algoliaAnalytics',
@@ -6,7 +7,7 @@ requirejs([
 
     algoliaAnalytics = algoliaAnalyticsWrapper.default;
 
-    var algoliaInsights = {
+    algoliaInsights = {
         config: null,
         defaultIndexName: null,
         isTracking: false,

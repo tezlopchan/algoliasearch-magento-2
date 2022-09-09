@@ -200,6 +200,21 @@ requirejs(['algoliaBundle'], function(algoliaBundle) {
                     return autocompleteConfig;
                 },
             });
+           //Written code for autocomplete insight 
+            jQuery(document).on('click', '.algoliasearch-autocomplete-hit', function(){
+                let itemUrl = jQuery(this).attr('href');
+                let eventData = algoliaInsights.buildEventData(
+                    'Clicked', getHitsUrlParameter(itemUrl, 'objectID'), getHitsUrlParameter(itemUrl, 'indexName'), 1, getHitsUrlParameter(itemUrl, 'queryID')
+                );
+                algoliaInsights.trackClick(eventData);
+            });
         });
     });
 });
+
+function getHitsUrlParameter(url, name) {
+    name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+    var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+        results = regex.exec(url);
+    return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+}
