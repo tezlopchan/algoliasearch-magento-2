@@ -102,7 +102,7 @@ requirejs(['algoliaBundle'], function(algoliaBundle) {
                         return;
                     }
 
-                    colors.push(color.value);
+                    colors.push(color);
 
                     if (algoliaConfig.useAdaptiveImage === true) {
                         var matchedColor = color.matchedWords.join(' ');
@@ -112,9 +112,7 @@ requirejs(['algoliaBundle'], function(algoliaBundle) {
                     }
                 });
 
-                colors = colors.join(', ');
-
-                hit._highlightResult.color = { value: colors };
+                hit._highlightResult.color = colors;
             }
             else {
                 if (hit._highlightResult.color && hit._highlightResult.color.matchLevel === 'none') {
@@ -241,7 +239,6 @@ requirejs(['algoliaBundle'], function(algoliaBundle) {
                 });
 
                 colors = colors.join(', ');
-
                 hit._highlightResult.color = { value: colors };
             }
             else {
@@ -677,10 +674,16 @@ requirejs(['algoliaBundle'], function(algoliaBundle) {
                     const queryString = qsModule.stringify(routeState);
                     const portWithPrefix = port === '' ? '' : ':' + port;
                     // IE <= 11 has no location.origin or buggy. Therefore we don't rely on it
-                    if (!routeState || Object.keys(routeState).length === 0)
+                    if (!routeState || Object.keys(routeState).length === 0) {
                         return protocol + '//' + hostname + portWithPrefix + pathname;
-                    else
-                        return protocol + '//' + hostname + portWithPrefix + pathname + '?' + queryString;
+                    }
+                    else {
+                        if (queryString) {
+                            return protocol + '//' + hostname + portWithPrefix + pathname + '?' + queryString;
+                        } else {
+                            return protocol + '//' + hostname + portWithPrefix + pathname;
+                        }
+                    }
                 },
             }),
             stateMapping: {

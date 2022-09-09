@@ -391,7 +391,7 @@ class ProductHelper
 
         if ($this->configHelper->isEnabledSynonyms($storeId) === true) {
             if ($synonymsFile = $this->configHelper->getSynonymsFile($storeId)) {
-                $synonymsToSet = json_decode(file_get_contents($synonymsFile));
+                $synonymsToSet = json_decode(file_get_contents($synonymsFile), true);
             } else {
                 $synonymsToSet = [];
 
@@ -1000,8 +1000,12 @@ class ProductHelper
                 }
             } else {
                 $attribute = $facet['attribute'];
-                if (array_key_exists('searchable', $facet) && $facet['searchable'] === '1') {
-                    $attribute = 'searchable(' . $attribute . ')';
+                if (array_key_exists('searchable', $facet)) {
+                    if ($facet['searchable'] === '1') {
+                        $attribute = 'searchable(' . $attribute . ')';
+                    } elseif ($facet['searchable'] === '3') {
+                        $attribute = 'filterOnly(' . $attribute . ')';
+                    }
                 }
 
                 $attributesForFaceting[] = $attribute;
