@@ -62,4 +62,8 @@
         <observer name="algoliasearch_flush_catalog_image_cache_after" instance="Algolia\AlgoliaSearch\Model\Observer\CleanCatalogImagesCacheAfter" />
     </event>
 
+    <event name="sales_order_shipment_save_after">
+        <observer name="algoliasearch_reindex_product_on_last_item_purchase" instance="Algolia\AlgoliaSearch\Observer\ReindexProductOnLastItemPurchase" disabled="false"/>
+    </event>
+
 </config>

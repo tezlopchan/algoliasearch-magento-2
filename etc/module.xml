@@ -26,6 +26,7 @@
             <module name="Magento_CatalogInventory" />
             <module name="Magento_LayeredNavigationStaging" />
             <module name="Magento_Swatches" />
+            <module name="Magento_InventoryShipping" />
         </sequence>
     </module>
 </config>
