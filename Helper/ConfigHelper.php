@@ -111,6 +111,8 @@ class ConfigHelper
 
     protected const IS_RECOMMEND_FREQUENTLY_BOUGHT_TOGETHER_ENABLED = 'algoliasearch_recommend/recommend/frequently_bought_together/is_frequently_bought_together_enabled';
     protected const IS_RECOMMEND_RELATED_PRODUCTS_ENABLED = 'algoliasearch_recommend/recommend/related_product/is_related_products_enabled';
+    protected const IS_RECOMMEND_FREQUENTLY_BOUGHT_TOGETHER_ENABLED_ON_CART_PAGE = 'algoliasearch_recommend/recommend/frequently_bought_together/is_frequently_bought_together_enabled_in_cart_page';
+    protected const IS_RECOMMEND_RELATED_PRODUCTS_ENABLED_ON_CART_PAGE = 'algoliasearch_recommend/recommend/related_product/is_related_products_enabled_in_cart_page';
     protected const NUM_OF_RECOMMEND_FREQUENTLY_BOUGHT_TOGETHER_PRODUCTS = 'algoliasearch_recommend/recommend/frequently_bought_together/num_of_frequently_bought_together_products';
     protected const NUM_OF_RECOMMEND_RELATED_PRODUCTS = 'algoliasearch_recommend/recommend/related_product/num_of_related_products';
     protected const IS_REMOVE_RELATED_PRODUCTS_BLOCK = 'algoliasearch_recommend/recommend/related_product/is_remove_core_related_products_block';
@@ -459,6 +461,26 @@ class ConfigHelper
     public function isRecommendRelatedProductsEnabled($storeId = null)
     {
         return $this->configInterface->isSetFlag(self::IS_RECOMMEND_RELATED_PRODUCTS_ENABLED, ScopeInterface::SCOPE_STORE, $storeId);
+    }
+
+    /**
+     * @param int $storeId
+     *
+     * @return int
+     */
+    public function isRecommendFrequentlyBroughtTogetherEnabledOnCartPage($storeId = null)
+    {
+        return $this->configInterface->isSetFlag(self::IS_RECOMMEND_FREQUENTLY_BOUGHT_TOGETHER_ENABLED_ON_CART_PAGE, ScopeInterface::SCOPE_STORE, $storeId);
+    }
+
+    /**
+     * @param int $storeId
+     *
+     * @return int
+     */
+    public function isRecommendRelatedProductsEnabledOnCartPage($storeId = null)
+    {
+        return $this->configInterface->isSetFlag(self::IS_RECOMMEND_RELATED_PRODUCTS_ENABLED_ON_CART_PAGE, ScopeInterface::SCOPE_STORE, $storeId);
     }
 
     /**

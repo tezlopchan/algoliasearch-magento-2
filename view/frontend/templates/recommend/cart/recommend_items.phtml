@@ -3,12 +3,11 @@
  * Copyright © Magento, Inc. All rights reserved.
  * See COPYING.txt for license details.
  */
-$product = $block->getProduct();
+$cartItems = $this->getAllCartItems();
 ?>
 <div id="frequentlyBoughtTogether" class="recommend-component"></div>
 <div id="relatedProducts"></div>
 <div id="trendItems" class="trendsItem"></div>
 <script>
-    window.objectId = ["<?php echo $product->getId() ?>"];
+    window.objectId = <?php echo json_encode($cartItems); ?>;
 </script>
-

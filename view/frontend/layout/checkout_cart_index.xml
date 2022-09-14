@@ -7,8 +7,8 @@
 -->
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="1column" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <body>
-        <referenceContainer name="content">
-            <block class="Magento\Checkout\Block\Cart\Crosssell" name="checkout.cart.trends.item" template="Algolia_AlgoliaSearch::recommend/cart/trends.phtml" after="checkout.cart.crosssell" ifconfig="algoliasearch_recommend/recommend/is_trending_items_enabled_on_cart_page">
+        <referenceContainer name="checkout.cart.items">
+            <block class="Algolia\AlgoliaSearch\Block\Cart\Recommend" name="checkout.cart.recommend" template="Algolia_AlgoliaSearch::recommend/cart/recommend_items.phtml" after="checkout.cart.container">
             </block>
         </referenceContainer>
     </body>
