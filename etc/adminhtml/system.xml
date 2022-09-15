@@ -588,13 +588,8 @@
                 <group id="trends_item" translate="label" type="text" sortOrder="0" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Trending Items</label>
                     <field id="is_trending_items_enabled" translate="label comment" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
-                        <label>Enable Trending Items</label>
+                        <label>Enable</label>
                         <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
-                        <comment>
-                            <![CDATA[
-                                Do you want the trending items to display inside a product detail page after main product info?
-                            ]]>
-                        </comment>
                     </field>
                     <field id="facet_name" translate="label comment" type="text" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="1">
                         <label>Facet Name</label>

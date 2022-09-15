@@ -36,6 +36,11 @@ class Recommend extends Template
         $this->configHelper = $configHelper;
     }
 
+    /**
+     * @return array
+     * @throws \Magento\Framework\Exception\LocalizedException
+     * @throws \Magento\Framework\Exception\NoSuchEntityException
+     */
     public function getAllCartItems()
     {
         $cartItems = array();

@@ -10,7 +10,12 @@ use Magento\Widget\Block\BlockInterface;
 class TrendsItem extends Template implements BlockInterface
 {
     protected $_template = 'recommend/widget/trends-item.phtml';
-
+    
+    /**
+     * @param Context $context
+     * @param Random $mathRandom
+     * @param array $data
+     */
     public function __construct(
         Context $context,
         Random $mathRandom,
@@ -22,7 +27,11 @@ class TrendsItem extends Template implements BlockInterface
             $data
         );
     }
-
+ 
+    /**
+     * @return string
+     * @throws \Magento\Framework\Exception\LocalizedException
+     */
     public function generateUniqueToken()
     {
         return $this->mathRandom->getRandomString(5);
