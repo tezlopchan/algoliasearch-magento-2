@@ -11,15 +11,15 @@ requirejs([
     const apiKey = this.config.apiKey;
     const recommendClient = recommend(appId, apiKey);
     const indexName = this.defaultIndexName;
-    if ($('body').hasClass('catalog-product-view')) {
+    if ($('body').hasClass('catalog-product-view') || $('body').hasClass('checkout-cart-index')) {
             // --- Add the current product objectID here ---
             const currentObjectID = objectId;
-            if (this.config.recommend.enabledFBT) {
+            if ((this.config.recommend.enabledFBT && $('body').hasClass('catalog-product-view')) || (this.config.recommend.enabledFBTInCart && $('body').hasClass('checkout-cart-index'))) {
                 recommendJs.frequentlyBoughtTogether({
                     container: '#frequentlyBoughtTogether',
                     recommendClient,
                     indexName,
-                    objectIDs: [currentObjectID],
+                    objectIDs: currentObjectID,
                     maxRecommendations: this.config.recommend.limitFBTProducts,
                     itemComponent({item, createElement, Fragment}) {
                         if (config.recommend.isAddToCartEnabledInFBT) {
@@ -30,12 +30,12 @@ requirejs([
                     },
                 });
             }
-            if (this.config.recommend.enabledRelated) {
+            if ((this.config.recommend.enabledRelated && $('body').hasClass('catalog-product-view')) || (this.config.recommend.enabledRelatedInCart && $('body').hasClass('checkout-cart-index')))  {
                 recommendJs.relatedProducts({
                     container: '#relatedProducts',
                     recommendClient,
                     indexName,
-                    objectIDs: [currentObjectID],
+                    objectIDs: currentObjectID,
                     maxRecommendations: this.config.recommend.limitRelatedProducts,
                     itemComponent({item, createElement, Fragment}) {
                         if (config.recommend.isAddToCartEnabledInRelatedProduct) {
@@ -72,7 +72,7 @@ requirejs([
             facetValue: facetValue ? facetValue : '',
             recommendClient,
             indexName,
-            maxRecommendations: this.config.recommend.limitTrendingItems,
+            maxRecommendations: numOfTrendsItem ? numOfTrendsItem : this.config.recommend.limitTrendingItems,
             itemComponent({item, createElement, Fragment}) {
                 if (config.recommend.isAddToCartEnabledInTrendsItem) {
                     return renderRecommendDataWithAddToCart(item, createElement);;
