@@ -630,7 +630,7 @@
                         <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                         <comment>
                             <![CDATA[
-                                Do you want the trending items to display inside a product detail page after main product info?
+                                Do you want the Trending Items to display inside a product detail page after main product info?
                             ]]>
                         </comment>
                         <depends>
@@ -642,7 +642,7 @@
                         <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                         <comment>
                             <![CDATA[
-                                Do you want the trending items to display inside a cart page after cart item info?
+                                Do you want the Trending Items to display inside a cart page after cart item info?
                             ]]>
                         </comment>
                         <depends>
@@ -654,7 +654,7 @@
                         <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                         <comment>
                             <![CDATA[
-                            Do you want to display an "Add To Cart" button in Trends Item?
+                            Do you want to display an "Add To Cart" button in Trending Items?
                             ]]>
                         </comment>
                         <depends>
