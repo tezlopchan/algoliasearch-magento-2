@@ -72,7 +72,7 @@ requirejs([
             facetValue: facetValue ? facetValue : '',
             recommendClient,
             indexName,
-            maxRecommendations: numOfTrendsItem ? numOfTrendsItem : this.config.recommend.limitTrendingItems,
+            maxRecommendations: numOfTrendsItem ? parseInt(numOfTrendsItem) : this.config.recommend.limitTrendingItems,
             itemComponent({item, createElement, Fragment}) {
                 if (config.recommend.isAddToCartEnabledInTrendsItem) {
                     return renderRecommendDataWithAddToCart(item, createElement);;

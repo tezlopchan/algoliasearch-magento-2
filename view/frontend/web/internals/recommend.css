@@ -27,9 +27,35 @@
     color: inherit;
     display: block;
 }
-#relatedProducts .product-name, #frequentlyBoughtTogether .product-name{
+#relatedProducts .product-name, #frequentlyBoughtTogether .product-name, #trendItems .product-name{
     text-align: center;
     width: 150px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    max-height: 42px;
+    height: 42px;
+    white-space: normal;
+    line-height: 2rem;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    display: -webkit-box;
+}
+.auc-Recommend-item .product-details {
+    text-align: center;
+}
+#trendItems .auc-Recommend-list{
+    flex-wrap: wrap;
+    justify-content: flex-start;
+}
+.product-details .action.primary, .action-primary{
+    background: #f4f4f4;
+    border: 1px solid #f4f4f4;
+    color: #666666;
+}
+.product-details .action.primary:hover, .action-primary:hover {
+    border-color: #1979c3;
+    background: #1979c3;
+    color: #FFFFFF;
 }
 @media (min-width: 768px) and (max-width: 1023px) {
     #relatedProducts li, #frequentlyBoughtTogether li {
