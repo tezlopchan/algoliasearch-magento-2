@@ -7,6 +7,7 @@ use Algolia\AlgoliaSearch\Helper\InsightsHelper;
 use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
 use Psr\Log\LoggerInterface;
+use Magento\Framework\Session\SessionManagerInterface;
 
 class CheckoutCartProductAddAfter implements ObserverInterface
 {
@@ -19,14 +20,25 @@ class CheckoutCartProductAddAfter implements ObserverInterface
     /** @var LoggerInterface */
     private $logger;
 
+     /** @var SessionManagerInterface */
+    private $_coreSession;
+
+    /**
+     * @param Data $dataHelper
+     * @param InsightsHelper $insightsHelper
+     * @param LoggerInterface $logger
+     * @param SessionManagerInterface $coreSession
+     */
     public function __construct(
         Data $dataHelper,
         InsightsHelper $insightsHelper,
-        LoggerInterface $logger
+        LoggerInterface $logger,
+        SessionManagerInterface $coreSession
     ) {
         $this->dataHelper = $dataHelper;
         $this->insightsHelper = $insightsHelper;
         $this->logger = $logger;
+        $this->_coreSession = $coreSession;
     }
 
     /**
@@ -63,14 +75,18 @@ class CheckoutCartProductAddAfter implements ObserverInterface
 
         if ($this->getConfigHelper()->isClickConversionAnalyticsEnabled($storeId)
             && $this->getConfigHelper()->getConversionAnalyticsMode($storeId) === 'add_to_cart') {
-            if ($product->hasData('queryId')) {
+            $this->_coreSession->start();
+            $queryId = $this->_coreSession->getQueryId();
+            if ($product->hasData('queryId') || $queryId) {
                 try {
+                    $queryId =  $product->getData('queryId') ?? $queryId;
                     $userClient->convertedObjectIDsAfterSearch(
                         __('Added to Cart'),
                         $this->dataHelper->getIndexName('_products', $storeId),
                         [$product->getId()],
-                        $product->getData('queryId')
+                        $queryId
                     );
+                    $this->_coreSession->unsQueryId();
                 } catch (\Exception $e) {
                     $this->logger->critical($e);
                 }
