@@ -588,7 +588,7 @@
                 <group id="trends_item" translate="label" type="text" sortOrder="0" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Trending Items</label>
                     <field id="is_trending_items_enabled_on_pdp" translate="label comment" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
-                        <label>Enable In Product Details Page</label>
+                        <label>Enable on PDP</label>
                         <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                         <comment>
                             <![CDATA[
@@ -597,7 +597,7 @@
                         </comment>
                     </field>
                     <field id="is_trending_items_enabled_on_cart_page" translate="label comment" type="select" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1">
-                        <label>Enable In Shopping Cart Page</label>
+                        <label>Enable on Cart Page</label>
                         <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                         <comment>
                             <![CDATA[
