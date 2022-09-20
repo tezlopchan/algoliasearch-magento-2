@@ -38,7 +38,10 @@
     line-height: 2rem;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
-    display: -webkit-box;
+    display: -webkit-box;   
+}
+#trendItems a, #trendItems a:hover{
+    color:#333;
 }
 .auc-Recommend-item .product-details {
     text-align: center;

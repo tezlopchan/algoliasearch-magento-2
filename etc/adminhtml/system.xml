@@ -502,7 +502,7 @@
                         </comment>
                     </field>
                     <field id="num_of_frequently_bought_together_products" translate="label comment" type="text" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1">
-                        <validate>validate-digits</validate>
+                        <validate>required-entry validate-digits validate-greater-than-zero</validate>
                         <label>Number of Products</label>
                         <comment>
                             <![CDATA[
@@ -555,7 +555,7 @@
                         </comment>
                     </field>
                     <field id="num_of_related_products" translate="label comment" type="text" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1">
-                        <validate>validate-digits</validate>
+                        <validate>required-entry validate-digits validate-greater-than-zero</validate>
                         <label>Number of Related Products</label>
                         <comment>
                             <![CDATA[
@@ -587,45 +587,7 @@
                 </group>
                 <group id="trends_item" translate="label" type="text" sortOrder="0" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Trending Items</label>
-                    <field id="is_trending_items_enabled" translate="label comment" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
-                        <label>Enable</label>
-                        <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
-                    </field>
-                    <field id="facet_name" translate="label comment" type="text" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="1">
-                        <label>Facet Name</label>
-                        <comment>
-                            <![CDATA[
-                                Please Input Valid facet attribute name EX:- color,size etc.
-                            ]]>
-                        </comment>
-                        <depends>
-                            <field id="is_trending_items_enabled">1</field>
-                        </depends>
-                    </field>
-                    <field id="facet_value" translate="label comment" type="text" sortOrder="4" showInDefault="1" showInWebsite="1" showInStore="1">
-                        <label>Facet Value</label>
-                        <comment>
-                            <![CDATA[
-                                Please Enter Valid Facet Value.
-                            ]]>
-                        </comment>
-                        <depends>
-                            <field id="is_trending_items_enabled">1</field>
-                        </depends>
-                    </field>
-                    <field id="num_of_trending_items" translate="label comment" type="text" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="1">
-                        <label>Number of Trending Items</label>
-                        <validate>required-entry validate-digits</validate>
-                        <comment>
-                            <![CDATA[
-                                How many products do you want to display in the Trending Items? Default value is 6.
-                            ]]>
-                        </comment>
-                        <depends>
-                            <field id="is_trending_items_enabled">1</field>
-                        </depends>
-                    </field>
-                    <field id="is_trending_items_enabled_on_pdp" translate="label comment" type="select" sortOrder="6" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <field id="is_trending_items_enabled_on_pdp" translate="label comment" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
                         <label>Enable In Product Details Page</label>
                         <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                         <comment>
@@ -633,11 +595,8 @@
                                 Do you want the Trending Items to display inside a product detail page after main product info?
                             ]]>
                         </comment>
-                        <depends>
-                            <field id="is_trending_items_enabled">1</field>
-                        </depends>
                     </field>
-                    <field id="is_trending_items_enabled_on_cart_page" translate="label comment" type="select" sortOrder="7" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <field id="is_trending_items_enabled_on_cart_page" translate="label comment" type="select" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1">
                         <label>Enable In Shopping Cart Page</label>
                         <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                         <comment>
@@ -645,11 +604,37 @@
                                 Do you want the Trending Items to display inside a cart page after cart item info?
                             ]]>
                         </comment>
-                        <depends>
-                            <field id="is_trending_items_enabled">1</field>
-                        </depends>
                     </field>
-                    <field id="is_addtocart_enabled" translate="label comment" type="select" sortOrder="8" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <field id="is_trending_items_enabled" translate="label comment" type="select" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Enable Trending Items Widgets</label>
+                        <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    </field>
+                    <field id="facet_name" translate="label comment" type="text" sortOrder="4" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Facet Name</label>
+                        <comment>
+                            <![CDATA[
+                                Please Input Valid facet attribute name EX:- color,size etc.
+                            ]]>
+                        </comment>
+                    </field>
+                    <field id="facet_value" translate="label comment" type="text" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Facet Value</label>
+                        <comment>
+                            <![CDATA[
+                                Please Enter Valid Facet Value.
+                            ]]>
+                        </comment>
+                    </field>
+                    <field id="num_of_trending_items" translate="label comment" type="text" sortOrder="6" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Number of Trending Items</label>
+                        <validate>required-entry validate-digits validate-greater-than-zero</validate>
+                        <comment>
+                            <![CDATA[
+                                How many products do you want to display in the Trending Items? Default value is 6.
+                            ]]>
+                        </comment>
+                    </field>
+                    <field id="is_addtocart_enabled" translate="label comment" type="select" sortOrder="7" showInDefault="1" showInWebsite="1" showInStore="1">
                         <label>Enable Add To Cart Button</label>
                         <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                         <comment>
@@ -657,9 +642,6 @@
                             Do you want to display an "Add To Cart" button in Trending Items?
                             ]]>
                         </comment>
-                        <depends>
-                            <field id="is_trending_items_enabled">1</field>
-                        </depends>
                     </field>
                 </group>
             </group>

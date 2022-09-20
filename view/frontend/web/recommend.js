@@ -48,7 +48,7 @@ requirejs([
             }
         }
 
-    if (this.config.recommend.enabledTrendItems && ((this.config.recommend.isTrendItemsEnabledInPDP && $('body').hasClass('catalog-product-view')) || (this.config.recommend.isTrendItemsEnabledInCartPage && $('body').hasClass('checkout-cart-index'))) ) {
+    if ((this.config.recommend.isTrendItemsEnabledInPDP && $('body').hasClass('catalog-product-view')) || (this.config.recommend.isTrendItemsEnabledInCartPage && $('body').hasClass('checkout-cart-index'))) {
         recommendJs.trendingItems({
             container: '#trendItems',
             facetName: this.config.recommend.trendItemFacetName ? this.config.recommend.trendItemFacetName : '',
