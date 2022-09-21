@@ -147,7 +147,7 @@
 }
 
 #algolia-autocomplete-container .aa-dropdown-menu .algoliasearch-autocomplete-hit, .aa-Panel .algoliasearch-autocomplete-hit {
-    display: block;
+    display: inline-block;
     position: relative;
     padding: 5px 10px;
     color: #000;
@@ -472,7 +472,6 @@
 }
 .aa-Panel li.aa-Item{
     list-style-type: none;
-    display: flex;
 }
 
 .aa-Panel .aa-PanelLayout{
