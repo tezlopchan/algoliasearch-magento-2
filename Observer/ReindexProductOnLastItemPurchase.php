@@ -7,11 +7,14 @@ use Magento\Catalog\Api\ProductRepositoryInterface;
 use Magento\Framework\Event\Observer as EventObserver;
 use Magento\Framework\Event\ObserverInterface;
 use Magento\Framework\Indexer\IndexerRegistry;
-use Magento\Framework\Module\Manager;
+use Magento\Framework\Module\Manager as ModuleManager;
 use Magento\Framework\ObjectManagerInterface;
 
 class ReindexProductOnLastItemPurchase implements ObserverInterface
 {
+    /**
+     * @var \Magento\Framework\Indexer\IndexerInterface
+     */
     protected $indexer;
 
     /**
@@ -20,7 +23,7 @@ class ReindexProductOnLastItemPurchase implements ObserverInterface
     protected $objectManager;
 
     /**
-     * @var Manager
+     * @var ModuleManager
      */
     protected $moduleManager;
 
@@ -32,12 +35,12 @@ class ReindexProductOnLastItemPurchase implements ObserverInterface
     /**
      * @param IndexerRegistry $indexerRegistry
      * @param ObjectManagerInterface $objectManager
-     * @param Manager $moduleManager
+     * @param ModuleManager $moduleManager
      * @param ProductRepositoryInterface $productRepository
      */
     public function __construct(
         ObjectManagerInterface $objectManager,
-        Manager $moduleManager,
+        ModuleManager $moduleManager,
         ProductRepositoryInterface $productRepository,
         IndexerRegistry $indexerRegistry
     ) {
@@ -46,6 +49,7 @@ class ReindexProductOnLastItemPurchase implements ObserverInterface
         $this->productRepository = $productRepository;
         $this->indexer = $indexerRegistry->get('algolia_products');
     }
+
     /**
      * @param EventObserver $observer
      * @return void
@@ -58,10 +62,10 @@ class ReindexProductOnLastItemPurchase implements ObserverInterface
             return;
         }
 
-        if ($this->moduleManager->isEnabled('Magento_Inventory'))
-        {
+        if ($this->moduleManager->isEnabled('Magento_Inventory')) {
             $isSingleMode = $this->objectManager->create(\Magento\InventoryCatalogApi\Model\IsSingleSourceModeInterface::class);
             $defaultSourceProvider = $this->objectManager->create(\Magento\InventoryCatalogApi\Api\DefaultSourceProviderInterface::class);
+
             if (!empty($shipment->getExtensionAttributes())
                 && !empty($shipment->getExtensionAttributes()->getSourceCode())) {
                 $sourceCode = $shipment->getExtensionAttributes()->getSourceCode();
@@ -72,12 +76,9 @@ class ReindexProductOnLastItemPurchase implements ObserverInterface
             foreach ($shipment->getAllItems() as $item) {
                 $getSourceItemBySku = $this->objectManager->create(\Magento\InventoryApi\Api\GetSourceItemsBySkuInterface::class);
                 $sourceItemList = $getSourceItemBySku->execute($item->getSku());
-                foreach ($sourceItemList as $source)
-                {
-                    if ($source->getSourceCode() == $sourceCode)
-                    {
-                        if ($source->getQuantity() < 1)
-                        {
+                foreach ($sourceItemList as $source) {
+                    if ($source->getSourceCode() == $sourceCode) {
+                        if ($source->getQuantity() < 1) {
                             $this->indexer->reindexRow($item->getProductId());
                         }
                     }

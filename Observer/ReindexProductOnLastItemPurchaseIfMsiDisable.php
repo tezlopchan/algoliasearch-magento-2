@@ -6,28 +6,28 @@ use Magento\Catalog\Api\ProductRepositoryInterface;
 use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
 use Magento\Framework\Indexer\IndexerRegistry;
-use Magento\Framework\Module\Manager;
+use Magento\Framework\Module\ModuleManager;
 
 class ReindexProductOnLastItemPurchaseIfMsiDisable implements ObserverInterface
 {
     protected $indexer;
 
-    /** @var Manager  */
+    /** @var ModuleManager  */
     protected $moduleManager;
 
     /** @var ProductRepositoryInterface  */
-    protected  $productRepository;
+    protected $productRepository;
 
     /** @var IndexerRegistry  */
     protected $indexerRegistry;
 
     /**
-     * @param Manager $moduleManager
+     * @param ModuleManager $moduleManager
      * @param ProductRepositoryInterface $productRepository
      * @param IndexerRegistry $indexerRegistry
      */
     public function __construct(
-        Manager $moduleManager,
+        ModuleManager $moduleManager,
         ProductRepositoryInterface $productRepository,
         IndexerRegistry $indexerRegistry
     ) {
@@ -36,6 +36,11 @@ class ReindexProductOnLastItemPurchaseIfMsiDisable implements ObserverInterface
         $this->indexer = $indexerRegistry->get('algolia_products');
     }
 
+    /**
+     * @param Observer $observer
+     * @return void
+     * @throws \Magento\Framework\Exception\NoSuchEntityException
+     */
     public function execute(Observer $observer)
     {
         if (!$this->moduleManager->isEnabled('Magento_Inventory')) {
@@ -51,7 +56,7 @@ class ReindexProductOnLastItemPurchaseIfMsiDisable implements ObserverInterface
                 }
             }
 
-            if($productIds) {
+            if ($productIds) {
                 $productTobeReindex = [];
                 foreach ($productIds as $productId) {
                     $product = $this->productRepository->getById($productId);
