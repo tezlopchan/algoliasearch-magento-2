@@ -5,13 +5,17 @@
         <description>You can allow Algolia Recommend Trending items to appear anywhere you want</description>
         <parameters>
             <parameter name="numOfTrendsItem" sort_order="10" visible="true" xsi:type="text">
-                <label>Number Of Trending Items</label>
+                <label>Number Of Trends Items</label>
+                <description>How many products do you want to display in the Trending Items?.</description>
+                <value>6</value>
             </parameter>
             <parameter name="facetName" sort_order="20" visible="true" xsi:type="text">
                 <label>Facet Name</label>
+                <description>Please Input Valid facet attribute name EX:- color,size etc.</description>
             </parameter>
             <parameter name="facetValue" sort_order="30" visible="true" xsi:type="text">
                 <label>Facet Value</label>
+                <description>Please Enter Valid Facet Value.</description>
             </parameter>
         </parameters>
     </widget>
