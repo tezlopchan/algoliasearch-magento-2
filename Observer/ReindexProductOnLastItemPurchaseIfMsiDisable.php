@@ -6,7 +6,7 @@ use Magento\Catalog\Api\ProductRepositoryInterface;
 use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
 use Magento\Framework\Indexer\IndexerRegistry;
-use Magento\Framework\Module\ModuleManager;
+use Magento\Framework\Module\Manager as ModuleManager;
 
 class ReindexProductOnLastItemPurchaseIfMsiDisable implements ObserverInterface
 {
@@ -43,6 +43,9 @@ class ReindexProductOnLastItemPurchaseIfMsiDisable implements ObserverInterface
      */
     public function execute(Observer $observer)
     {
+        // Adding the Product to Queue if last item purchased
+        // Also Checking if user using the Magento MSI module or not.
+        // if user using MSI then this feature handle in ReindexProductOnLastItemPurchase Observer
         if (!$this->moduleManager->isEnabled('Magento_Inventory')) {
             $quote = $observer->getEvent()->getQuote();
             $productIds = [];
