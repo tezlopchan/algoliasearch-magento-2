@@ -70,6 +70,11 @@ class AssetHelper extends \Magento\Framework\App\Helper\AbstractHelper
                 'url' => 'https://www.algolia.com/doc/integration/magento-2/troubleshooting/general-faq/?utm_source=magento&utm_medium=extension&utm_campaign=magento_2&utm_term=shop-owner&utm_content=doc-link',
                 'icon' => 'iconFaq',
             ],
+            [
+                'title' => 'Issues',
+                'url' => 'https://github.com/algolia/algoliasearch-magento-2/issues/',
+                'icon' => 'iconIssues',
+            ],
         ],
         'algoliasearch_autocomplete' => [
             [
