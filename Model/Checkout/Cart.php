@@ -34,12 +34,19 @@ class Cart extends \Magento\Checkout\Model\Cart
              */
             if (is_string($result)) {
                 if ($product->hasOptionsValidationFail()) {
+                    $cartQueryParams['startcustomization'] = 1;
+                    if (isset($requestInfo['queryID'])) {
+                        $cartQueryParams['queryID'] = $requestInfo['queryID'];
+                    }
                     $redirectUrl = $product->getUrlModel()->getUrl(
                         $product,
-                        ['_query' => ['startcustomization' => 1]]
+                        ['_query' => $cartQueryParams]
                     );
                 } elseif (isset($requestInfo['queryID']) && $requestInfo['queryID'] != '') {
-                    $redirectUrl = $product->getProductUrl()."?queryID=".$requestInfo['queryID'];
+                    $redirectUrl = $product->getUrlModel()->getUrl(
+                        $product,
+                        ['_query' => ['queryID' => $requestInfo['queryID'] ]]
+                    );
                 } else {
                     $redirectUrl = $product->getProductUrl();
                 }
