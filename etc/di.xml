@@ -120,4 +120,6 @@
     <type name="Magento\Quote\Model\Quote\Item\ToOrderItem">
         <plugin name="algoliasearch_query_quote_item_conversion" type="Algolia\AlgoliaSearch\Plugin\QuoteItem"/>
     </type>
+
+    <preference for="Magento\Checkout\Model\Cart" type="Algolia\AlgoliaSearch\Model\Checkout\Cart" />
 </config>
