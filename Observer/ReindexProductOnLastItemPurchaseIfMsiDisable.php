@@ -43,9 +43,7 @@ class ReindexProductOnLastItemPurchaseIfMsiDisable implements ObserverInterface
      */
     public function execute(Observer $observer)
     {
-        // Adding the Product to Queue if last item purchased
-        // Also Checking if user using the Magento MSI module or not.
-        // if user using MSI then this feature handle in ReindexProductOnLastItemPurchase Observer
+        // Add product to Algolia Indexing Queue if last item was purchased and if Magento MSI related modules are disabled.
         if (!$this->moduleManager->isEnabled('Magento_Inventory')) {
             $quote = $observer->getEvent()->getQuote();
             $productIds = [];
@@ -60,15 +58,15 @@ class ReindexProductOnLastItemPurchaseIfMsiDisable implements ObserverInterface
             }
 
             if ($productIds) {
-                $productTobeReindex = [];
+                $productToReindex = [];
                 foreach ($productIds as $productId) {
                     $product = $this->productRepository->getById($productId);
                     $stockInfo = $product->getData('quantity_and_stock_status');
                     if ($stockInfo['qty'] < 1) {
-                        $productTobeReindex[] = $productId;
+                        $productToReindex[] = $productId;
                     }
                 }
-                $this->indexer->reindexList($productTobeReindex);
+                $this->indexer->reindexList($productToReindex);
             }
         }
     }

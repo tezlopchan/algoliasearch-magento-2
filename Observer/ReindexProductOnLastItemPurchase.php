@@ -62,9 +62,7 @@ class ReindexProductOnLastItemPurchase implements ObserverInterface
             return;
         }
 
-        // Adding the Product to Queue if last item purchased
-        // Also Checking if user using the Magento MSI module or not.
-        // if user not using MSI then this feature handle in ReindexProductOnLastItemPurchaseIfMsiDisable Observer
+        // Add product to Algolia Indexing Queue if last item was purchased and check if Magento MSI related modules are enabled.
         if ($this->moduleManager->isEnabled('Magento_Inventory')) {
             $isSingleMode = $this->objectManager->create(\Magento\InventoryCatalogApi\Model\IsSingleSourceModeInterface::class);
             $defaultSourceProvider = $this->objectManager->create(\Magento\InventoryCatalogApi\Api\DefaultSourceProviderInterface::class);
