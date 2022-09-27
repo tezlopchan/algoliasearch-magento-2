@@ -63,7 +63,7 @@
     </event>
 
     <event name="sales_order_shipment_save_after">
-        <observer name="algoliasearch_reindex_product_on_last_item_purchase" instance="Algolia\AlgoliaSearch\Observer\ReindexProductOnLastItemPurchase" disabled="false"/>
+        <observer name="algoliasearch_reindex_product_on_last_item_purchase" instance="Algolia\AlgoliaSearch\Observer\ReindexProductOnLastItemPurchase"/>
     </event>
 
 </config>
