@@ -3,12 +3,14 @@
 namespace Algolia\AlgoliaSearch\Observer\Insights;
 
 use Algolia\AlgoliaSearch\Helper\ConfigHelper;
+use Algolia\AlgoliaSearch\Helper\Configuration\PersonalizationHelper;
 use Algolia\AlgoliaSearch\Helper\Data;
 use Algolia\AlgoliaSearch\Helper\InsightsHelper;
 use Exception;
 use Magento\Catalog\Model\Product;
 use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
+use Magento\Framework\Session\SessionManagerInterface;
 use Magento\Quote\Model\Quote\Item;
 use Psr\Log\LoggerInterface;
 
@@ -27,20 +29,30 @@ class CheckoutCartProductAddAfter implements ObserverInterface
     /** @var ConfigHelper  */
     protected ConfigHelper $configHelper;
 
+    /** @var PersonalizationHelper */
+    private PersonalizationHelper $personalizationHelper;
+
+    /** @var SessionManagerInterface */
+    protected SessionManagerInterface $coreSession;
+
     /**
      * @param Data $dataHelper
      * @param InsightsHelper $insightsHelper
+     * @param SessionManagerInterface $coreSession
      * @param LoggerInterface $logger
      */
     public function __construct(
         Data $dataHelper,
         InsightsHelper $insightsHelper,
+        SessionManagerInterface $coreSession,
         LoggerInterface $logger
     ) {
         $this->dataHelper = $dataHelper;
         $this->insightsHelper = $insightsHelper;
         $this->logger = $logger;
+        $this->coreSession = $coreSession;
         $this->configHelper = $this->insightsHelper->getConfigHelper();
+        $this->personalizationHelper = $this->insightsHelper->getPersonalizationHelper();
     }
 
     /**
@@ -60,12 +72,12 @@ class CheckoutCartProductAddAfter implements ObserverInterface
         }
 
         $userClient = $this->insightsHelper->getUserInsightsClient();
-
-        if ($this->configHelper->isClickConversionAnalyticsEnabled($storeId) && $product->hasData('queryId')) {
+        $queryId = $this->coreSession->getQueryId();
+        if ($this->configHelper->isClickConversionAnalyticsEnabled($storeId) && $queryId) {
             $conversionAnalyticsMode = $this->configHelper->getConversionAnalyticsMode($storeId);
             switch ($conversionAnalyticsMode) {
                 case 'place_order':
-                    $quoteItem->setData('algoliasearch_query_param', $product->getData('queryId'));
+                    $quoteItem->setData('algoliasearch_query_param', $queryId);
                     break;
                 case 'add_to_cart':
                     try {
@@ -73,20 +85,20 @@ class CheckoutCartProductAddAfter implements ObserverInterface
                             __('Added to Cart'),
                             $this->dataHelper->getIndexName('_products', $storeId),
                             [$product->getId()],
-                            $product->getData('queryId')
+                            $queryId
                         );
-                    } catch (\Exception $e) {
+                    } catch (Exception $e) {
                         $this->logger->critical($e);
                     }
             }
-        } else {
+        } elseif ($this->personalizationHelper->isPersoEnabled($storeId) && $this->personalizationHelper->isCartAddTracked($storeId)) {
             try {
                 $userClient->convertedObjectIDs(
                     __('Added to Cart'),
                     $this->dataHelper->getIndexName('_products', $storeId),
                     [$product->getId()]
                 );
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 $this->logger->critical($e);
             }
         }
