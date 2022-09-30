@@ -9,6 +9,11 @@ $product = $block->getProduct();
 <div id="relatedProducts" class="recommend-component"></div>
 <div id="trendItems" class="trendsItem recommend-component"></div>
 <script>
-    window.objectId = ["<?php echo $product->getId() ?>"];
+    require([
+        'jquery',
+        'domReady!'
+    ], function($){
+            window.algoliObjectId = ["<?php echo $product->getId() ?>"];
+    });
 </script>
 

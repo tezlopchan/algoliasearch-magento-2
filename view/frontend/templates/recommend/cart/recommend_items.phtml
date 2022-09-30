@@ -9,5 +9,10 @@ $cartItems = $this->getAllCartItems();
 <div id="relatedProducts" class="recommend-component"></div>
 <div id="trendItems" class="trendsItem recommend-component"></div>
 <script>
-    window.objectId = <?php echo json_encode($cartItems); ?>;
+    require([
+        'jquery',
+        'domReady!'
+    ], function($){
+        window.algoliObjectId = <?php echo json_encode($cartItems); ?>;
+    });
 </script>

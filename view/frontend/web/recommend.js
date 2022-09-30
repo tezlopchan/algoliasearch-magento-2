@@ -13,7 +13,7 @@ requirejs([
     const indexName = this.defaultIndexName;
     if ($('body').hasClass('catalog-product-view') || $('body').hasClass('checkout-cart-index')) {
             // --- Add the current product objectID here ---
-            const currentObjectID = objectId;
+            const currentObjectID = algoliObjectId;
             if ((this.config.recommend.enabledFBT && $('body').hasClass('catalog-product-view')) || (this.config.recommend.enabledFBTInCart && $('body').hasClass('checkout-cart-index'))) {
                 recommendJs.frequentlyBoughtTogether({
                     container: '#frequentlyBoughtTogether',

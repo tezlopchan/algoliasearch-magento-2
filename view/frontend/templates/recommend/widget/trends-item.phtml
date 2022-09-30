@@ -7,8 +7,13 @@ $trendConstainer =  'trendItems' . $block->generateUniqueToken();
 ?>
 <div id="<?php echo $trendConstainer; ?>" class="trendsItem"></div>
 <script>
-    window.recommendTrendContainer = "<?php echo $trendConstainer; ?>";
-    window.numOfTrendsItem = "<?php echo $block->getData('numOfTrendsItem') ?>";
-    window.facetName = "<?php echo $block->getData('facetName') ?>";
-    window.facetValue = "<?php echo $block->getData('facetValue') ?>";
+    require([
+        'jquery',
+        'domReady!'
+    ], function($){
+        window.recommendTrendContainer = "<?php echo $trendConstainer; ?>";
+        window.numOfTrendsItem = "<?php echo $block->getData('numOfTrendsItem') ?>";
+        window.facetName = "<?php echo $block->getData('facetName') ?>";
+        window.facetValue = "<?php echo $block->getData('facetValue') ?>";
+    });
 </script>
