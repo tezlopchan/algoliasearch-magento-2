@@ -109,12 +109,23 @@ class ConfigHelper
 
     public const DEFAULT_MAX_RECORD_SIZE = 10000;
 
-    public const IS_RECOMMEND_FREQUENTLY_BOUGHT_TOGETHER_ENABLED = 'algoliasearch_recommend/recommend/is_frequently_bought_together_enabled';
-    public const IS_RECOMMEND_RELATED_PRODUCTS_ENABLED = 'algoliasearch_recommend/recommend/is_related_products_enabled';
-    public const NUM_OF_RECOMMEND_FREQUENTLY_BOUGHT_TOGETHER_PRODUCTS = 'algoliasearch_recommend/recommend/num_of_frequently_bought_together_products';
-    public const NUM_OF_RECOMMEND_RELATED_PRODUCTS = 'algoliasearch_recommend/recommend/num_of_related_products';
-    public const IS_REMOVE_RELATED_PRODUCTS_BLOCK = 'algoliasearch_recommend/recommend/is_remove_core_related_products_block';
-    public const IS_REMOVE_UPSELL_PRODUCTS_BLOCK = 'algoliasearch_recommend/recommend/is_remove_core_upsell_products_block';
+    protected const IS_RECOMMEND_FREQUENTLY_BOUGHT_TOGETHER_ENABLED = 'algoliasearch_recommend/recommend/frequently_bought_together/is_frequently_bought_together_enabled';
+    protected const IS_RECOMMEND_RELATED_PRODUCTS_ENABLED = 'algoliasearch_recommend/recommend/related_product/is_related_products_enabled';
+    protected const IS_RECOMMEND_FREQUENTLY_BOUGHT_TOGETHER_ENABLED_ON_CART_PAGE = 'algoliasearch_recommend/recommend/frequently_bought_together/is_frequently_bought_together_enabled_in_cart_page';
+    protected const IS_RECOMMEND_RELATED_PRODUCTS_ENABLED_ON_CART_PAGE = 'algoliasearch_recommend/recommend/related_product/is_related_products_enabled_in_cart_page';
+    protected const NUM_OF_RECOMMEND_FREQUENTLY_BOUGHT_TOGETHER_PRODUCTS = 'algoliasearch_recommend/recommend/frequently_bought_together/num_of_frequently_bought_together_products';
+    protected const NUM_OF_RECOMMEND_RELATED_PRODUCTS = 'algoliasearch_recommend/recommend/related_product/num_of_related_products';
+    protected const IS_REMOVE_RELATED_PRODUCTS_BLOCK = 'algoliasearch_recommend/recommend/related_product/is_remove_core_related_products_block';
+    protected const IS_REMOVE_UPSELL_PRODUCTS_BLOCK = 'algoliasearch_recommend/recommend/frequently_bought_together/is_remove_core_upsell_products_block';
+    protected const IS_RECOMMEND_TRENDING_ITEMS_ENABLED = 'algoliasearch_recommend/recommend/trends_item/is_trending_items_enabled';
+    protected const NUM_OF_TRENDING_ITEMS = 'algoliasearch_recommend/recommend/trends_item/num_of_trending_items';
+    protected const TREND_ITEMS_FACET_NAME = 'algoliasearch_recommend/recommend/trends_item/facet_name';
+    protected const TREND_ITEMS_FACET_VALUE = 'algoliasearch_recommend/recommend/trends_item/facet_value';
+    protected const IS_TREND_ITEMS_ENABLED_IN_PDP = 'algoliasearch_recommend/recommend/trends_item/is_trending_items_enabled_on_pdp';
+    protected const IS_TREND_ITEMS_ENABLED_IN_SHOPPING_CART = 'algoliasearch_recommend/recommend/trends_item/is_trending_items_enabled_on_cart_page';
+    protected const IS_ADDTOCART_ENABLED_IN_FREQUENTLY_BOUGHT_TOGETHER = 'algoliasearch_recommend/recommend/frequently_bought_together/is_addtocart_enabled';
+    protected const IS_ADDTOCART_ENABLED_IN_RELATED_PRODUCTS= 'algoliasearch_recommend/recommend/related_product/is_addtocart_enabled';
+    protected const IS_ADDTOCART_ENABLED_IN_TRENDS_ITEM= 'algoliasearch_recommend/recommend/trends_item/is_addtocart_enabled';
 
     private $configInterface;
     private $objectManager;
@@ -457,6 +468,26 @@ class ConfigHelper
      *
      * @return int
      */
+    public function isRecommendFrequentlyBroughtTogetherEnabledOnCartPage($storeId = null)
+    {
+        return $this->configInterface->isSetFlag(self::IS_RECOMMEND_FREQUENTLY_BOUGHT_TOGETHER_ENABLED_ON_CART_PAGE, ScopeInterface::SCOPE_STORE, $storeId);
+    }
+
+    /**
+     * @param int $storeId
+     *
+     * @return int
+     */
+    public function isRecommendRelatedProductsEnabledOnCartPage($storeId = null)
+    {
+        return $this->configInterface->isSetFlag(self::IS_RECOMMEND_RELATED_PRODUCTS_ENABLED_ON_CART_PAGE, ScopeInterface::SCOPE_STORE, $storeId);
+    }
+
+    /**
+     * @param int $storeId
+     *
+     * @return int
+     */
     public function isRemoveCoreRelatedProductsBlock($storeId = null)
     {
         return $this->configInterface->isSetFlag(self::IS_REMOVE_RELATED_PRODUCTS_BLOCK, ScopeInterface::SCOPE_STORE, $storeId);
@@ -498,6 +529,121 @@ class ConfigHelper
             ScopeInterface::SCOPE_STORE,
             $storeId
         );
+    }
+    
+     /**
+     * @param int $storeId
+     *
+     * @return int
+     */
+    public function isRecommendTrendingItemsEnabled($storeId = null)
+    {
+        return (int) $this->configInterface->getValue(
+            self::IS_RECOMMEND_TRENDING_ITEMS_ENABLED,
+            ScopeInterface::SCOPE_STORE,
+            $storeId
+        );
+    }
+
+    /**
+     * @param int $storeId
+     *
+     * @return int
+     */
+    public function getNumberOfTrendingItems($storeId = null)
+    {
+        return (int) $this->configInterface->getValue(
+            self::NUM_OF_TRENDING_ITEMS,
+            ScopeInterface::SCOPE_STORE,
+            $storeId
+        );
+    }
+
+
+    /**
+     * @param int $storeId
+     *
+     * @return string
+     */
+    public function getTrendingItemsFacetName($storeId = null)
+    {
+        return $this->configInterface->getValue(
+            self::TREND_ITEMS_FACET_NAME,
+            ScopeInterface::SCOPE_STORE,
+            $storeId
+        );
+    }
+
+    /**
+     * @param int $storeId
+     *
+     * @return string
+     */
+    public function getTrendingItemsFacetValue($storeId = null)
+    {
+        return $this->configInterface->getValue(
+            self::TREND_ITEMS_FACET_VALUE,
+            ScopeInterface::SCOPE_STORE,
+            $storeId
+        );
+    }
+
+    /**
+     * @param int $storeId
+     *
+     * @return int
+     */
+    public function isTrendItemsEnabledInPDP($storeId = null)
+    {
+        return (int) $this->configInterface->getValue(
+            self::IS_TREND_ITEMS_ENABLED_IN_PDP,
+            ScopeInterface::SCOPE_STORE,
+            $storeId
+        );
+    }
+
+    /**
+     * @param int $storeId
+     *
+     * @return int
+     */
+    public function isTrendItemsEnabledInShoppingCart($storeId = null)
+    {
+        return (int) $this->configInterface->getValue(
+            self::IS_TREND_ITEMS_ENABLED_IN_SHOPPING_CART,
+            ScopeInterface::SCOPE_STORE,
+            $storeId
+        );
+    }
+
+    /**
+     * @param int $storeId
+     *
+     * @return int
+     */
+    public function isAddToCartEnabledInFrequentlyBoughtTogether($storeId = null)
+    {
+        return $this->configInterface->isSetFlag(self::IS_ADDTOCART_ENABLED_IN_FREQUENTLY_BOUGHT_TOGETHER, ScopeInterface::SCOPE_STORE, $storeId);
+    }
+
+    /**
+     * @param int $storeId
+     *
+     * @return int
+     */
+    public function isAddToCartEnabledInRelatedProducts($storeId = null)
+    {
+        return $this->configInterface->isSetFlag(self::IS_ADDTOCART_ENABLED_IN_RELATED_PRODUCTS, ScopeInterface::SCOPE_STORE, $storeId);
+    }
+
+    /**
+     * @param int $storeId
+     *
+     * @return int
+     */
+    public function isAddToCartEnabledInTrendsItem($storeId = null)
+    {
+        return $this->configInterface->isSetFlag(self::IS_ADDTOCART_ENABLED_IN_TRENDS_ITEM, ScopeInterface::SCOPE_STORE, $storeId);
     }
 
     public function useAdaptiveImage($storeId = null)

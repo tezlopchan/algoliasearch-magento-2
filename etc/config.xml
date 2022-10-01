@@ -44,8 +44,15 @@
         </algoliasearch_personalization>
         <algoliasearch_recommend>
             <recommend>
-                <num_of_frequently_bought_together_products>6</num_of_frequently_bought_together_products>
-                <num_of_related_products>6</num_of_related_products>
+                <frequently_bought_together>
+                    <num_of_frequently_bought_together_products>6</num_of_frequently_bought_together_products>
+                </frequently_bought_together>
+                <related_product>
+                    <num_of_related_products>6</num_of_related_products>
+                </related_product>
+                <trends_item>
+                    <num_of_trending_items>6</num_of_trending_items>
+                </trends_item>
             </recommend>
         </algoliasearch_recommend>
     </default>
