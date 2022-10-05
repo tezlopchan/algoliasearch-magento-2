@@ -26,7 +26,6 @@ class CheckoutCartProductAddBefore implements ObserverInterface
      */
     public function execute(Observer $observer)
     {
-        /** @var Product $product */
         $requestInfo = $observer->getEvent()->getInfo();
 
         if (isset($requestInfo['queryID']) && $requestInfo['queryID'] != '') {

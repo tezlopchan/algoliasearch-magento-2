@@ -92,7 +92,7 @@ class CheckoutOnepageControllerSuccessAction implements ObserverInterface
                         $userClient->convertedObjectIDsAfterSearch(
                             __('Placed Order'),
                             $this->dataHelper->getIndexName('_products', $order->getStoreId()),
-                            $productIds,
+                            array_unique($productIds),
                             $queryId
                         );
                     } catch (Exception $e) {
@@ -117,7 +117,7 @@ class CheckoutOnepageControllerSuccessAction implements ObserverInterface
                 $userClient->convertedObjectIDs(
                     __('Placed Order'),
                     $this->dataHelper->getIndexName('_products', $order->getStoreId()),
-                    $productIds
+                    array_unique($productIds)
                 );
             } catch (Exception $e) {
                 $this->logger->critical($e);

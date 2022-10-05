@@ -34,10 +34,15 @@ class PersonalizationHelper extends \Magento\Framework\App\Helper\AbstractHelper
     /** @var ConfigResourceInterface */
     private $configResourceInterface;
 
+    /**
+     * @param \Magento\Framework\App\Helper\Context $context
+     * @param ScopeConfigInterface $configInterface
+     * @param ConfigResourceInterface $configResourceInterface
+     */
     public function __construct(
         \Magento\Framework\App\Helper\Context $context,
-        ScopeConfigInterface $configInterface,
-        ConfigResourceInterface $configResourceInterface
+        ScopeConfigInterface                  $configInterface,
+        ConfigResourceInterface               $configResourceInterface
     ) {
         $this->configInterface = $configInterface;
         $this->configResourceInterface = $configResourceInterface;
