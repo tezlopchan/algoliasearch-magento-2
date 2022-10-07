@@ -4,7 +4,10 @@ var config = {
 		'algoliaAnalytics': 'Algolia_AlgoliaSearch/internals/search-insights',
         'recommend': 'Algolia_AlgoliaSearch/internals/recommend.min',
         'recommendJs': 'Algolia_AlgoliaSearch/internals/recommend-js.min',
-		'rangeSlider': 'Algolia_AlgoliaSearch/navigation/range-slider-widget'
+		'rangeSlider': 'Algolia_AlgoliaSearch/navigation/range-slider-widget',
+        'pagesHtml': 'Algolia_AlgoliaSearch/internals/template/pages.js',
+        'categoriesHtml': 'Algolia_AlgoliaSearch/internals/template/categories.js',
+        'productsHtml': 'Algolia_AlgoliaSearch/internals/template/products.js'
 	},
 	config: {
 		mixins: {
