@@ -1,9 +1,12 @@
 define([], function () {
     return {
         getProductsHtml: function (_data, components, html) {
+            var color = '';
             if (_data._highlightResult.color !== undefined) {
                 color = _data._highlightResult.color.value;
             }
+            var origFormatedVar = algoliaConfig.origFormatedVar;
+            var tierFormatedvar = algoliaConfig.tierFormatedVar;
             if (algoliaConfig.priceGroup == null) {
                 return html`<a class="algoliasearch-autocomplete-hit" href="${_data.__autocomplete_queryID != null ? _data.urlForInsights : _data.url}">
                     <div class="thumb"><img src="${_data.thumbnail_url || ''}" alt="${_data.name || ''}"/></div>
