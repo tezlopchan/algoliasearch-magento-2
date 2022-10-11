@@ -91,7 +91,9 @@ class CheckoutCartProductAddAfter implements ObserverInterface
                         $this->logger->critical($e);
                     }
             }
-        } elseif ($this->personalizationHelper->isPersoEnabled($storeId) && $this->personalizationHelper->isCartAddTracked($storeId)) {
+        } 
+        
+        if ($this->personalizationHelper->isPersoEnabled($storeId) && $this->personalizationHelper->isCartAddTracked($storeId) && (!$this->configHelper->isClickConversionAnalyticsEnabled($storeId) || $this->configHelper->getConversionAnalyticsMode($storeId) != 'add_to_cart')) {
             try {
                 $userClient->convertedObjectIDs(
                     __('Added to Cart'),
