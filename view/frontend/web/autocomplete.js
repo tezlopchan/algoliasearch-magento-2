@@ -175,6 +175,7 @@ requirejs(['algoliaBundle', 'pagesHtml', 'categoriesHtml', 'productsHtml', 'sugg
                 container: '#algoliaAutocomplete',
                 placeholder: 'Search for products, categories, ...',
                 detachedMediaQuery: 'none',
+                debug:algoliaConfig.autocomplete.isDebugEnabled,
                 plugins: [querySuggestionsPlugin],
                 onSubmit(data){
                     if(data.state.query && data.state.query !== null && data.state.query !== ""){
@@ -341,7 +342,7 @@ requirejs(['algoliaBundle', 'pagesHtml', 'categoriesHtml', 'productsHtml', 'sugg
                 paramName:algolia_client.initIndex(algoliaConfig.indexName + "_" + section.name),
                 templates: {
                     noResults() {
-                        return 'No results.';
+                        return productsHtml.getNoResultHtml();
                     },
                     item({ item, components, html }) {
                         if(suggestionSection){
@@ -391,16 +392,7 @@ requirejs(['algoliaBundle', 'pagesHtml', 'categoriesHtml', 'productsHtml', 'sugg
                         }
 
                         var allUrl = algoliaConfig.baseUrl + '/catalogsearch/result/?q=' + encodeURIComponent(productResult[0].query);
-                        if(orsTab && orsTab.length > 0 && algoliaConfig.instant.enabled) {
-                            return html `<div id="autocomplete-products-footer">${algoliaConfig.translations.seeIn} <span><a href="${allUrl}">${algoliaConfig.translations.allDepartments}</a></span> (${productResult[0].nbHits}) ${algoliaConfig.translations.orIn}
-                                    ${orsTab.map(
-                                (list, index) =>
-                                    index === 0 ? html` <span><a href="${list.url}">${list.name}</a></span>` : html`, <span><a href="${list.url}">${list.name}</a></span>`
-                            )}
-                                </div>`;
-                        }else{
-                            return html `<div id="autocomplete-products-footer">${algoliaConfig.translations.seeIn} <span><a href="${allUrl}">${algoliaConfig.translations.allDepartments}</a></span> (${productResult[0].nbHits})</div>`;
-                        }
+                        return productsHtml.getFooterHtml(html, orsTab, allUrl, productResult)
                     }
                 }
             };
@@ -416,10 +408,10 @@ requirejs(['algoliaBundle', 'pagesHtml', 'categoriesHtml', 'productsHtml', 'sugg
                 paramName:algolia_client.initIndex(algoliaConfig.indexName + "_" + section.name),
                 templates: {
                     noResults() {
-                        return 'No results.';
+                        return categoriesHtml.getNoResultHtml();
                     },
                     header() {
-                        return section.name;
+                        return categoriesHtml.getHeaderHtml(section);
                     },
                     item({ item, components, html }) {
                         return categoriesHtml.getCategoriesHtml(item, components, html);
@@ -435,10 +427,10 @@ requirejs(['algoliaBundle', 'pagesHtml', 'categoriesHtml', 'productsHtml', 'sugg
                 paramName:algolia_client.initIndex(algoliaConfig.indexName + "_" + section.name),
                 templates: {
                     noResults() {
-                        return 'No results.';
+                        return pagesHtml.getNoResultHtml();
                     },
                     header() {
-                        return section.name;
+                        return pagesHtml.getHeaderHtml(section);
                     },
                     item({ item, components, html }) {
                         return pagesHtml.getPagesHtml(item, components, html);
@@ -471,10 +463,10 @@ requirejs(['algoliaBundle', 'pagesHtml', 'categoriesHtml', 'productsHtml', 'sugg
                 hitsPerPage: section.hitsPerPage,
                 templates: {
                     noResults() {
-                        return 'No results.';
+                        return additionalHtml.getNoResultHtml();
                     },
                     header() {
-                        return section.name;
+                        return additionalHtml.getHeaderHtml(section);
                     },
                     item({ item, components, html }) {
                         return additionalHtml.getAdditionalHtml(item, components, html);

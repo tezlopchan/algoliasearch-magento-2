@@ -47,6 +47,26 @@ define([], function () {
                     </div>
                 </a>`;
             }
+        },
+
+        getHeaderHtml: function (section) {
+            return section.name;
+        },
+
+        getNoResultHtml: function () {
+            return 'No Results';
+        },
+
+        getFooterHtml: function (html, orsTab, allUrl, productResult) {
+            if(orsTab && orsTab.length > 0 && algoliaConfig.instant.enabled) {
+                return html `<div id="autocomplete-products-footer">${algoliaConfig.translations.seeIn} <span><a href="${allUrl}">${algoliaConfig.translations.allDepartments}</a></span> (${productResult[0].nbHits}) ${algoliaConfig.translations.orIn}
+                    ${orsTab.map((list, index) =>
+                        index === 0 ? html` <span><a href="${list.url}">${list.name}</a></span>` : html`, <span><a href="${list.url}">${list.name}</a></span>`
+                )}
+                </div>`;
+            }else{
+                return html `<div id="autocomplete-products-footer">${algoliaConfig.translations.seeIn} <span><a href="${allUrl}">${algoliaConfig.translations.allDepartments}</a></span> (${productResult[0].nbHits})</div>`;
+            }
         }
     };
 });

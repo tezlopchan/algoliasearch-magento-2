@@ -10,6 +10,14 @@ define([], function () {
                 </div>
                 <div class="algolia-clearfix"></div>
             </a>`;
+        },
+
+        getHeaderHtml: function (section) {
+            return section.name;
+        },
+
+        getNoResultHtml: function () {
+            return 'No Results';
         }
     };
 });
