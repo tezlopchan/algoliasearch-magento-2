@@ -75,6 +75,11 @@ class AssetHelper extends \Magento\Framework\App\Helper\AbstractHelper
                 'url' => 'https://www.algolia.com/support/?contact=',
                 'icon' => 'iconIssues',
             ],
+            [
+                'title' => 'Release Notes',
+                'url' => 'https://github.com/algolia/algoliasearch-magento-2/releases',
+                'icon' => 'iconDocs',
+            ]
         ],
         'algoliasearch_autocomplete' => [
             [
