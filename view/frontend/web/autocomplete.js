@@ -166,7 +166,9 @@ requirejs(['algoliaBundle', 'pagesHtml', 'categoriesHtml', 'productsHtml', 'sugg
             });
 
             options.plugins = [querySuggestionsPlugin];
-            algoliaAutocomplete.autocomplete(options);
+            /** Bind autocomplete feature to the input */
+            var algoliaAutocompleteInstance = algoliaAutocomplete.autocomplete(options);
+            algoliaAutocompleteInstance = algolia.triggerHooks('afterAutocompleteStart', algoliaAutocompleteInstance);
             //Written code for autocomplete insight
             jQuery(document).on('click', '.algoliasearch-autocomplete-hit', function(){
                 let itemUrl = jQuery(this).attr('href');
