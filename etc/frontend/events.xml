@@ -24,4 +24,5 @@
         <observer name="algoliasearch_insights_place_order_event" instance="Algolia\AlgoliaSearch\Model\Observer\Insights\CheckoutOnepageControllerSuccessAction" />
     </event>
 
+
 </config>
