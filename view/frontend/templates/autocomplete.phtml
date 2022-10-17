@@ -3,13 +3,13 @@
  * @var \Algolia\AlgoliaSearch\Block\Algolia $block
  */
 
-$blockInstance= $block->getLayout()->createBlock('Algolia\AlgoliaSearch\Block\Algolia');
-$config = $blockInstance->getConfigHelper();
-$catalogSearchHelper = $blockInstance->getCatalogSearchHelper();
+$config = $block->getConfigHelper();
+
+$catalogSearchHelper = $block->getCatalogSearchHelper();
 
 $placeholder = __('Search for products, categories, ...');
 
 // Render form with autocomplete input
-//if ($config->isDefaultSelector()) : ?>
+if ($config->isDefaultSelector()) : ?>
 <div id="algoliaAutocomplete" class="block block-search algolia-search-block algolia-search-input"></div>
-<?php //endif; ?>
+<?php endif; ?>
