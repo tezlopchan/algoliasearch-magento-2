@@ -14,15 +14,15 @@ define([], function () {
                         ${components.Highlight({hit: _data, attribute: 'name'}) || ''}
                         <div class="algoliasearch-autocomplete-category">
                             ${color && color != '' ? html `color : ${components.Highlight({hit: _data, attribute: 'color'})}` :
-                                _data.categories_without_path && _data.categories_without_path.length != 0 ? html `in ${components.Highlight({hit: _data, attribute: 'categories_without_path'})}` : ''}
+                    _data.categories_without_path && _data.categories_without_path.length != 0 ? html `in ${components.Highlight({hit: _data, attribute: 'categories_without_path'})}` : ''}
                         </div>
-                        <div class="algoliasearch-autocomplete-price">
-                            <span class="after_special ${origFormatedVar != null ? 'promotion' : ''}">
+                        ${_data['price'] !== undefined ? html `<div className="algoliasearch-autocomplete-price">
+                            <span className="after_special ${origFormatedVar != null ? 'promotion' : ''}">
                                 ${_data['price'][algoliaConfig.currencyCode]['default_formated']}
                             </span>
                             ${_data['price'][algoliaConfig.currencyCode]['default_original_formated'] != null ? html`
                                 <span class="before_special">${_data['price'][algoliaConfig.currencyCode]['default_original_formated']}</span>` : ''}
-                        </div>
+                        </div>` : ''}
                     </div>
                 </a>`;
             } else {
@@ -32,10 +32,10 @@ define([], function () {
                         ${components.Highlight({hit: _data, attribute: 'name'}) || ''}
                         <div class="algoliasearch-autocomplete-category">
                             ${color && color != '' ? html `color : ${components.Highlight({hit: _data, attribute: 'color'})}` :
-                                _data.categories_without_path && _data.categories_without_path.length != 0 ? html `in ${components.Highlight({hit: _data, attribute: 'categories_without_path'})}` : ''}
+                    _data.categories_without_path && _data.categories_without_path.length != 0 ? html `in ${components.Highlight({hit: _data, attribute: 'categories_without_path'})}` : ''}
                         </div>
-                        <div class="algoliasearch-autocomplete-price">
-                            <span class="after_special ${origFormatedVar != null ? 'promotion' : ''}">
+                        ${_data['price'] !== undefined ? html `<div className="algoliasearch-autocomplete-price">
+                            <span className="after_special ${origFormatedVar != null ? 'promotion' : ''}">
                                 ${_data['price'][algoliaConfig.currencyCode][algoliaConfig.priceGroup + '_formated']}
                             </span>
                             ${_data['price'][algoliaConfig.currencyCode][algoliaConfig.priceGroup + '_original_formated'] != null ? html`
@@ -43,7 +43,7 @@ define([], function () {
 
                             ${_data['price'][algoliaConfig.currencyCode][algoliaConfig.priceGroup + '_tier_formated'] != null ? html`
                                 <span class="tier_price">As low as ${_data['price'][algoliaConfig.currencyCode][algoliaConfig.priceGroup + '_tier_formated']}</span>` : ''}
-                        </div>
+                        </div>` : ''}
                     </div>
                 </a>`;
             }
@@ -62,7 +62,7 @@ define([], function () {
                 return html `<div id="autocomplete-products-footer">${algoliaConfig.translations.seeIn} <span><a href="${allUrl}">${algoliaConfig.translations.allDepartments}</a></span> (${productResult[0].nbHits}) ${algoliaConfig.translations.orIn}
                     ${orsTab.map((list, index) =>
                         index === 0 ? html` <span><a href="${list.url}">${list.name}</a></span>` : html`, <span><a href="${list.url}">${list.name}</a></span>`
-                )}
+                    )}
                 </div>`;
             }else{
                 return html `<div id="autocomplete-products-footer">${algoliaConfig.translations.seeIn} <span><a href="${allUrl}">${algoliaConfig.translations.allDepartments}</a></span> (${productResult[0].nbHits})</div>`;

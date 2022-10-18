@@ -184,6 +184,7 @@ requirejs(['algoliaBundle', 'pagesHtml', 'categoriesHtml', 'productsHtml', 'sugg
 
     // autocomplete code moved from common.js to autocomplete.js
     window.transformAutocompleteHit = function (hit, price_key, $, helper) {
+        //console.log(hit);
         if (Array.isArray(hit.categories))
             hit.categories = hit.categories.join(', ');
 
@@ -256,20 +257,20 @@ requirejs(['algoliaBundle', 'pagesHtml', 'categoriesHtml', 'productsHtml', 'sugg
         if (Array.isArray(hit._highlightResult.name))
             hit._highlightResult.name = hit._highlightResult.name[0];
 
-        if (Array.isArray(hit.price))
+        if (Array.isArray(hit.price)) {
             hit.price = hit.price[0];
+            if (hit['price'] !== undefined && price_key !== '.' + algoliaConfig.currencyCode + '.default' && hit['price'][algoliaConfig.currencyCode][price_key.substr(1) + '_formated'] !== hit['price'][algoliaConfig.currencyCode]['default_formated']) {
+                hit['price'][algoliaConfig.currencyCode][price_key.substr(1) + '_original_formated'] = hit['price'][algoliaConfig.currencyCode]['default_formated'];
+            }
 
-        if (hit['price'] !== undefined && price_key !== '.' + algoliaConfig.currencyCode + '.default' && hit['price'][algoliaConfig.currencyCode][price_key.substr(1) + '_formated'] !== hit['price'][algoliaConfig.currencyCode]['default_formated']) {
-            hit['price'][algoliaConfig.currencyCode][price_key.substr(1) + '_original_formated'] = hit['price'][algoliaConfig.currencyCode]['default_formated'];
-        }
+            if (hit['price'][algoliaConfig.currencyCode]['default_original_formated']
+                && hit['price'][algoliaConfig.currencyCode]['special_to_date']) {
+                var priceExpiration = hit['price'][algoliaConfig.currencyCode]['special_to_date'];
 
-        if (hit['price'][algoliaConfig.currencyCode]['default_original_formated']
-            && hit['price'][algoliaConfig.currencyCode]['special_to_date']) {
-            var priceExpiration = hit['price'][algoliaConfig.currencyCode]['special_to_date'];
-
-            if (algoliaConfig.now > priceExpiration + 1) {
-                hit['price'][algoliaConfig.currencyCode]['default_formated'] = hit['price'][algoliaConfig.currencyCode]['default_original_formated'];
-                hit['price'][algoliaConfig.currencyCode]['default_original_formated'] = false;
+                if (algoliaConfig.now > priceExpiration + 1) {
+                    hit['price'][algoliaConfig.currencyCode]['default_formated'] = hit['price'][algoliaConfig.currencyCode]['default_original_formated'];
+                    hit['price'][algoliaConfig.currencyCode]['default_original_formated'] = false;
+                }
             }
         }
 
