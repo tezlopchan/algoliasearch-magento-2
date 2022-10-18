@@ -184,7 +184,6 @@ requirejs(['algoliaBundle', 'pagesHtml', 'categoriesHtml', 'productsHtml', 'sugg
 
     // autocomplete code moved from common.js to autocomplete.js
     window.transformAutocompleteHit = function (hit, price_key, $, helper) {
-        //console.log(hit);
         if (Array.isArray(hit.categories))
             hit.categories = hit.categories.join(', ');
 
