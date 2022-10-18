@@ -90,7 +90,8 @@ requirejs(['algoliaBundle', 'pagesHtml', 'categoriesHtml', 'productsHtml', 'sugg
                     sources.push(source);
                 }
 
-                /** Those sections have already specific placeholder, so do not use the default aa-dataset-{i} class **/
+                /** Those sections have already specific placeholder,
+                 * so do not use the default aa-dataset-{i} class to specify the placeholder **/
                 if (section.name !== 'suggestions' && section.name !== 'products') {
                     i++;
                 }
@@ -169,7 +170,8 @@ requirejs(['algoliaBundle', 'pagesHtml', 'categoriesHtml', 'productsHtml', 'sugg
             /** Bind autocomplete feature to the input */
             var algoliaAutocompleteInstance = algoliaAutocomplete.autocomplete(options);
             algoliaAutocompleteInstance = algolia.triggerHooks('afterAutocompleteStart', algoliaAutocompleteInstance);
-            //Written code for autocomplete insight
+
+            //Autocomplete insight click conversion
             jQuery(document).on('click', '.algoliasearch-autocomplete-hit', function(){
                 let itemUrl = jQuery(this).attr('href');
                 let eventData = algoliaInsights.buildEventData(
@@ -179,8 +181,8 @@ requirejs(['algoliaBundle', 'pagesHtml', 'categoriesHtml', 'productsHtml', 'sugg
             });
         });
     });
-    // moving common.js autocomplete code to autocomplete.js
 
+    // autocomplete code moved from common.js to autocomplete.js
     window.transformAutocompleteHit = function (hit, price_key, $, helper) {
         if (Array.isArray(hit.categories))
             hit.categories = hit.categories.join(', ');
@@ -324,7 +326,7 @@ requirejs(['algoliaBundle', 'pagesHtml', 'categoriesHtml', 'productsHtml', 'sugg
         if (section.name === "products") {
             options.facets = ['categories.level0'];
             options.numericFilters = 'visibility_search=1';
-            options.ruleContexts = ['magento_filters', '']; // Empty context to keep BC for already create rules in dashboard
+            options.ruleContexts = ['magento_filters', '']; // Empty context to keep backward compatibility for already created rules in dashboard
 
             options = algolia.triggerHooks('beforeAutocompleteProductSourceOptions', options);
 
