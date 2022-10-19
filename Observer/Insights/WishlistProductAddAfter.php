@@ -1,23 +1,30 @@
 <?php
 
-namespace Algolia\AlgoliaSearch\Model\Observer\Insights;
+namespace Algolia\AlgoliaSearch\Observer\Insights;
 
 use Algolia\AlgoliaSearch\Helper\Configuration\PersonalizationHelper;
 use Algolia\AlgoliaSearch\Helper\Data;
 use Algolia\AlgoliaSearch\Helper\InsightsHelper;
+use Exception;
 use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
+use Magento\Sales\Model\Order;
+use Magento\Wishlist\Model\Item;
+use Psr\Log\LoggerInterface;
 
 class WishlistProductAddAfter implements ObserverInterface
 {
     /** @var Data */
-    private $dataHelper;
+    protected Data $dataHelper;
 
     /** @var PersonalizationHelper */
-    private $personalisationHelper;
+    protected PersonalizationHelper $personalisationHelper;
 
     /** @var InsightsHelper */
-    private $insightsHelper;
+    protected InsightsHelper $insightsHelper;
+
+    /** @var LoggerInterface */
+    protected LoggerInterface $logger;
 
     /**
      * CheckoutCartProductAddAfter constructor.
@@ -25,15 +32,18 @@ class WishlistProductAddAfter implements ObserverInterface
      * @param Data $dataHelper
      * @param PersonalizationHelper $personalisationHelper
      * @param InsightsHelper $insightsHelper
+     * @param LoggerInterface $logger
      */
     public function __construct(
         Data $dataHelper,
         PersonalizationHelper $personalisationHelper,
-        InsightsHelper $insightsHelper
+        InsightsHelper $insightsHelper,
+        LoggerInterface $logger
     ) {
         $this->dataHelper = $dataHelper;
         $this->personalisationHelper = $personalisationHelper;
         $this->insightsHelper = $insightsHelper;
+        $this->logger = $logger;
     }
 
     /**
@@ -42,9 +52,9 @@ class WishlistProductAddAfter implements ObserverInterface
      */
     public function execute(Observer $observer)
     {
-        /** @var \Magento\Sales\Model\Order $order */
+        /** @var Order $order */
         $items = $observer->getEvent()->getItems();
-        /** @var \Magento\Wishlist\Model\Item $firstItem */
+        /** @var Item $firstItem */
         $firstItem = $items[0];
 
         if (!$this->personalisationHelper->isPersoEnabled($firstItem->getStoreId())
@@ -55,15 +65,19 @@ class WishlistProductAddAfter implements ObserverInterface
         $userClient = $this->insightsHelper->getUserInsightsClient();
         $productIds = [];
 
-        /** @var \Magento\Wishlist\Model\Item $item */
+        /** @var Item $item */
         foreach ($items as $item) {
             $productIds[] = $item->getProductId();
         }
 
-        $userClient->convertedObjectIDs(
-            __('Added to Wishlist'),
-            $this->dataHelper->getIndexName('_products', $firstItem->getStoreId()),
-            $productIds
-        );
+        try {
+            $userClient->convertedObjectIDs(
+                __('Added to Wishlist'),
+                $this->dataHelper->getIndexName('_products', $firstItem->getStoreId()),
+                $productIds
+            );
+        } catch (Exception $e) {
+            $this->logger->critical($e);
+        }
     }
 }

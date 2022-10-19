@@ -1,29 +1,24 @@
 <?php
 
-namespace Algolia\AlgoliaSearch\Model\Observer\Insights;
+namespace Algolia\AlgoliaSearch\Observer\Insights;
 
-use Algolia\AlgoliaSearch\Helper\ConfigHelper;
 use Algolia\AlgoliaSearch\Helper\InsightsHelper;
+use Magento\Customer\Model\Customer;
 use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
 
 class CustomerLogin implements ObserverInterface
 {
-    /** @var ConfigHelper */
-    private $configHelper;
 
     /** @var InsightsHelper */
-    private $insightsHelper;
+    protected InsightsHelper $insightsHelper;
 
     /**
-     * @param ConfigHelper $configHelper
      * @param InsightsHelper $insightsHelper
      */
     public function __construct(
-        ConfigHelper $configHelper,
         InsightsHelper $insightsHelper
     ) {
-        $this->configHelper = $configHelper;
         $this->insightsHelper = $insightsHelper;
     }
 
@@ -33,7 +28,7 @@ class CustomerLogin implements ObserverInterface
      */
     public function execute(Observer $observer)
     {
-        /** @var \Magento\Customer\Model\Customer $customer */
+        /** @var Customer $customer */
         $customer = $observer->getEvent()->getCustomer();
 
         if ($this->insightsHelper->getPersonalizationHelper()->isPersoEnabled($customer->getStoreId())) {
