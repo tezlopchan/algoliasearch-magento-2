@@ -466,6 +466,7 @@
     position: absolute;
     right: 0px;
     height: 32px;
+    box-shadow: none;
 }
 #algoliaAutocomplete .aa-ClearButton{
     position: absolute;
@@ -608,4 +609,8 @@
 }
 .aa-Panel .aa-PanelLayout section .aa-SourceNoResults{
     padding: 5px;
+}
+
+.clear-query-autocomplete {
+    display: none !important;
 }
