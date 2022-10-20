@@ -83,6 +83,8 @@ requirejs([
         });
     }
     function renderRecommendData(item, createElement){
+        this.config = algoliaConfig;
+        this.defaultIndexName = algoliaConfig.indexName + '_products';
         return createElement(
             'div',
             null,
@@ -91,7 +93,7 @@ requirejs([
                 {className: "product-details"},
                 createElement(
                     'a',
-                    {className: "product-url", href: item.url},
+                    {className: "recommend-item product-url", href: item.url, 'data-objectId': item.objectID, 'data-index': this.defaultIndexName},
                     createElement('img', {className: "product-img", src: item.image_url}, item.image_url),
                     createElement('p', {className: "product-name"}, item.name)
                 )
@@ -104,6 +106,8 @@ requirejs([
         if(correctFKey != "" && config.recommend.addToCartParams.formKey != correctFKey) {
             config.recommend.addToCartParams.formKey = correctFKey;
         }
+        this.config = algoliaConfig;
+        this.defaultIndexName = algoliaConfig.indexName + '_products';
         return createElement(
             'div',
             null,
@@ -112,7 +116,7 @@ requirejs([
                 {className: "product-details"},
                 createElement(
                     'a',
-                    {className: "product-url", href: item.url},
+                    {className: "recommend-item product-url", href: item.url, 'data-objectId': item.objectID, 'data-index': this.defaultIndexName},
                     createElement('img', {className: "product-img", src: item.image_url}, item.image_url),
                     createElement('p', {className: "product-name"}, item.name),
                     createElement('form', {className: 'addTocartForm', action: action, method: 'post'},

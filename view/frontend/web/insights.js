@@ -109,7 +109,7 @@ requirejs([
             });
 
 
-            if (this.config.ccAnalytics.enabled || this.config.personalization.enabled) {
+            if (this.config.ccAnalytics.enabled) {
                 $(document).on('click', this.config.ccAnalytics.ISSelector, function() {
                     var $this = $(this);
                     if ($this.data('clicked')) return;
