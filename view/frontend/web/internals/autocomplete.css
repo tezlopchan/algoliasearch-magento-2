@@ -610,3 +610,7 @@
 .aa-Panel .aa-PanelLayout section .aa-SourceNoResults{
     padding: 5px;
 }
+
+.clear-query-autocomplete {
+    display: none !important;
+}
