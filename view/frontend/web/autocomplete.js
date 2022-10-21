@@ -473,14 +473,6 @@ requirejs(['algoliaBundle', 'pagesHtml', 'categoriesHtml', 'productsHtml', 'sugg
                 );
                 algoliaInsights.trackClick(eventData);
             });
-           //Written code for autocomplete insight 
-            jQuery(document).on('click', '.algoliasearch-autocomplete-hit', function(){
-                let itemUrl = jQuery(this).attr('href');
-                let eventData = algoliaInsights.buildEventData(
-                    'Clicked', getHitsUrlParameter(itemUrl, 'objectID'), getHitsUrlParameter(itemUrl, 'indexName'), 1, getHitsUrlParameter(itemUrl, 'queryID')
-                );
-                algoliaInsights.trackClick(eventData);
-            });
         });
     });
 
@@ -491,10 +483,3 @@ requirejs(['algoliaBundle', 'pagesHtml', 'categoriesHtml', 'productsHtml', 'sugg
         return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
     }
 });
-
-function getHitsUrlParameter(url, name) {
-    name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
-    var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
-        results = regex.exec(url);
-    return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
-}
