@@ -8,7 +8,7 @@ define([], function () {
             var origFormatedVar = algoliaConfig.origFormatedVar;
             var tierFormatedvar = algoliaConfig.tierFormatedVar;
             if (algoliaConfig.priceGroup == null) {
-                return html`<a class="algoliasearch-autocomplete-hit" href="${_data.__autocomplete_queryID != null ? _data.urlForInsights : _data.url}">
+                return html`<a class="algoliasearch-autocomplete-hit" href="${_data.__autocomplete_queryID != null ? _data.urlForInsights : _data.url}" data-objectId="${_data.objectID}" data-index="${_data.__autocomplete_indexName}">
                     <div class="thumb"><img src="${_data.thumbnail_url || ''}" alt="${_data.name || ''}"/></div>
                     <div class="info">
                         ${components.Highlight({hit: _data, attribute: 'name'}) || ''}
@@ -26,7 +26,7 @@ define([], function () {
                     </div>
                 </a>`;
             } else {
-                return html`<a class="algoliasearch-autocomplete-hit" href="${_data.__autocomplete_queryID != null ? _data.urlForInsights : _data.url}">
+                return html`<a class="algoliasearch-autocomplete-hit" href="${_data.__autocomplete_queryID != null ? _data.urlForInsights : _data.url}" data-objectId="${_data.objectID}" data-index="${_data.__autocomplete_indexName}">
                     <div class="thumb"><img src="${_data.thumbnail_url || ''}" alt="${_data.name || ''}"/></div>
                     <div class="info">
                         ${components.Highlight({hit: _data, attribute: 'name'}) || ''}

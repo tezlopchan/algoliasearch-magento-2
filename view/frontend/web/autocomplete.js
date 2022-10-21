@@ -466,13 +466,16 @@ requirejs(['algoliaBundle', 'pagesHtml', 'categoriesHtml', 'productsHtml', 'sugg
             algoliaAutocompleteInstance = algolia.triggerHooks('afterAutocompleteStart', algoliaAutocompleteInstance);
 
             //Autocomplete insight click conversion
-            jQuery(document).on('click', '.algoliasearch-autocomplete-hit', function(){
-                let itemUrl = jQuery(this).attr('href');
-                let eventData = algoliaInsights.buildEventData(
-                    'Clicked', getHitsUrlParameter(itemUrl, 'objectID'), getHitsUrlParameter(itemUrl, 'indexName'), 1, getHitsUrlParameter(itemUrl, 'queryID')
-                );
-                algoliaInsights.trackClick(eventData);
-            });
+            if (algoliaConfig.ccAnalytics.enabled
+                && algoliaConfig.ccAnalytics.conversionAnalyticsMode !== 'disabled') {
+                    jQuery(document).on('click', '.algoliasearch-autocomplete-hit', function(){
+                        let itemUrl = jQuery(this).attr('href');
+                        let eventData = algoliaInsights.buildEventData(
+                            'Clicked', getHitsUrlParameter(itemUrl, 'objectID'), getHitsUrlParameter(itemUrl, 'indexName'), 1, getHitsUrlParameter(itemUrl, 'queryID')
+                        );
+                        algoliaInsights.trackClick(eventData);
+                    });
+            }
         });
     });
 
