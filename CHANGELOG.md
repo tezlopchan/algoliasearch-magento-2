@@ -3,7 +3,7 @@
 ## 3.9.0
 
 ### New Features
-- Trends Recommendations: We have added the ability to add Trending Items to the PDP and the shopping cart page. More information can be found here. We also provide a Trending Items widget that can be used to add Trending Items to any page.
+- Trends Recommendations: We have added the ability to add Trending Items to the PDP and the shopping cart page. More information can be found <a href="https://deploy-preview-7369--algolia-docs.netlify.app/doc/integration/magento-2/how-it-works/recommend/?client=php#trending-items">here</a>. We also provide a <a href="https://deploy-preview-7369--algolia-docs.netlify.app/doc/integration/magento-2/how-it-works/recommend/?client=php#configure-the-trending-items-widget">Trending Items widget</a> that can be used to add Trending Items to any page.
 - Added an option to show Recommend Related and Frequently Bought Together products on the shopping cart page.
 - Added an option to enable the Add To Cart button for all types of recommended products (Related, Frequently Bought Together, and Trending Items).
 - Added Algolia Recommend dashboard link on the Magento dashboard
