@@ -469,11 +469,14 @@ requirejs(['algoliaBundle', 'pagesHtml', 'categoriesHtml', 'productsHtml', 'sugg
             if (algoliaConfig.ccAnalytics.enabled
                 && algoliaConfig.ccAnalytics.conversionAnalyticsMode !== 'disabled') {
                     jQuery(document).on('click', '.algoliasearch-autocomplete-hit', function(){
+                        var $this = $(this);
+                        if ($this.data('clicked')) return;
                         let itemUrl = jQuery(this).attr('href');
                         let eventData = algoliaInsights.buildEventData(
                             'Clicked', getHitsUrlParameter(itemUrl, 'objectID'), getHitsUrlParameter(itemUrl, 'indexName'), 1, getHitsUrlParameter(itemUrl, 'queryID')
                         );
                         algoliaInsights.trackClick(eventData);
+                        $this.attr('data-clicked', true);
                     });
             }
         });
