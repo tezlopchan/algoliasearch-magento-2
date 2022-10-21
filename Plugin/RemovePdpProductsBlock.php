@@ -30,7 +30,7 @@ class RemovePdpProductsBlock
      */
     public function afterToHtml(AbstractBlock $subject, $result)
     {
-        if (($subject->getNameInLayout() === self::RELATED_BLOCK_NAME && $this->_configHelper->isRemoveCoreRelatedProductsBlock()) || ($subject->getNameInLayout() === self::UPSELL_BLOCK_NAME && $this->_configHelper->isRemoveUpsellProductsBlock())) {
+        if (($subject->getNameInLayout() === self::RELATED_BLOCK_NAME && $this->_configHelper->isRecommendRelatedProductsEnabled() && $this->_configHelper->isRemoveCoreRelatedProductsBlock()) || ($subject->getNameInLayout() === self::UPSELL_BLOCK_NAME && $this->_configHelper->isRecommendFrequentlyBroughtTogetherEnabled() && $this->_configHelper->isRemoveUpsellProductsBlock())) {
             return '';
         }
 
