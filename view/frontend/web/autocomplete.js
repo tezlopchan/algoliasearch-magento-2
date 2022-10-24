@@ -189,7 +189,7 @@ requirejs(['algoliaBundle', 'pagesHtml', 'categoriesHtml', 'productsHtml', 'sugg
                                 algoliaAutocomplete.$('.aa-PanelLayout').append(algoliaFooter);
                             }
                             var _data = transformAutocompleteHit(item, algoliaConfig.priceKey, $);
-                            return productsHtml.getProductsHtml(_data, components, html);
+                            return productsHtml.getItemHtml(_data, components, html);
                         },
                         footer({html}) {
                             var keys = [];
@@ -248,7 +248,7 @@ requirejs(['algoliaBundle', 'pagesHtml', 'categoriesHtml', 'productsHtml', 'sugg
                             return categoriesHtml.getHeaderHtml(section);
                         },
                         item({ item, components, html }) {
-                            return categoriesHtml.getCategoriesHtml(item, components, html);
+                            return categoriesHtml.getItemHtml(item, components, html);
                         }
                     }
                 };
@@ -268,7 +268,7 @@ requirejs(['algoliaBundle', 'pagesHtml', 'categoriesHtml', 'productsHtml', 'sugg
                             return pagesHtml.getHeaderHtml(section);
                         },
                         item({ item, components, html }) {
-                            return pagesHtml.getPagesHtml(item, components, html);
+                            return pagesHtml.getItemHtml(item, components, html);
                         }
                     }
                 };
@@ -306,7 +306,7 @@ requirejs(['algoliaBundle', 'pagesHtml', 'categoriesHtml', 'productsHtml', 'sugg
                             return additionalHtml.getHeaderHtml(section);
                         },
                         item({ item, components, html }) {
-                            return additionalHtml.getAdditionalHtml(item, components, html);
+                            return additionalHtml.getItemHtml(item, components, html);
                         }
                     }
                 };
@@ -413,7 +413,7 @@ requirejs(['algoliaBundle', 'pagesHtml', 'categoriesHtml', 'productsHtml', 'sugg
                                     },
                                     item(params) {
                                         const { item, html } = params;
-                                        return suggestionsHtml.getSuggestionsHtml(item, html)
+                                        return suggestionsHtml.getItemHtml(item, html)
                                     },
                                 },
                             };

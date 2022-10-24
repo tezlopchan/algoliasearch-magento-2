@@ -1,6 +1,6 @@
 define([], function () {
     return {
-        getProductsHtml: function (item, components, html) {
+        getItemHtml: function (item, components, html) {
             var color = '';
             if (item._highlightResult.color !== undefined) {
                 color = item._highlightResult.color.value;
