@@ -1,20 +1,27 @@
 define([], function () {
     return {
+        getColorHtml: (item, components, html) => {
+            return item._highlightResult.color !== undefined && item._highlightResult.color.value !== ''
+                ? html`<span class="color">color: ${components.Highlight({ hit: item, attribute: "color" })}</span>`
+                : "";
+        },
+        getCategoriesHtml: (item, components, html) => {
+            return item.categories_without_path &&
+                item.categories_without_path.length
+                ? html`<span>in ${components.Highlight({ hit: item, attribute: "categories_without_path",})}</span>`
+                : "";
+        },
         getItemHtml: function (item, components, html) {
-            var color = '';
-            if (item._highlightResult.color !== undefined) {
-                color = item._highlightResult.color.value;
-            }
             var origFormatedVar = algoliaConfig.origFormatedVar;
             var tierFormatedvar = algoliaConfig.tierFormatedVar;
             if (algoliaConfig.priceGroup == null) {
                 return html`<a class="algoliasearch-autocomplete-hit" href="${item.__autocomplete_queryID != null ? item.urlForInsights : item.url}">
                     <div class="thumb"><img src="${item.thumbnail_url || ''}" alt="${item.name || ''}"/></div>
                     <div class="info">
-                        ${components.Highlight({hit: item, attribute: 'name'}) || ''}
+                        ${components.Highlight({hit: item, attribute: 'name'})}
                         <div class="algoliasearch-autocomplete-category">
-                            ${color && color != '' ? html `color : ${components.Highlight({hit: item, attribute: 'color'})}` :
-                    item.categories_without_path && item.categories_without_path.length != 0 ? html `in ${components.Highlight({hit: item, attribute: 'categories_without_path'})}` : ''}
+                            ${this.getColorHtml(item, components, html)}
+                            ${this.getCategoriesHtml(item, components, html)} 
                         </div>
                         ${item['price'] !== undefined ? html `<div className="algoliasearch-autocomplete-price">
                             <span className="after_special ${origFormatedVar != null ? 'promotion' : ''}">

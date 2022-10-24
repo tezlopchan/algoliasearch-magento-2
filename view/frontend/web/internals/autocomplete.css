@@ -370,6 +370,10 @@
     color: #222;
 }
 
+.algoliasearch-autocomplete-hit .info .algoliasearch-autocomplete-category span:nth-child(n+2):before {
+    content: " | ";
+}
+
 #algolia-autocomplete-container .aa-dropdown-menu .footer_algolia {
     position: absolute;
     width: 100%;
