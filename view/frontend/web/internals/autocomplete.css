@@ -374,6 +374,15 @@
     content: " | ";
 }
 
+.algoliasearch-autocomplete-hit .info .algoliasearch-autocomplete-price .after_special:after {
+    content: " ";
+}
+
+.algoliasearch-autocomplete-hit .info .algoliasearch-autocomplete-price .tier_price {
+    padding-left: 5px;
+}
+
+
 #algolia-autocomplete-container .aa-dropdown-menu .footer_algolia {
     position: absolute;
     width: 100%;

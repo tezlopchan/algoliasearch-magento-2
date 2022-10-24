@@ -13,49 +13,46 @@ define([], function () {
             return html`<span>in ${components.Highlight({ hit: item, attribute: "categories_without_path",})}</span>`;
         },
 
-        getItemHtml: function (item, components, html) {
-            var origFormatedVar = algoliaConfig.origFormatedVar;
-            var tierFormatedvar = algoliaConfig.tierFormatedVar;
-            if (algoliaConfig.priceGroup == null) {
-                return html`<a class="algoliasearch-autocomplete-hit" href="${item.__autocomplete_queryID != null ? item.urlForInsights : item.url}">
-                    <div class="thumb"><img src="${item.thumbnail_url || ''}" alt="${item.name || ''}"/></div>
-                    <div class="info">
-                        ${components.Highlight({hit: item, attribute: 'name'})}
-                        <div class="algoliasearch-autocomplete-category">
-                            ${this.getColorHtml(item, components, html)}
-                            ${this.getCategoriesHtml(item, components, html)} 
-                        </div>
-                        ${item['price'] !== undefined ? html `<div className="algoliasearch-autocomplete-price">
-                            <span className="after_special ${origFormatedVar != null ? 'promotion' : ''}">
-                                ${item['price'][algoliaConfig.currencyCode]['default_formated']}
-                            </span>
-                            ${item['price'][algoliaConfig.currencyCode]['default_original_formated'] != null ? html`
-                                <span class="before_special">${item['price'][algoliaConfig.currencyCode]['default_original_formated']}</span>` : ''}
-                        </div>` : ''}
-                    </div>
-                </a>`;
-            } else {
-                return html`<a class="algoliasearch-autocomplete-hit" href="${item.__autocomplete_queryID != null ? item.urlForInsights : item.url}">
-                    <div class="thumb"><img src="${item.thumbnail_url || ''}" alt="${item.name || ''}"/></div>
-                    <div class="info">
-                        ${components.Highlight({hit: item, attribute: 'name'}) || ''}
-                        <div class="algoliasearch-autocomplete-category">
-                            ${color && color != '' ? html `color : ${components.Highlight({hit: item, attribute: 'color'})}` :
-                    item.categories_without_path && item.categories_without_path.length != 0 ? html `in ${components.Highlight({hit: item, attribute: 'categories_without_path'})}` : ''}
-                        </div>
-                        ${item['price'] !== undefined ? html `<div className="algoliasearch-autocomplete-price">
-                            <span className="after_special ${origFormatedVar != null ? 'promotion' : ''}">
-                                ${item['price'][algoliaConfig.currencyCode][algoliaConfig.priceGroup + '_formated']}
-                            </span>
-                            ${item['price'][algoliaConfig.currencyCode][algoliaConfig.priceGroup + '_original_formated'] != null ? html`
-                                <span class="before_special">${item['price'][algoliaConfig.currencyCode][algoliaConfig.priceGroup + '_original_formated']}</span>` : ''}
+        getOriginalPriceHtml: (item, html, priceGroup) => {
+            if (item['price'][algoliaConfig.currencyCode][priceGroup + '_original_formated'] == null) return "";
 
-                            ${item['price'][algoliaConfig.currencyCode][algoliaConfig.priceGroup + '_tier_formated'] != null ? html`
-                                <span class="tier_price">As low as ${item['price'][algoliaConfig.currencyCode][algoliaConfig.priceGroup + '_tier_formated']}</span>` : ''}
-                        </div>` : ''}
+            return html`<span class="before_special"> ${item['price'][algoliaConfig.currencyCode][priceGroup + '_original_formated']} </span>`;
+        },
+
+        getTierPriceHtml: (item, html, priceGroup) => {
+            if (item['price'][algoliaConfig.currencyCode][priceGroup + '_tier_formated'] == null) return "";            
+
+            return html`<span class="tier_price"> As low as <span class="tier_value">${item['price'][algoliaConfig.currencyCode][priceGroup + '_tier_formated']}</span></span>`;
+        },
+
+        getPricingHtml: function(item, html) { 
+            if (item['price'] == undefined) return "";
+
+            const priceGroup =  algoliaConfig.priceGroup || 'default'; 
+            
+            return html `<div className="algoliasearch-autocomplete-price">
+                <span className="after_special ${algoliaConfig.origFormatedVar != null ? 'promotion' : ''}">
+                    ${item['price'][algoliaConfig.currencyCode][priceGroup + '_formated']}
+                </span>
+                ${this.getOriginalPriceHtml(item, html, priceGroup)}
+
+                ${this.getTierPriceHtml(item, html, priceGroup)}
+            </div>`;
+        },
+
+        getItemHtml: function (item, components, html) {
+            return html`<a class="algoliasearch-autocomplete-hit" href="${item.__autocomplete_queryID != null ? item.urlForInsights : item.url}">
+                <div class="thumb"><img src="${item.thumbnail_url || ''}" alt="${item.name || ''}"/></div>
+                <div class="info">
+                    ${components.Highlight({hit: item, attribute: 'name'})}
+                    <div class="algoliasearch-autocomplete-category">
+                        ${this.getColorHtml(item, components, html)}
+                        ${this.getCategoriesHtml(item, components, html)} 
                     </div>
-                </a>`;
-            }
+
+                    ${this.getPricingHtml(item, html)}
+                </div>
+            </a>`;
         },
 
         getHeaderHtml: function (section) {
