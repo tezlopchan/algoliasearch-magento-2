@@ -1,16 +1,18 @@
 define([], function () {
     return {
+
         getColorHtml: (item, components, html) => {
-            return item._highlightResult.color !== undefined && item._highlightResult.color.value !== ''
-                ? html`<span class="color">color: ${components.Highlight({ hit: item, attribute: "color" })}</span>`
-                : "";
+            if (item._highlightResult.color == undefined || item._highlightResult.color.value == "") return "";
+
+            return html`<span class="color">color: ${components.Highlight({ hit: item, attribute: "color" })}</span>`;
         },
+
         getCategoriesHtml: (item, components, html) => {
-            return item.categories_without_path &&
-                item.categories_without_path.length
-                ? html`<span>in ${components.Highlight({ hit: item, attribute: "categories_without_path",})}</span>`
-                : "";
+            if (item.categories_without_path == undefined || item.categories_without_path.length == 0) return "";
+
+            return html`<span>in ${components.Highlight({ hit: item, attribute: "categories_without_path",})}</span>`;
         },
+
         getItemHtml: function (item, components, html) {
             var origFormatedVar = algoliaConfig.origFormatedVar;
             var tierFormatedvar = algoliaConfig.tierFormatedVar;
