@@ -63,16 +63,28 @@ define([], function () {
             return 'No Results';
         },
 
-        getFooterHtml: function (html, orsTab, allUrl, productResult) {
-            if(orsTab && orsTab.length > 0 && algoliaConfig.instant.enabled) {
-                return html `<div id="autocomplete-products-footer">${algoliaConfig.translations.seeIn} <span><a href="${allUrl}">${algoliaConfig.translations.allDepartments}</a></span> (${productResult[0].nbHits}) ${algoliaConfig.translations.orIn}
-                    ${orsTab.map((list, index) =>
-                        index === 0 ? html` <span><a href="${list.url}">${list.name}</a></span>` : html`, <span><a href="${list.url}">${list.name}</a></span>`
-                    )}
-                </div>`;
-            }else{
-                return html `<div id="autocomplete-products-footer">${algoliaConfig.translations.seeIn} <span><a href="${allUrl}">${algoliaConfig.translations.allDepartments}</a></span> (${productResult[0].nbHits})</div>`;
-            }
+        getFooterSearchCategoryLinks: (html, resultDetails) => {
+            if (resultDetails.allCategories == undefined) return "";
+
+            return html ` ${algoliaConfig.translations.orIn}
+                ${resultDetails.allCategories.map((list, index) =>
+                    index === 0 ? html` <span><a href="${list.url}">${list.name}</a></span>` : html`, <span><a href="${list.url}">${list.name}</a></span>`
+                )}  
+            `;
+        },
+
+        getFooterSearchLinks: function(html, resultDetails)  {
+            if (resultDetails.nbHits === 0) return "";
+
+            return html`${algoliaConfig.translations.seeIn} <span><a href="${resultDetails.allDepartmentsUrl}">${algoliaConfig.translations.allDepartments}</a></span> (${resultDetails.nbHits})            
+                ${this.getFooterSearchCategoryLinks(html, resultDetails)}
+            `;
+        },
+
+        getFooterHtml: function (html, resultDetails) {
+            return html`<div id="autocomplete-products-footer">
+                ${this.getFooterSearchLinks(html, resultDetails)}
+            </div>`;
         }
     };
 });

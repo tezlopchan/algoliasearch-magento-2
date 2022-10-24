@@ -1,7 +1,6 @@
 let algoliaAutocomplete;
 let suggestionSection = false;
 let algoliaFooter;
-let productResult = [];
 requirejs(
     ['jquery', 'algoliaBundle', 'pagesHtml', 'categoriesHtml', 'productsHtml', 'suggestionsHtml', 'additionalHtml', 'domReady!'], 
     function(jQuery, algoliaBundle, pagesHtml, categoriesHtml, productsHtml, suggestionsHtml, additionalHtml) 
@@ -195,41 +194,30 @@ requirejs(
                             var _data = transformAutocompleteHit(item, algoliaConfig.priceKey, $);
                             return productsHtml.getItemHtml(_data, components, html);
                         },
-                        footer({html}) {
-                            var keys = [];
-                            for (var i = 0; i<algoliaConfig.facets.length; i++) {
-                                if (algoliaConfig.facets[i].attribute == "categories" && productResult[0]) {
-                                    for (var key in productResult[0].facets['categories.level0']) {
-                                        var url = algoliaConfig.baseUrl + '/catalogsearch/result/?q=' + encodeURIComponent(productResult[0].query) + '#q=' + encodeURIComponent(productResult[0].query) + '&hFR[categories.level0][0]=' + encodeURIComponent(key) + '&idx=' + algoliaConfig.indexName + '_products';
-                                        keys.push({
-                                            key: key,
-                                            value: productResult[0].facets['categories.level0'][key],
-                                            url: url
-                                        });
-                                    }
+                        footer({items, html}) {
+                            
+                            const resultDetails = {};
+                            if (items.length) {
+                                const firstItem = items[0];
+                                resultDetails.allDepartmentsUrl = algoliaConfig.baseUrl + '/catalogsearch/result/?q=' + encodeURIComponent(firstItem.query);
+                                resultDetails.nbHits = firstItem.nbHits;
+
+                                if (algoliaConfig.facets.find(facet => facet.attribute === 'categories')) {                                    
+                                    const allCategories = Object.keys(firstItem.allCategories).map(key => {
+                                        const url = resultDetails.allDepartmentsUrl + '&categories=' + encodeURIComponent(key);
+                                        return {
+                                            name: key,
+                                            value: firstItem.allCategories[key],
+                                            url
+                                        };
+                                    });
+                                    //reverse value sort apparently...
+                                    allCategories.sort((a, b) => b.value - a.value);
+                                    resultDetails.allCategories = allCategories.slice(0, 2); 
                                 }
                             }
-
-                            keys.sort(function (a, b) {
-                                return b.value - a.value;
-                            });
-
-                            var orsTab = [];
-
-                            if (keys.length > 0) {
-                                orsTab = [];
-                                for (var i = 0; i < keys.length && i < 2; i++) {
-                                    orsTab.push(
-                                        {
-                                            url:keys[i].url,
-                                            name:keys[i].key
-                                        }
-                                    );
-                                }
-                            }
-
-                            var allUrl = algoliaConfig.baseUrl + '/catalogsearch/result/?q=' + encodeURIComponent(productResult[0].query);
-                            return productsHtml.getFooterHtml(html, orsTab, allUrl, productResult)
+                            
+                            return productsHtml.getFooterHtml(html, resultDetails);
                         }
                     }
                 };
@@ -437,8 +425,18 @@ requirejs(
                                     },
                                 ],
                                 transformResponse({ results, hits }) {
-                                    productResult = results;
-                                    return hits;
+                                    const resDetail = results[0];
+
+                                    return hits.map(res => { 
+                                        return res.map(hit => {
+                                            return { 
+                                                ...hit, 
+                                                nbHits: resDetail.nbHits,
+                                                allCategories: resDetail.facets['categories.level0'],
+                                                query: resDetail.query
+                                            }
+                                        })
+                                    });
                                 },
                             });
                         },
