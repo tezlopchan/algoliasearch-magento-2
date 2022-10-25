@@ -148,7 +148,7 @@ define(
             return hit;
         };
 
-        const getAutocompleteSource = function (section, algolia_client, $, i) {
+        const getAutocompleteSource = function (section, algolia_client, i) {
             if (section.hitsPerPage <= 0)
                 return null;
 
@@ -323,8 +323,9 @@ define(
          * For autocomplete feature is used Algolia's autocomplete.js library
          * Docs: https://github.com/algolia/autocomplete.js
          **/
-        $(algoliaConfig.autocomplete.selector).each(function (i) {
+        $(algoliaConfig.autocomplete.selector).each(function () {
             let querySuggestionsPlugin = "";
+            let sources = [];
             let autocompleteConfig = [];
             let options = {
                 container: '#algoliaAutocomplete',
@@ -340,7 +341,7 @@ define(
                     return autocompleteConfig;
                 },
             };
-
+            
             if (isMobile() === true) {
                 // Set debug to true, to be able to remove keyboard and be able to scroll in autocomplete menu
                 options.debug = true;
@@ -350,7 +351,7 @@ define(
                 algoliaFooter = '<div id="algoliaFooter" class="footer_algolia"><a href="https://www.algolia.com/?utm_source=magento&utm_medium=link&utm_campaign=magento_autocompletion_menu" title="Search by Algolia" target="_blank"><img src="' +algoliaConfig.urls.logo + '"  alt="Search by Algolia" /></a></div>';
             }
 
-            sources = algolia.triggerHooks('beforeAutocompleteSources', algoliaConfig.autocomplete.sections, algolia_client, algoliaBundle);
+            sources = algolia.triggerHooks('beforeAutocompleteSources', sources, algolia_client, algoliaBundle);
             options = algolia.triggerHooks('beforeAutocompleteOptions', options);
 
             // Keep for backward compatibility
@@ -366,10 +367,9 @@ define(
             }
 
             /** Setup autocomplete data sources **/
-            var sources = [],
-                i = 0;
-            $.each(algoliaConfig.autocomplete.sections, function (name, section) {
-                const source = getAutocompleteSource(section, algolia_client, $, i);
+            let i = 0;
+            $.each(algoliaConfig.autocomplete.sections, function (...[, section]) {
+                const source = getAutocompleteSource(section, algolia_client, i);
 
                 if (source) {
                     sources.push(source);
