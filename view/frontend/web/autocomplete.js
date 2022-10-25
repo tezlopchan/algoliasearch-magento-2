@@ -1,11 +1,9 @@
 let algoliaAutocomplete;
 let suggestionSection = false;
 let algoliaFooter;
-requirejs(
+define(
     ['jquery', 'algoliaBundle', 'pagesHtml', 'categoriesHtml', 'productsHtml', 'suggestionsHtml', 'additionalHtml', 'domReady!'], 
-    function(jQuery, algoliaBundle, pagesHtml, categoriesHtml, productsHtml, suggestionsHtml, additionalHtml) 
-    
-    {
+    function(jQuery, algoliaBundle, pagesHtml, categoriesHtml, productsHtml, suggestionsHtml, additionalHtml) {
     algoliaAutocomplete = algoliaBundle;
     algoliaBundle.$(function ($) {
 
