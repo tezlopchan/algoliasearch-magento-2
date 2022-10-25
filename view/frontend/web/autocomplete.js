@@ -1,11 +1,10 @@
 let suggestionSection = false;
 let algoliaFooter;
 define(
-    ['jquery', 'algoliaBundle', 'pagesHtml', 'categoriesHtml', 'productsHtml', 'suggestionsHtml', 'additionalHtml', 'domReady!'], 
-    function(jQuery, algoliaBundle, pagesHtml, categoriesHtml, productsHtml, suggestionsHtml, additionalHtml) {
+    ['algoliaBundle', 'pagesHtml', 'categoriesHtml', 'productsHtml', 'suggestionsHtml', 'additionalHtml', 'domReady!'], 
+    function(algoliaBundle, pagesHtml, categoriesHtml, productsHtml, suggestionsHtml, additionalHtml) {
 
     algoliaBundle.$(function ($) {
-
         /** We have nothing to do here if autocomplete is disabled **/
         if (!algoliaConfig.autocomplete.enabled) {
             return;
@@ -179,14 +178,14 @@ define(
                         },
                         item({ item, components, html }) {
                             if(suggestionSection){
-                                algoliaBundle.$('.aa-Panel').addClass('productColumn2');
-                                algoliaBundle.$('.aa-Panel').removeClass('productColumn1');
+                                $('.aa-Panel').addClass('productColumn2');
+                                $('.aa-Panel').removeClass('productColumn1');
                             }else{
-                                algoliaBundle.$('.aa-Panel').removeClass('productColumn2');
-                                algoliaBundle.$('.aa-Panel').addClass('productColumn1');
+                                $('.aa-Panel').removeClass('productColumn2');
+                                $('.aa-Panel').addClass('productColumn1');
                             }
-                            if(algoliaFooter && algoliaFooter !== undefined && algoliaFooter !== null && algoliaBundle.$('#algoliaFooter').length === 0){
-                                algoliaBundle.$('.aa-PanelLayout').append(algoliaFooter);
+                            if(algoliaFooter && algoliaFooter !== undefined && algoliaFooter !== null && $('#algoliaFooter').length === 0){
+                                $('.aa-PanelLayout').append(algoliaFooter);
                             }
                             var _data = transformAutocompleteHit(item, algoliaConfig.priceKey, $);
                             return productsHtml.getItemHtml(_data, components, html);
@@ -461,19 +460,11 @@ define(
 
             options.plugins = [querySuggestionsPlugin];
             /** Bind autocomplete feature to the input */
-            var algoliaAutocompleteInstance = algoliaBundle.autocomplete(options);
+            let algoliaAutocompleteInstance = algoliaBundle.autocomplete(options);
             algoliaAutocompleteInstance = algolia.triggerHooks('afterAutocompleteStart', algoliaAutocompleteInstance);
 
             //Autocomplete insight click conversion
-            jQuery(document).on('click', '.algoliasearch-autocomplete-hit', function(){
-                let itemUrl = jQuery(this).attr('href');
-                let eventData = algoliaInsights.buildEventData(
-                    'Clicked', getHitsUrlParameter(itemUrl, 'objectID'), getHitsUrlParameter(itemUrl, 'indexName'), 1, getHitsUrlParameter(itemUrl, 'queryID')
-                );
-                algoliaInsights.trackClick(eventData);
-            });
-           //Written code for autocomplete insight 
-            jQuery(document).on('click', '.algoliasearch-autocomplete-hit', function(){
+            $(document).on('click', '.algoliasearch-autocomplete-hit', function(){
                 let itemUrl = jQuery(this).attr('href');
                 let eventData = algoliaInsights.buildEventData(
                     'Clicked', getHitsUrlParameter(itemUrl, 'objectID'), getHitsUrlParameter(itemUrl, 'indexName'), 1, getHitsUrlParameter(itemUrl, 'queryID')
@@ -490,10 +481,3 @@ define(
         return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
     }
 });
-
-function getHitsUrlParameter(url, name) {
-    name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
-    var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
-        results = regex.exec(url);
-    return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
-}
