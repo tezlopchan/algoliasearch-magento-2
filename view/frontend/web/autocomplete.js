@@ -375,6 +375,8 @@ define(
                     sources.push(source);
                 }
 
+                /** TODO: Review this block - appears to only apply to Autocomplete v0 with Hogan templates which is now unsupported
+                 * e.g. view/frontend/templates/autocomplete/menu.phtml **/
                 /** Those sections have already specific placeholder,
                  * so do not use the default aa-dataset-{i} class to specify the placeholder **/
                 if (section.name !== 'suggestions' && section.name !== 'products') {
