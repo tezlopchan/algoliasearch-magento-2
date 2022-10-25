@@ -1,10 +1,9 @@
-let algoliaAutocomplete;
 let suggestionSection = false;
 let algoliaFooter;
 define(
     ['jquery', 'algoliaBundle', 'pagesHtml', 'categoriesHtml', 'productsHtml', 'suggestionsHtml', 'additionalHtml', 'domReady!'], 
     function(jQuery, algoliaBundle, pagesHtml, categoriesHtml, productsHtml, suggestionsHtml, additionalHtml) {
-    algoliaAutocomplete = algoliaBundle;
+
     algoliaBundle.$(function ($) {
 
         /** We have nothing to do here if autocomplete is disabled **/
@@ -180,14 +179,14 @@ define(
                         },
                         item({ item, components, html }) {
                             if(suggestionSection){
-                                algoliaAutocomplete.$('.aa-Panel').addClass('productColumn2');
-                                algoliaAutocomplete.$('.aa-Panel').removeClass('productColumn1');
+                                algoliaBundle.$('.aa-Panel').addClass('productColumn2');
+                                algoliaBundle.$('.aa-Panel').removeClass('productColumn1');
                             }else{
-                                algoliaAutocomplete.$('.aa-Panel').removeClass('productColumn2');
-                                algoliaAutocomplete.$('.aa-Panel').addClass('productColumn1');
+                                algoliaBundle.$('.aa-Panel').removeClass('productColumn2');
+                                algoliaBundle.$('.aa-Panel').addClass('productColumn1');
                             }
-                            if(algoliaFooter && algoliaFooter !== undefined && algoliaFooter !== null && algoliaAutocomplete.$('#algoliaFooter').length === 0){
-                                algoliaAutocomplete.$('.aa-PanelLayout').append(algoliaFooter);
+                            if(algoliaFooter && algoliaFooter !== undefined && algoliaFooter !== null && algoliaBundle.$('#algoliaFooter').length === 0){
+                                algoliaBundle.$('.aa-PanelLayout').append(algoliaFooter);
                             }
                             var _data = transformAutocompleteHit(item, algoliaConfig.priceKey, $);
                             return productsHtml.getItemHtml(_data, components, html);
@@ -385,7 +384,7 @@ define(
             sources.forEach(function(data){
                 if(data.name === "suggestions"){
                     suggestionSection = true;
-                    querySuggestionsPlugin = algoliaAutocomplete.createQuerySuggestionsPlugin.createQuerySuggestionsPlugin({
+                    querySuggestionsPlugin = algoliaBundle.createQuerySuggestionsPlugin.createQuerySuggestionsPlugin({
                         searchClient,
                         indexName: data.paramName.indexName,
                         transformSource({ source }) {
@@ -462,7 +461,7 @@ define(
 
             options.plugins = [querySuggestionsPlugin];
             /** Bind autocomplete feature to the input */
-            var algoliaAutocompleteInstance = algoliaAutocomplete.autocomplete(options);
+            var algoliaAutocompleteInstance = algoliaBundle.autocomplete(options);
             algoliaAutocompleteInstance = algolia.triggerHooks('afterAutocompleteStart', algoliaAutocompleteInstance);
 
             //Autocomplete insight click conversion
