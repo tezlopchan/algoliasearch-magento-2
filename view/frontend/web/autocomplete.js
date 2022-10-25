@@ -1,8 +1,9 @@
-let suggestionSection = false;
-let algoliaFooter;
 define(
     ['algoliaBundle', 'pagesHtml', 'categoriesHtml', 'productsHtml', 'suggestionsHtml', 'additionalHtml', 'domReady!'], 
     function(algoliaBundle, pagesHtml, categoriesHtml, productsHtml, suggestionsHtml, additionalHtml) {
+    
+    let suggestionSection = false;
+    let algoliaFooter;
 
     algoliaBundle.$(function ($) {
         /** We have nothing to do here if autocomplete is disabled **/
@@ -14,13 +15,13 @@ define(
          * Initialise Algolia client
          * Docs: https://www.algolia.com/doc/api-client/getting-started/instantiate-client-index/
          **/
-        var algolia_client = algoliaBundle.algoliasearch(algoliaConfig.applicationId, algoliaConfig.apiKey);
+        const algolia_client = algoliaBundle.algoliasearch(algoliaConfig.applicationId, algoliaConfig.apiKey);
         algolia_client.addAlgoliaAgent('Magento2 integration (' + algoliaConfig.extensionVersion + ')');
 
-        var searchClient = algoliaBundle.algoliasearch(algoliaConfig.applicationId, algoliaConfig.apiKey);
+        const searchClient = algoliaBundle.algoliasearch(algoliaConfig.applicationId, algoliaConfig.apiKey);
 
         // autocomplete code moved from common.js to autocomplete.js
-        window.transformAutocompleteHit = function (hit, price_key, $, helper) {
+        const transformAutocompleteHit = function (hit, price_key, $, helper) {
             if (Array.isArray(hit.categories))
                 hit.categories = hit.categories.join(', ');
 
@@ -147,7 +148,7 @@ define(
             return hit;
         };
 
-        window.getAutocompleteSource = function (section, algolia_client, $, i) {
+        const getAutocompleteSource = function (section, algolia_client, $, i) {
             if (section.hitsPerPage <= 0)
                 return null;
 
@@ -302,6 +303,7 @@ define(
 
             return source;
         };
+
         /** Add products and categories that are required sections **/
         /** Add autocomplete menu sections **/
         if (algoliaConfig.autocomplete.nbOfProductsSuggestions > 0) {
