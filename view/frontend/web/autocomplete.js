@@ -5,12 +5,12 @@ define(
     let suggestionSection = false;
     let algoliaFooter;
 
-    algoliaBundle.$(function ($) {
-        /** We have nothing to do here if autocomplete is disabled **/
-        if (!algoliaConfig.autocomplete.enabled) {
-            return;
-        }
+    /** We have nothing to do here if autocomplete is disabled **/
+    if (!algoliaConfig.autocomplete.enabled) {
+        return;
+    }
 
+    algoliaBundle.$(function ($) {
         /**
          * Initialise Algolia client
          * Docs: https://www.algolia.com/doc/api-client/getting-started/instantiate-client-index/
@@ -33,7 +33,7 @@ define(
                 hit.categories_without_path = hit.categories_without_path.join(', ');
             }
 
-            var matchedColors = [];
+            let matchedColors = [];
 
             if (helper && algoliaConfig.useAdaptiveImage === true) {
                 if (hit.images_data && helper.state.facetsRefinements.color) {
@@ -46,7 +46,7 @@ define(
             }
 
             if (Array.isArray(hit.color)) {
-                var colors = [];
+                let colors = [];
 
                 $.each(hit._highlightResult.color, function (i, color) {
                     if (color.matchLevel === undefined || color.matchLevel === 'none') {
@@ -56,7 +56,7 @@ define(
                     colors.push(color.value);
 
                     if (algoliaConfig.useAdaptiveImage === true) {
-                        var matchedColor = color.matchedWords.join(' ');
+                        const matchedColor = color.matchedWords.join(' ');
                         if (hit.images_data && color.fullyHighlighted && color.fullyHighlighted === true) {
                             matchedColors.push(matchedColor);
                         }
@@ -102,7 +102,7 @@ define(
 
                 if (hit['price'][algoliaConfig.currencyCode]['default_original_formated']
                     && hit['price'][algoliaConfig.currencyCode]['special_to_date']) {
-                    var priceExpiration = hit['price'][algoliaConfig.currencyCode]['special_to_date'];
+                    const priceExpiration = hit['price'][algoliaConfig.currencyCode]['special_to_date'];
 
                     if (algoliaConfig.now > priceExpiration + 1) {
                         hit['price'][algoliaConfig.currencyCode]['default_formated'] = hit['price'][algoliaConfig.currencyCode]['default_original_formated'];
@@ -112,9 +112,9 @@ define(
             }
 
             // Add to cart parameters
-            var action = algoliaConfig.instant.addToCartParams.action + 'product/' + hit.objectID + '/';
+            const action = algoliaConfig.instant.addToCartParams.action + 'product/' + hit.objectID + '/';
 
-            var correctFKey = getCookie('form_key');
+            const correctFKey = getCookie('form_key');
 
             if(correctFKey != "" && algoliaConfig.instant.addToCartParams.formKey != correctFKey) {
                 algoliaConfig.instant.addToCartParams.formKey = correctFKey;
@@ -132,7 +132,7 @@ define(
 
                 if (algoliaConfig.ccAnalytics.enabled
                     && algoliaConfig.ccAnalytics.conversionAnalyticsMode !== 'disabled') {
-                    var insightsDataUrlString = $.param({
+                    const insightsDataUrlString = $.param({
                         queryID: hit.__autocomplete_queryID,
                         objectID: hit.objectID,
                         indexName: hit.__autocomplete_indexName
@@ -152,14 +152,14 @@ define(
             if (section.hitsPerPage <= 0)
                 return null;
 
-            var options = {
+            let options = {
                 hitsPerPage: section.hitsPerPage,
                 analyticsTags: 'autocomplete',
                 clickAnalytics: true,
                 distinct: true
             };
 
-            var source;
+            let source;
 
             if (section.name === "products") {
                 options.facets = ['categories.level0'];
@@ -172,7 +172,7 @@ define(
                     name: section.name,
                     hitsPerPage: section.hitsPerPage,
                     paramName:algolia_client.initIndex(algoliaConfig.indexName + "_" + section.name),
-                    options:options,
+                    options,
                     templates: {
                         noResults() {
                             return productsHtml.getNoResultHtml();
@@ -188,7 +188,7 @@ define(
                             if(algoliaFooter && algoliaFooter !== undefined && algoliaFooter !== null && $('#algoliaFooter').length === 0){
                                 $('.aa-PanelLayout').append(algoliaFooter);
                             }
-                            var _data = transformAutocompleteHit(item, algoliaConfig.priceKey, $);
+                            const _data = transformAutocompleteHit(item, algoliaConfig.priceKey, $);
                             return productsHtml.getItemHtml(_data, components, html);
                         },
                         footer({items, html}) {
@@ -228,7 +228,7 @@ define(
                     name: section.name || i,
                     hitsPerPage: section.hitsPerPage,
                     paramName:algolia_client.initIndex(algoliaConfig.indexName + "_" + section.name),
-                    options:options,
+                    options,
                     templates: {
                         noResults() {
                             return categoriesHtml.getNoResultHtml();
@@ -248,7 +248,7 @@ define(
                     name: section.name || i,
                     hitsPerPage: section.hitsPerPage,
                     paramName:algolia_client.initIndex(algoliaConfig.indexName + "_" + section.name),
-                    options:options,
+                    options,
                     templates: {
                         noResults() {
                             return pagesHtml.getNoResultHtml();
@@ -264,15 +264,15 @@ define(
             }
             else if (section.name === "suggestions")
             {
-                var suggestions_index = algolia_client.initIndex(algoliaConfig.indexName + "_suggestions");
-                var products_index = algolia_client.initIndex(algoliaConfig.indexName + "_products");
+                const suggestions_index = algolia_client.initIndex(algoliaConfig.indexName + "_suggestions");
+                const products_index = algolia_client.initIndex(algoliaConfig.indexName + "_products"); // unused variable? 
 
                 source = {
                     displayKey: 'query',
                     name: section.name,
                     hitsPerPage: section.hitsPerPage,
                     paramName: suggestions_index,
-                    options:options,
+                    options,
                     templates: {
                         item({ item, html }) {
                             return html`<div>Suggestion List</div>`;
@@ -286,7 +286,7 @@ define(
                     displayKey: 'value',
                     name: section.name || i,
                     hitsPerPage: section.hitsPerPage,
-                    options:options,
+                    options,
                     templates: {
                         noResults() {
                             return additionalHtml.getNoResultHtml();
@@ -325,7 +325,8 @@ define(
          **/
         $(algoliaConfig.autocomplete.selector).each(function (i) {
             let querySuggestionsPlugin = "";
-            var options = {
+            let autocompleteConfig = [];
+            let options = {
                 container: '#algoliaAutocomplete',
                 placeholder: 'Search for products, categories, ...',
                 debug: algoliaConfig.autocomplete.isDebugEnabled,
@@ -358,7 +359,7 @@ define(
                     'Please, replace your hook method with new hook API. ' +
                     'More information you can find on https://www.algolia.com/doc/integration/magento-2/customize/custom-front-end-events/');
 
-                var hookResult = algoliaHookBeforeAutocompleteStart(sources, options, algolia_client);
+                const hookResult = algoliaHookBeforeAutocompleteStart(sources, options, algolia_client);
 
                 sources = hookResult.shift();
                 options = hookResult.shift();
@@ -368,7 +369,7 @@ define(
             var sources = [],
                 i = 0;
             $.each(algoliaConfig.autocomplete.sections, function (name, section) {
-                var source = getAutocompleteSource(section, algolia_client, $, i);
+                const source = getAutocompleteSource(section, algolia_client, $, i);
 
                 if (source) {
                     sources.push(source);
@@ -381,7 +382,6 @@ define(
                 }
             });
 
-            let autocompleteConfig = [];
             sources.forEach(function(data){
                 if(data.name === "suggestions"){
                     suggestionSection = true;
@@ -478,7 +478,7 @@ define(
 
     function getHitsUrlParameter(url, name) {
         name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
-        var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+        const regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
             results = regex.exec(url);
         return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
     }
