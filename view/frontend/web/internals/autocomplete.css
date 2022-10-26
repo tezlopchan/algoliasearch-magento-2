@@ -600,6 +600,7 @@ html {
 @media (max-width: 768px) {
     .aa-Panel .aa-PanelLayout, .footer_algolia{
         width: 100%;
+        justify-content: center;
     }
     .aa-Panel .aa-List {
         padding-left: 0px;
