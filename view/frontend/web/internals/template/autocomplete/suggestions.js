@@ -9,7 +9,7 @@ define([], function () {
         },
 
         getItemHtml: function (item, html) {
-            return html`<a class="aa-ItemLink" href="/search?q=${item.query}">
+            return html`<a class="aa-ItemLink" href="/catalogsearch/result/?q=${encodeURIComponent(item.query)}">
                 ${item.query}
             </a>`;
         },

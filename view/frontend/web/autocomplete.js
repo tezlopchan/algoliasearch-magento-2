@@ -1,6 +1,8 @@
 define(
     ['algoliaBundle', 'pagesHtml', 'categoriesHtml', 'productsHtml', 'suggestionsHtml', 'additionalHtml', 'domReady!'], 
     function(algoliaBundle, pagesHtml, categoriesHtml, productsHtml, suggestionsHtml, additionalHtml) {
+
+    const DEFAULT_HITS_PER_SECTION = 2;
     
     let suggestionSection = false;
     let algoliaFooter;
@@ -150,11 +152,8 @@ define(
         };
 
         const getAutocompleteSource = function (section, algolia_client, i) {
-            if (section.hitsPerPage <= 0)
-                return null;
-
             let options = {
-                hitsPerPage: section.hitsPerPage,
+                hitsPerPage: section.hitsPerPage || DEFAULT_HITS_PER_SECTION,
                 analyticsTags: 'autocomplete',
                 clickAnalytics: true,
                 distinct: true
@@ -303,10 +302,10 @@ define(
                             return additionalHtml.getHeaderHtml({section, html, items});
                         },
                         item({ item, components, html }) {
-                            return additionalHtml.getItemHtml({item, components, html});
+                            return additionalHtml.getItemHtml({item, components, html, section});
                         },
                         footer({html, items}) {
-                            return additionalHtml.getHeaderHtml({section, html, items});
+                            return additionalHtml.getFooterHtml({section, html, items});
                         }
                     }
                 };
@@ -348,7 +347,7 @@ define(
                         window.location.href = `/catalogsearch/result/?q=${data.state.query}`;
                     }
                 },
-                getSources({query, setContext}) {
+                getSources() {
                     return autocompleteConfig;
                 },
             };
@@ -437,6 +436,7 @@ define(
                                         params: data.options,
                                     },
                                 ],
+                                // Stash additional data at item level
                                 transformResponse({ results, hits }) {
                                     const resDetail = results[0];
 
@@ -468,6 +468,20 @@ define(
                                         params: data.options,
                                     },
                                 ],
+                                // Stash additional data at item level
+                                transformResponse({ results, hits }) {
+                                    const resDetail = results[0];
+
+                                    return hits.map(res => { 
+                                        return res.map(hit => {
+                                            return { 
+                                                ...hit, 
+                                                query: resDetail.query 
+                                            }
+                                        })
+                                    });
+                                },
+                                
                             });
                         },
                         templates: data.templates,

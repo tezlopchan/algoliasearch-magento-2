@@ -5,7 +5,7 @@ define([], function () {
         },
 
         getHeaderHtml: function ({section}) {
-            return section.name;
+            return section.label || section.name;
         },
 
         getItemHtml: function ({item, components, html}) {
@@ -19,7 +19,7 @@ define([], function () {
                 <div class="algolia-clearfix"></div>
             </a>`;
         },
-        
+
         getFooterHtml: function () {
             return "";
         }
