@@ -1,6 +1,43 @@
 define([], function () {
     return {
 
+        ////////////////////
+        //  Template API  //
+        ////////////////////
+
+        getNoResultHtml: function ({html}) {
+            return html`<p>No Results</p>`;
+        },
+
+        getHeaderHtml: function () {
+            return "";
+        },
+
+        getItemHtml: function ({item, components, html}) {
+            return html`<a class="algoliasearch-autocomplete-hit" href="${item.__autocomplete_queryID != null ? item.urlForInsights : item.url}">
+                <div class="thumb"><img src="${item.thumbnail_url || ''}" alt="${item.name || ''}"/></div>
+                <div class="info">
+                    ${components.Highlight({hit: item, attribute: 'name'})}
+                    <div class="algoliasearch-autocomplete-category">
+                        ${this.getColorHtml(item, components, html)}
+                        ${this.getCategoriesHtml(item, components, html)} 
+                    </div>
+
+                    ${this.getPricingHtml(item, html)}
+                </div>
+            </a>`;
+        },
+
+        getFooterHtml: function ({html, ...resultDetails}) {
+            return html`<div id="autocomplete-products-footer">
+                ${this.getFooterSearchLinks(html, resultDetails)}
+            </div>`;
+        },
+
+        ////////////////////
+        // Helper methods //
+        ////////////////////
+        
         getColorHtml: (item, components, html) => {
             if (item._highlightResult.color == undefined || item._highlightResult.color.value == "") return "";
 
@@ -40,29 +77,6 @@ define([], function () {
             </div>`;
         },
 
-        getItemHtml: function (item, components, html) {
-            return html`<a class="algoliasearch-autocomplete-hit" href="${item.__autocomplete_queryID != null ? item.urlForInsights : item.url}">
-                <div class="thumb"><img src="${item.thumbnail_url || ''}" alt="${item.name || ''}"/></div>
-                <div class="info">
-                    ${components.Highlight({hit: item, attribute: 'name'})}
-                    <div class="algoliasearch-autocomplete-category">
-                        ${this.getColorHtml(item, components, html)}
-                        ${this.getCategoriesHtml(item, components, html)} 
-                    </div>
-
-                    ${this.getPricingHtml(item, html)}
-                </div>
-            </a>`;
-        },
-
-        getHeaderHtml: function (section) {
-            return section.name;
-        },
-
-        getNoResultHtml: function () {
-            return 'No Results';
-        },
-
         getFooterSearchCategoryLinks: (html, resultDetails) => {
             if (resultDetails.allCategories == undefined) return "";
 
@@ -79,12 +93,7 @@ define([], function () {
             return html`${algoliaConfig.translations.seeIn} <span><a href="${resultDetails.allDepartmentsUrl}">${algoliaConfig.translations.allDepartments}</a></span> (${resultDetails.nbHits})            
                 ${this.getFooterSearchCategoryLinks(html, resultDetails)}
             `;
-        },
-
-        getFooterHtml: function (html, resultDetails) {
-            return html`<div id="autocomplete-products-footer">
-                ${this.getFooterSearchLinks(html, resultDetails)}
-            </div>`;
         }
+        
     };
 });

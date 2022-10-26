@@ -1,6 +1,14 @@
 define([], function () {
     return {
-        getItemHtml: function (item, components, html) {
+        getNoResultHtml: function () {
+            return 'No Results';
+        },
+
+        getHeaderHtml: function ({section}) {
+            return section.name;
+        },
+
+        getItemHtml: function ({item, components, html}) {
             return html`<a class="algoliasearch-autocomplete-hit" href="${item.url}">
                 <div class="info-without-thumb">
                     ${components.Highlight({hit: item, attribute: 'name'})}
@@ -11,13 +19,9 @@ define([], function () {
                 <div class="algolia-clearfix"></div>
             </a>`;
         },
-
-        getHeaderHtml: function (section) {
-            return section.name;
-        },
-
-        getNoResultHtml: function () {
-            return 'No Results';
+        
+        getFooterHtml: function () {
+            return "";
         }
     };
 });

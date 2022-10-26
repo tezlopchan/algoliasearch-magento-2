@@ -174,8 +174,11 @@ define(
                     paramName:algolia_client.initIndex(algoliaConfig.indexName + "_" + section.name),
                     options,
                     templates: {
-                        noResults() {
-                            return productsHtml.getNoResultHtml();
+                        noResults({html}) {
+                            return productsHtml.getNoResultHtml({html});
+                        },
+                        header({items, html}) { 
+                            return productsHtml.getHeaderHtml({items, html})
                         },
                         item({ item, components, html }) {
                             if(suggestionSection){
@@ -189,10 +192,9 @@ define(
                                 $('.aa-PanelLayout').append(algoliaFooter);
                             }
                             const _data = transformAutocompleteHit(item, algoliaConfig.priceKey, $);
-                            return productsHtml.getItemHtml(_data, components, html);
+                            return productsHtml.getItemHtml({ item: _data, components, html });
                         },
                         footer({items, html}) {
-                            
                             const resultDetails = {};
                             if (items.length) {
                                 const firstItem = items[0];
@@ -213,8 +215,7 @@ define(
                                     resultDetails.allCategories = allCategories.slice(0, 2); 
                                 }
                             }
-                            
-                            return productsHtml.getFooterHtml(html, resultDetails);
+                            return productsHtml.getFooterHtml({ html, ...resultDetails });
                         }
                     }
                 };
@@ -230,14 +231,17 @@ define(
                     paramName:algolia_client.initIndex(algoliaConfig.indexName + "_" + section.name),
                     options,
                     templates: {
-                        noResults() {
-                            return categoriesHtml.getNoResultHtml();
+                        noResults({html}) {
+                            return categoriesHtml.getNoResultHtml({html});
                         },
-                        header() {
-                            return categoriesHtml.getHeaderHtml(section);
+                        header({html, items}) {
+                            return categoriesHtml.getHeaderHtml({section, html, items});
                         },
                         item({ item, components, html }) {
-                            return categoriesHtml.getItemHtml(item, components, html);
+                            return categoriesHtml.getItemHtml({item, components, html});
+                        },
+                        footer({html, items}) {
+                            return categoriesHtml.getFooterHtml({section, html, items});
                         }
                     }
                 };
@@ -250,14 +254,17 @@ define(
                     paramName:algolia_client.initIndex(algoliaConfig.indexName + "_" + section.name),
                     options,
                     templates: {
-                        noResults() {
-                            return pagesHtml.getNoResultHtml();
+                        noResults({html}) {
+                            return pagesHtml.getNoResultHtml({html});
                         },
-                        header() {
-                            return pagesHtml.getHeaderHtml(section);
+                        header({html, items}) {
+                            return pagesHtml.getHeaderHtml({section, html, items});
                         },
-                        item({ item, components, html }) {
-                            return pagesHtml.getItemHtml(item, components, html);
+                        item({item, components, html}) {
+                            return pagesHtml.getItemHtml({item, components, html});
+                        },
+                        footer({html, items}) {
+                            return pagesHtml.getFooterHtml({section, html, items});
                         }
                     }
                 };
@@ -288,14 +295,17 @@ define(
                     hitsPerPage: section.hitsPerPage,
                     options,
                     templates: {
-                        noResults() {
-                            return additionalHtml.getNoResultHtml();
+                        noResults({html}) {
+                            return additionalHtml.getNoResultHtml({html});
                         },
-                        header() {
-                            return additionalHtml.getHeaderHtml(section);
+                        header({html, items}) {
+                            return additionalHtml.getHeaderHtml({section, html, items});
                         },
                         item({ item, components, html }) {
-                            return additionalHtml.getItemHtml(item, components, html);
+                            return additionalHtml.getItemHtml({item, components, html});
+                        },
+                        footer({html, items}) {
+                            return additionalHtml.getHeaderHtml({section, html, items});
                         }
                     }
                 };
@@ -397,15 +407,17 @@ define(
                                     return `/search?q=${item.query}`;
                                 },
                                 templates: {
-                                    noResults() {
-                                        return 'No results.';
+                                    noResults({html}) {
+                                        return suggestionsHtml.getNoResultHtml({html});
                                     },
-                                    header() {
-                                        return sources[0].name;
+                                    header({html, items}) {
+                                        return suggestionsHtml.getHeaderHtml({section: data, html, items});
                                     },
-                                    item(params) {
-                                        const { item, html } = params;
-                                        return suggestionsHtml.getItemHtml(item, html)
+                                    item({item, html}) {
+                                        return suggestionsHtml.getItemHtml({item, html})
+                                    },
+                                    footer({html, items}) {
+                                        return suggestionsHtml.getFooterHtml({section: data, html, items})
                                     },
                                 },
                             };
