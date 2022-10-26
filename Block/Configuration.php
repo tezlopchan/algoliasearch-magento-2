@@ -228,7 +228,7 @@ class Configuration extends Algolia implements CollectionDataSourceInterface
             'popularQueries' => $config->getPopularQueries(),
             'useAdaptiveImage' => $config->useAdaptiveImage(),
             'urls' => [
-                'logo' => $this->getViewFileUrl('Algolia_AlgoliaSearch::images/search-by-algolia.svg'),
+                'logo' => $this->getViewFileUrl('Algolia_AlgoliaSearch::images/algolia-logo-blue.svg'),
             ],
             'ccAnalytics' => [
                 'enabled' => $config->isClickConversionAnalyticsEnabled(),
