@@ -21,7 +21,7 @@ define(
         const searchClient = algoliaBundle.algoliasearch(algoliaConfig.applicationId, algoliaConfig.apiKey);
 
         // autocomplete code moved from common.js to autocomplete.js
-        const transformAutocompleteHit = function (hit, price_key, $, helper) {
+        const transformAutocompleteHit = function (hit, price_key, helper) {
             if (Array.isArray(hit.categories))
                 hit.categories = hit.categories.join(', ');
 
@@ -35,6 +35,7 @@ define(
 
             let matchedColors = [];
 
+            // TODO: Adapt this migrated code from common.js - helper not utilized
             if (helper && algoliaConfig.useAdaptiveImage === true) {
                 if (hit.images_data && helper.state.facetsRefinements.color) {
                     matchedColors = helper.state.facetsRefinements.color.slice(0); // slice to clone
@@ -191,7 +192,7 @@ define(
                             if(algoliaFooter && algoliaFooter !== undefined && algoliaFooter !== null && $('#algoliaFooter').length === 0){
                                 $('.aa-PanelLayout').append(algoliaFooter);
                             }
-                            const _data = transformAutocompleteHit(item, algoliaConfig.priceKey, $);
+                            const _data = transformAutocompleteHit(item, algoliaConfig.priceKey);
                             return productsHtml.getItemHtml({ item: _data, components, html });
                         },
                         footer({items, html}) {
