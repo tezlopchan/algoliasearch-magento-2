@@ -481,13 +481,20 @@ define(
             algoliaAutocompleteInstance = algolia.triggerHooks('afterAutocompleteStart', algoliaAutocompleteInstance);
 
             //Autocomplete insight click conversion
-            $(document).on('click', '.algoliasearch-autocomplete-hit', function(){
-                let itemUrl = jQuery(this).attr('href');
-                let eventData = algoliaInsights.buildEventData(
-                    'Clicked', getHitsUrlParameter(itemUrl, 'objectID'), getHitsUrlParameter(itemUrl, 'indexName'), 1, getHitsUrlParameter(itemUrl, 'queryID')
-                );
-                algoliaInsights.trackClick(eventData);
-            });
+            if (algoliaConfig.ccAnalytics.enabled
+                && algoliaConfig.ccAnalytics.conversionAnalyticsMode !== 'disabled') {
+                    $(document).on('click', '.algoliasearch-autocomplete-hit', function(){
+                        const $this = $(this);
+                        if ($this.data('clicked')) return;
+
+                        let itemUrl = $this.attr('href');
+                        let eventData = algoliaInsights.buildEventData(
+                            'Clicked', getHitsUrlParameter(itemUrl, 'objectID'), getHitsUrlParameter(itemUrl, 'indexName'), 1, getHitsUrlParameter(itemUrl, 'queryID')
+                        );
+                        algoliaInsights.trackClick(eventData);
+                        $this.attr('data-clicked', true);
+                    });
+            }
         });
     });
 
