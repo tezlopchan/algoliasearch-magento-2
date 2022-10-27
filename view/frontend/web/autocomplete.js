@@ -1,9 +1,9 @@
 define(
-    ['algoliaBundle', 'pagesHtml', 'categoriesHtml', 'productsHtml', 'suggestionsHtml', 'additionalHtml', 'domReady!'], 
+    ['algoliaBundle', 'pagesHtml', 'categoriesHtml', 'productsHtml', 'suggestionsHtml', 'additionalHtml', 'domReady!'],
     function(algoliaBundle, pagesHtml, categoriesHtml, productsHtml, suggestionsHtml, additionalHtml) {
 
     const DEFAULT_HITS_PER_SECTION = 2;
-    
+
     let suggestionSection = false;
     let algoliaFooter;
 
@@ -177,7 +177,7 @@ define(
                         noResults({html}) {
                             return productsHtml.getNoResultHtml({html});
                         },
-                        header({items, html}) { 
+                        header({items, html}) {
                             return productsHtml.getHeaderHtml({items, html})
                         },
                         item({ item, components, html }) {
@@ -201,18 +201,21 @@ define(
                                 resultDetails.allDepartmentsUrl = algoliaConfig.baseUrl + '/catalogsearch/result/?q=' + encodeURIComponent(firstItem.query);
                                 resultDetails.nbHits = firstItem.nbHits;
 
-                                if (algoliaConfig.facets.find(facet => facet.attribute === 'categories')) {                                    
-                                    const allCategories = Object.keys(firstItem.allCategories).map(key => {
-                                        const url = resultDetails.allDepartmentsUrl + '&categories=' + encodeURIComponent(key);
-                                        return {
-                                            name: key,
-                                            value: firstItem.allCategories[key],
-                                            url
-                                        };
-                                    });
+                                if (algoliaConfig.facets.find(facet => facet.attribute === 'categories')) {
+                                    let allCategories = [];
+                                    if (typeof firstItem.allCategories !== 'undefined') {
+                                        allCategories = Object.keys(firstItem.allCategories).map(key => {
+                                            const url = resultDetails.allDepartmentsUrl + '&categories=' + encodeURIComponent(key);
+                                            return {
+                                                name: key,
+                                                value: firstItem.allCategories[key],
+                                                url
+                                            };
+                                        });
+                                    }
                                     //reverse value sort apparently...
                                     allCategories.sort((a, b) => b.value - a.value);
-                                    resultDetails.allCategories = allCategories.slice(0, 2); 
+                                    resultDetails.allCategories = allCategories.slice(0, 2);
                                 }
                             }
                             return productsHtml.getFooterHtml({ html, ...resultDetails });
@@ -272,7 +275,7 @@ define(
             else if (section.name === "suggestions")
             {
                 const suggestions_index = algolia_client.initIndex(algoliaConfig.indexName + "_suggestions");
-                const products_index = algolia_client.initIndex(algoliaConfig.indexName + "_products"); // unused variable? 
+                const products_index = algolia_client.initIndex(algoliaConfig.indexName + "_products"); // unused variable?
 
                 source = {
                     displayKey: 'query',
@@ -351,7 +354,7 @@ define(
                     return autocompleteConfig;
                 },
             };
-            
+
             if (isMobile() === true) {
                 // Set debug to true, to be able to remove keyboard and be able to scroll in autocomplete menu
                 options.debug = true;
@@ -440,10 +443,10 @@ define(
                                 transformResponse({ results, hits }) {
                                     const resDetail = results[0];
 
-                                    return hits.map(res => { 
+                                    return hits.map(res => {
                                         return res.map(hit => {
-                                            return { 
-                                                ...hit, 
+                                            return {
+                                                ...hit,
                                                 nbHits: resDetail.nbHits,
                                                 allCategories: resDetail.facets['categories.level0'],
                                                 query: resDetail.query
@@ -472,16 +475,16 @@ define(
                                 transformResponse({ results, hits }) {
                                     const resDetail = results[0];
 
-                                    return hits.map(res => { 
+                                    return hits.map(res => {
                                         return res.map(hit => {
-                                            return { 
-                                                ...hit, 
-                                                query: resDetail.query 
+                                            return {
+                                                ...hit,
+                                                query: resDetail.query
                                             }
                                         })
                                     });
                                 },
-                                
+
                             });
                         },
                         templates: data.templates,
