@@ -1,7 +1,7 @@
 define([], function () {
     return {
-        getNoResultHtml: function () {
-            return 'No Results';
+        getNoResultHtml: function ({html}) {
+            return html`<p>No Results</p>`;
         },
 
         getHeaderHtml: function ({section}) {

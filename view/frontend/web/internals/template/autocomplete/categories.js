@@ -1,7 +1,7 @@
 define([], function () {
     return {
-        getNoResultHtml: function () {
-            return 'No Results';
+        getNoResultHtml: function ({html}) {
+            return html`<p>No Results</p>`;
         },
 
         getHeaderHtml: function ({section}) {
@@ -13,7 +13,7 @@ define([], function () {
                 ${components.Highlight({ hit: item, attribute: 'path' })} (${item.product_count})
             </a>`;
         },
-        
+
         getFooterHtml: function () {
             return "";
         },

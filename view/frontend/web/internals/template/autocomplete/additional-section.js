@@ -1,7 +1,7 @@
 define([], function () {
     return {
-        getNoResultHtml: function () {
-            return 'No Results';
+        getNoResultHtml: function ({html}) {
+            return html`<p>No Results</p>`;
         },
 
         getHeaderHtml: function ({section}) {
@@ -12,11 +12,11 @@ define([], function () {
             return html`<a class="aa-ItemLink" href="/catalogsearch/result/?q=${encodeURIComponent(item.query)}&${section.name}=${encodeURIComponent(item.value)}">
                 ${components.Highlight({ hit: item, attribute: 'value' })}
             </a>`;
-            
+
         },
 
         getFooterHtml: function () {
-            "";
-        }        
+            return "";
+        }
     };
 });
