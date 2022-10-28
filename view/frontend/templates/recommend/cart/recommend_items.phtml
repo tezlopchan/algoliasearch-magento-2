@@ -3,7 +3,7 @@
  * Copyright © Magento, Inc. All rights reserved.
  * See COPYING.txt for license details.
  */
-$product = $block->getProduct();
+$cartItems = $this->getAllCartItems();
 ?>
 <div id="frequentlyBoughtTogether" class="recommend-component"></div>
 <div id="relatedProducts" class="recommend-component"></div>
@@ -13,7 +13,6 @@ $product = $block->getProduct();
         'jquery',
         'domReady!'
     ], function($){
-            window.algoliObjectId = ["<?php echo $product->getId() ?>"];
+        window.algoliObjectId = <?php echo json_encode($cartItems); ?>;
     });
 </script>
-

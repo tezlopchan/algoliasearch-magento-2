@@ -1,27 +1,34 @@
 <?php
 
-namespace Algolia\AlgoliaSearch\Model\Observer\Insights;
+namespace Algolia\AlgoliaSearch\Observer\Insights;
 
+use Algolia\AlgoliaSearch\Helper\ConfigHelper;
 use Algolia\AlgoliaSearch\Helper\Data;
 use Algolia\AlgoliaSearch\Helper\InsightsHelper;
+use Exception;
 use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
+use Magento\Sales\Model\Order;
+use Magento\Sales\Model\Order\Item;
 use Magento\Sales\Model\OrderFactory;
 use Psr\Log\LoggerInterface;
 
 class CheckoutOnepageControllerSuccessAction implements ObserverInterface
 {
     /** @var Data */
-    private $dataHelper;
+    protected Data $dataHelper;
 
     /** @var InsightsHelper */
-    private $insightsHelper;
+    protected InsightsHelper $insightsHelper;
 
     /** @var OrderFactory */
-    private $orderFactory;
+    protected OrderFactory $orderFactory;
 
     /** @var LoggerInterface */
-    private $logger;
+    protected LoggerInterface $logger;
+
+    /** @var ConfigHelper  */
+    protected ConfigHelper $configHelper;
 
     /**
      * @param Data $dataHelper
@@ -39,24 +46,17 @@ class CheckoutOnepageControllerSuccessAction implements ObserverInterface
         $this->insightsHelper = $insightsHelper;
         $this->orderFactory = $orderFactory;
         $this->logger = $logger;
-    }
-
-    /**
-     * @return \Algolia\AlgoliaSearch\Helper\ConfigHelper
-     */
-    public function getConfigHelper()
-    {
-        return $this->insightsHelper->getConfigHelper();
+        $this->configHelper = $this->insightsHelper->getConfigHelper();
     }
 
     /**
      * @param Observer $observer
      *
-     * @return $this|void
+     * @return $this
      */
     public function execute(Observer $observer)
     {
-        /** @var \Magento\Sales\Model\Order $order */
+        /** @var Order $order */
         $order = $observer->getEvent()->getOrder();
 
         if (!$order) {
@@ -71,10 +71,10 @@ class CheckoutOnepageControllerSuccessAction implements ObserverInterface
         $userClient = $this->insightsHelper->getUserInsightsClient();
         $orderItems = $order->getAllVisibleItems();
 
-        if ($this->getConfigHelper()->isClickConversionAnalyticsEnabled($order->getStoreId())
-            && $this->getConfigHelper()->getConversionAnalyticsMode($order->getStoreId()) === 'place_order') {
+        if ($this->configHelper->isClickConversionAnalyticsEnabled($order->getStoreId())
+            && $this->configHelper->getConversionAnalyticsMode($order->getStoreId()) === 'place_order') {
             $queryIds = [];
-            /** @var \Magento\Sales\Model\Order\Item $item */
+            /** @var Item $item */
             foreach ($orderItems as $item) {
                 if ($item->hasData('algoliasearch_query_param')) {
                     $queryId = $item->getData('algoliasearch_query_param');
@@ -92,17 +92,18 @@ class CheckoutOnepageControllerSuccessAction implements ObserverInterface
                         $userClient->convertedObjectIDsAfterSearch(
                             __('Placed Order'),
                             $this->dataHelper->getIndexName('_products', $order->getStoreId()),
-                            $productIds,
+                            array_unique($productIds),
                             $queryId
                         );
-                    } catch (\Exception $e) {
+                    } catch (Exception $e) {
+                        $this->logger->critical($e);
                         continue; // skip item
                     }
                 }
             }
         } else {
             $productIds = [];
-            /** @var \Magento\Sales\Model\Order\Item $item */
+            /** @var Item $item */
             foreach ($orderItems as $item) {
                 $productIds[] = $item->getProductId();
 
@@ -116,9 +117,9 @@ class CheckoutOnepageControllerSuccessAction implements ObserverInterface
                 $userClient->convertedObjectIDs(
                     __('Placed Order'),
                     $this->dataHelper->getIndexName('_products', $order->getStoreId()),
-                    $productIds
+                    array_unique($productIds)
                 );
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 $this->logger->critical($e);
             }
         }

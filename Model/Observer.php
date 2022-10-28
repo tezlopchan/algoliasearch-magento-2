@@ -14,12 +14,19 @@ use Magento\Store\Model\StoreManagerInterface;
  */
 class Observer implements ObserverInterface
 {
-    private $config;
-    private $registry;
-    private $storeManager;
-    private $pageConfig;
-    private $request;
+    protected $config;
+    protected $registry;
+    protected $storeManager;
+    protected $pageConfig;
+    protected $request;
 
+    /**
+     * @param ConfigHelper $configHelper
+     * @param Registry $registry
+     * @param StoreManagerInterface $storeManager
+     * @param PageConfig $pageConfig
+     * @param \Magento\Framework\App\Request\Http $http
+     */
     public function __construct(
         ConfigHelper $configHelper,
         Registry $registry,
