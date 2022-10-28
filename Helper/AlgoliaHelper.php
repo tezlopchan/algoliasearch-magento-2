@@ -611,13 +611,25 @@ class AlgoliaHelper extends AbstractHelper
         return $object;
     }
 
+    /**
+     * @param $value
+     * @return bool
+     */
+    public function isValidFloat(string $value) : bool {
+        return !(
+            floatval($value) === INF //no overflow to infinity - first more performant check
+            ||
+            preg_match('/^\d*[Ee]\d+$/', $value) //no scientific notation - exhaustive check
+        );
+    }
+
     private function castAttribute($value)
     {
         if (is_numeric($value) && floatval($value) === floatval((int) $value)) {
             return (int) $value;
         }
 
-        if (is_numeric($value)) {
+        if (is_numeric($value) && $this->isValidFloat($value)) {
             return floatval($value);
         }
 
