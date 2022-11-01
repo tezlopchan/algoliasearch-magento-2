@@ -504,9 +504,11 @@ define(
                         const $this = $(this);
                         if ($this.data('clicked')) return;
 
-                        let itemUrl = $this.attr('href');
+                        let objectId = $this.attr('objectId');
+                        let indexName = $this.attr('indexName');
+                        let queryId = $this.attr('queryId');
                         let eventData = algoliaInsights.buildEventData(
-                            'Clicked', getHitsUrlParameter(itemUrl, 'objectID'), getHitsUrlParameter(itemUrl, 'indexName'), 1, getHitsUrlParameter(itemUrl, 'queryID')
+                            'Clicked', objectId, indexName, 1, queryId
                         );
                         algoliaInsights.trackClick(eventData);
                         $this.attr('data-clicked', true);
@@ -514,11 +516,4 @@ define(
             }
         });
     });
-
-    function getHitsUrlParameter(url, name) {
-        name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
-        const regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
-            results = regex.exec(url);
-        return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
-    }
 });
