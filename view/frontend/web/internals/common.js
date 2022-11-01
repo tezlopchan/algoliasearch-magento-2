@@ -323,7 +323,7 @@ requirejs(['algoliaBundle'], function(algoliaBundle) {
                         return protocol + '//' + hostname + portWithPrefix + pathname;
                     }
                     else {
-                        if (queryString) {
+                        if (queryString && queryString != 'q=__empty__') {
                             return protocol + '//' + hostname + portWithPrefix + pathname + '?' + queryString;
                         } else {
                             return protocol + '//' + hostname + portWithPrefix + pathname;
