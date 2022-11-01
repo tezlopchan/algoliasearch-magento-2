@@ -119,7 +119,7 @@ requirejs([
                     {className: "recommend-item product-url", href: item.url, 'data-objectId': item.objectID, 'data-index': this.defaultIndexName},
                     createElement('img', {className: "product-img", src: item.image_url}, item.image_url),
                     createElement('p', {className: "product-name"}, item.name),
-                    createElement('form', {id: 'product_addtocart_form', className: 'addTocartForm', action: action, method: 'post', 'data-role':'tocart-form'},
+                    createElement('form', {className: 'addTocartForm', action: action, method: 'post', 'data-role':'tocart-form'},
                         createElement('input', {type: 'hidden', name: 'form_key',value: config.recommend.addToCartParams.formKey}),
                         createElement('input', {type: 'hidden', name:'unec', value: AlgoliaBase64.mageEncode(action)}),
                         createElement('input', {type: 'hidden', name:'product', value: item.objectID}),
