@@ -10,7 +10,7 @@ define([], function () {
 
         getItemHtml: function ({item, html}) {
             return html`<a class="aa-ItemLink" href="/catalogsearch/result/?q=${encodeURIComponent(item.query)}"
-                'objectId'=${item.objectID} 'indexName'=${item.__autocomplete_indexName} 'queryId'=${item.__autocomplete_queryID}>
+                data-object-id=${item.objectID} data-index-name=${item.__autocomplete_indexName} data-query-id=${item.__autocomplete_queryID}>
                 ${item.query}
             </a>`;
         },

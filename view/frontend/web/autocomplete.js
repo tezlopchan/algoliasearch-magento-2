@@ -504,9 +504,9 @@ define(
                         const $this = $(this);
                         if ($this.data('clicked')) return;
 
-                        let objectId = $this.attr('objectId');
-                        let indexName = $this.attr('indexName');
-                        let queryId = $this.attr('queryId');
+                        let objectId = $this.attr('data-object-id');
+                        let indexName = $this.attr('data-index-name');
+                        let queryId = $this.attr('data-query-id');
                         let eventData = algoliaInsights.buildEventData(
                             'Clicked', objectId, indexName, 1, queryId
                         );
