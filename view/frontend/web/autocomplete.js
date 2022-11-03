@@ -275,19 +275,12 @@ define(
             else if (section.name === "suggestions")
             {
                 const suggestions_index = algolia_client.initIndex(algoliaConfig.indexName + "_suggestions");
-                const products_index = algolia_client.initIndex(algoliaConfig.indexName + "_products"); // unused variable?
-
                 source = {
                     displayKey: 'query',
                     name: section.name,
                     hitsPerPage: section.hitsPerPage,
                     paramName: suggestions_index,
-                    options,
-                    templates: {
-                        item({ item, html }) {
-                            return html`<div>Suggestion List</div>`;
-                        }
-                    }
+                    options
                 };
             } else {
                 /** If is not products, categories, pages or suggestions, it's additional section **/
@@ -407,7 +400,7 @@ define(
                             return {
                                 ...source,
                                 getItemUrl({ item }) {
-                                    return `/search?q=${item.query}`;
+                                    return `/catalogsearch/result/?q=${item.query}`;
                                 },
                                 templates: {
                                     noResults({html}) {
@@ -504,9 +497,9 @@ define(
                         const $this = $(this);
                         if ($this.data('clicked')) return;
 
-                        let objectId = $this.attr('data-object-id');
-                        let indexName = $this.attr('data-index-name');
-                        let queryId = $this.attr('data-query-id');
+                        let objectId = $this.attr('data-objectId');
+                        let indexName = $this.attr('data-index');
+                        let queryId = $this.attr('data-queryId');
                         let eventData = algoliaInsights.buildEventData(
                             'Clicked', objectId, indexName, 1, queryId
                         );

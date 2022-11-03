@@ -10,7 +10,7 @@ define([], function () {
 
         getItemHtml: function ({item, components, html}) {
             return html `<a class="algoliasearch-autocomplete-hit" href="${item.url}"
-                data-object-id=${item.objectID} data-index-name=${item.__autocomplete_indexName} data-query-id=${item.__autocomplete_queryID}>
+                data-objectId=${item.objectID} data-index=${item.__autocomplete_indexName} data-queryId=${item.__autocomplete_queryID}>
                 ${components.Highlight({ hit: item, attribute: 'path' })} (${item.product_count})
             </a>`;
         },
