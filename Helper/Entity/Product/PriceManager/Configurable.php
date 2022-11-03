@@ -2,8 +2,15 @@
 
 namespace Algolia\AlgoliaSearch\Helper\Entity\Product\PriceManager;
 
+use DateTime;
+
 class Configurable extends ProductWithChildren
 {
+    /**
+     * @param $groupId
+     * @param $product
+     * @return float|int|mixed
+     */
     protected function getRulePrice($groupId, $product)
     {
         $childrenPrices = [];
@@ -13,7 +20,7 @@ class Configurable extends ProductWithChildren
         $children = $typeInstance->getUsedProducts($product);
         foreach ($children as $child) {
             $childrenPrices[] = (float) $this->rule->getRulePrice(
-                new \DateTime(),
+                new DateTime(),
                 $this->store->getWebsiteId(),
                 $groupId,
                 $child->getId()
