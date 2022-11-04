@@ -205,7 +205,7 @@ class ConfigHelper
 
     public function isDefaultSelector($storeId = null)
     {
-        return '.algolia-search-input' === $this->getAutocompleteSelector($storeId);
+        return 'top.search' === $this->getAutocompleteSelector($storeId);
     }
 
     public function getAutocompleteSelector($storeId = null)
@@ -530,7 +530,7 @@ class ConfigHelper
             $storeId
         );
     }
-    
+
      /**
      * @param int $storeId
      *
