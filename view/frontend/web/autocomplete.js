@@ -198,7 +198,7 @@ define(
                             const resultDetails = {};
                             if (items.length) {
                                 const firstItem = items[0];
-                                resultDetails.allDepartmentsUrl = algoliaConfig.baseUrl + '/catalogsearch/result/?q=' + encodeURIComponent(firstItem.query);
+                                resultDetails.allDepartmentsUrl = algoliaConfig.resultPageUrl + '?q=' + encodeURIComponent(firstItem.query);
                                 resultDetails.nbHits = firstItem.nbHits;
 
                                 if (algoliaConfig.facets.find(facet => facet.attribute === 'categories')) {
@@ -340,7 +340,7 @@ define(
                 detachedMediaQuery: 'none',
                 onSubmit(data){
                     if(data.state.query && data.state.query !== null && data.state.query !== ""){
-                        window.location.href = `/catalogsearch/result/?q=${data.state.query}`;
+                        window.location.href = algoliaConfig.resultPageUrl+`?q=${data.state.query}`;
                     }
                 },
                 getSources() {
@@ -400,7 +400,7 @@ define(
                             return {
                                 ...source,
                                 getItemUrl({ item }) {
-                                    return `/catalogsearch/result/?q=${item.query}`;
+                                    return algoliaConfig.resultPageUrl+`?q=${item.query}`;
                                 },
                                 templates: {
                                     noResults({html}) {

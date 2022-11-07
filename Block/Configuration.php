@@ -213,6 +213,7 @@ class Configuration extends Algolia implements CollectionDataSourceInterface
             'priceFormat' => $priceFormat,
             'maxValuesPerFacet' => (int) $config->getMaxValuesPerFacet(),
             'autofocus' => true,
+            'resultPageUrl' => $this->getCatalogSearchHelper()->getResultUrl(),
             'request' => [
                 'query' => html_entity_decode($query),
                 'refinementKey' => $refinementKey,

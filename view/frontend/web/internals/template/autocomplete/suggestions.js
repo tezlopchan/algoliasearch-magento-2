@@ -9,7 +9,7 @@ define([], function () {
         },
 
         getItemHtml: function ({item, html}) {
-            return html`<a class="aa-ItemLink" href="/catalogsearch/result/?q=${encodeURIComponent(item.query)}"
+            return html`<a class="aa-ItemLink" href="${algoliaConfig.resultPageUrl}?q=${encodeURIComponent(item.query)}"
                 data-objectId=${item.objectID} data-index=${item.__autocomplete_indexName} data-queryId=${item.__autocomplete_queryID}>
                 ${item.query}
             </a>`;
