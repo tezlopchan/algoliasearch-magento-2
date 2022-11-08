@@ -257,7 +257,7 @@ abstract class ProductWithoutChildren
             $product->setData('customer_group_id', $groupId);
             $product->setData('website_id', $product->getStore()->getWebsiteId());
 
-            $discountedPrice = $product->getPriceModel()->getFinalPrice(1, $product);
+            $discountedPrice = $product->getPriceInfo()->getPrice('final_price')->getValue();
             if ($currencyCode !== $this->baseCurrencyCode) {
                 $discountedPrice = $this->convertPrice($discountedPrice, $currencyCode);
             }
