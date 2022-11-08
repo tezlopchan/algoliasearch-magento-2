@@ -94,9 +94,12 @@ class SuggestionHelper
         return $suggestionObject;
     }
 
+    /**
+     * @param $storeId
+     */
     public function getPopularQueries($storeId)
     {
-        $queries = $this->cache->load($this->popularQueriesCacheId);
+        $queries = $this->cache->load($this->popularQueriesCacheId .'_'.$storeId);
         if ($queries !== false) {
             return $this->serializer->unserialize($queries);
         }
@@ -104,8 +107,8 @@ class SuggestionHelper
         /** @var \Magento\Search\Model\ResourceModel\Query\Collection $collection */
         $collection = $this->queryCollectionFactory->create();
         $collection->getSelect()->where(
-            'num_results >= ' . $this->configHelper->getMinNumberOfResults() . ' 
-            AND popularity >= ' . $this->configHelper->getMinPopularity() . ' 
+            'num_results >= ' . $this->configHelper->getMinNumberOfResults() . '
+            AND popularity >= ' . $this->configHelper->getMinPopularity() . '
             AND query_text != "__empty__" AND CHAR_LENGTH(query_text) >= 3'
         );
 
@@ -121,7 +124,12 @@ class SuggestionHelper
 
         $queries = $collection->getColumnValues('query_text');
 
-        $this->cache->save($this->serializer->serialize($queries), $this->popularQueriesCacheId, [], 24*3600);
+        $this->cache->save(
+            $this->serializer->serialize($queries),
+            $this->popularQueriesCacheId .'_'.$storeId,
+            [],
+            $this->configHelper->getCacheTime($storeId)
+        );
 
         return $queries;
     }
@@ -134,8 +142,8 @@ class SuggestionHelper
             ->setStoreId($storeId);
 
         $collection->getSelect()->where(
-            'num_results >= ' . $this->configHelper->getMinNumberOfResults($storeId) . ' 
-            AND popularity >= ' . $this->configHelper->getMinPopularity($storeId) . ' 
+            'num_results >= ' . $this->configHelper->getMinNumberOfResults($storeId) . '
+            AND popularity >= ' . $this->configHelper->getMinPopularity($storeId) . '
             AND query_text != "__empty__"'
         );
 

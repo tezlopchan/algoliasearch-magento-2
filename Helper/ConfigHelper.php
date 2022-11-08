@@ -108,6 +108,7 @@ class ConfigHelper
         'algoliasearch_extra_settings/extra_settings/additional_sections_extra_settings';
 
     public const DEFAULT_MAX_RECORD_SIZE = 10000;
+    public const MAGENTO_DEFAULT_CACHE_TIME = 'system/full_page_cache/ttl';
 
     protected const IS_RECOMMEND_FREQUENTLY_BOUGHT_TOGETHER_ENABLED = 'algoliasearch_recommend/recommend/frequently_bought_together/is_frequently_bought_together_enabled';
     protected const IS_RECOMMEND_RELATED_PRODUCTS_ENABLED = 'algoliasearch_recommend/recommend/related_product/is_related_products_enabled';
@@ -126,6 +127,7 @@ class ConfigHelper
     protected const IS_ADDTOCART_ENABLED_IN_FREQUENTLY_BOUGHT_TOGETHER = 'algoliasearch_recommend/recommend/frequently_bought_together/is_addtocart_enabled';
     protected const IS_ADDTOCART_ENABLED_IN_RELATED_PRODUCTS= 'algoliasearch_recommend/recommend/related_product/is_addtocart_enabled';
     protected const IS_ADDTOCART_ENABLED_IN_TRENDS_ITEM= 'algoliasearch_recommend/recommend/trends_item/is_addtocart_enabled';
+
 
     private $configInterface;
     private $objectManager;
@@ -530,7 +532,7 @@ class ConfigHelper
             $storeId
         );
     }
-    
+
      /**
      * @param int $storeId
      *
@@ -1327,6 +1329,13 @@ class ConfigHelper
     {
         return (int) $this->configInterface->getValue(
             self::ARCHIVE_LOG_CLEAR_LIMIT,
+            ScopeInterface::SCOPE_STORE,
+            $storeId
+        );
+    }
+
+    public function getCacheTime($storeId = null) {
+        return $this->configInterface->getValue(self::MAGENTO_DEFAULT_CACHE_TIME,
             ScopeInterface::SCOPE_STORE,
             $storeId
         );
