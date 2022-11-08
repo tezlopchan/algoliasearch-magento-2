@@ -1334,6 +1334,10 @@ class ConfigHelper
         );
     }
 
+    /**
+     * @param $storeId
+     * @return mixed
+     */
     public function getCacheTime($storeId = null) {
         return $this->configInterface->getValue(self::MAGENTO_DEFAULT_CACHE_TIME,
             ScopeInterface::SCOPE_STORE,
