@@ -36,8 +36,10 @@ abstract class ProductWithChildren extends ProductWithoutChildren
             $this->addSpecialPrices($specialPrice, $field, $currencyCode);
         }
 
-        if ($this->areCustomersGroupsEnabled) {
+        if ($this->areCustomersGroupsEnabled && $product->getTypeId() != 'bundle') {
             $this->setFinalGroupPrices($field, $currencyCode, $min, $max, $dashedFormat, $product, $subProducts, $withTax);
+        }else{
+            $this->setFinalGroupPricesBundle($field, $currencyCode, $min, $max, $dashedFormat);
         }
     }
 

@@ -33,4 +33,23 @@ class Bundle extends ProductWithChildren
 
         return [$min, $max, $min, $max];
     }
+
+    protected function setFinalGroupPricesBundle($field, $currencyCode, $min, $max, $dashedFormat)
+    {
+        /** @var Group $group */
+        foreach ($this->groups as $group) {
+            $groupId = (int) $group->getData('customer_group_id');
+
+            if ($this->customData[$field][$currencyCode]['group_' . $groupId] == 0) {
+                $this->customData[$field][$currencyCode]['group_' . $groupId] = $min;
+
+                if ($min === $max) {
+                    $this->customData[$field][$currencyCode]['group_' . $groupId . '_formated'] =
+                        $this->customData[$field][$currencyCode]['default_formated'];
+                } else {
+                    $this->customData[$field][$currencyCode]['group_' . $groupId . '_formated'] = $dashedFormat;
+                }
+            }
+        }
+    }
 }
