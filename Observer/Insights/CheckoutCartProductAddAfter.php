@@ -77,7 +77,18 @@ class CheckoutCartProductAddAfter implements ObserverInterface
             $conversionAnalyticsMode = $this->configHelper->getConversionAnalyticsMode($storeId);
             switch ($conversionAnalyticsMode) {
                 case 'place_order':
-                    $quoteItem->setData('algoliasearch_query_param', $queryId);
+                    if ($product->getTypeId() == "grouped") {
+                        $groupProducts = $product->getTypeInstance()->getAssociatedProducts($product);
+                        foreach ($quoteItem->getQuote()->getAllItems() as $item) {
+                            foreach ($groupProducts as $groupProduct) {
+                                if ($groupProduct->getId() == $item->getProductId()) {
+                                    $item->setData('algoliasearch_query_param', $queryId);
+                                }
+                            }
+                        }
+                    } else {
+                        $quoteItem->setData('algoliasearch_query_param', $queryId);
+                    }
                     break;
                 case 'add_to_cart':
                     try {
@@ -91,8 +102,8 @@ class CheckoutCartProductAddAfter implements ObserverInterface
                         $this->logger->critical($e);
                     }
             }
-        } 
-        
+        }
+
         if ($this->personalizationHelper->isPersoEnabled($storeId) && $this->personalizationHelper->isCartAddTracked($storeId) && (!$this->configHelper->isClickConversionAnalyticsEnabled($storeId) || $this->configHelper->getConversionAnalyticsMode($storeId) != 'add_to_cart')) {
             try {
                 $userClient->convertedObjectIDs(
