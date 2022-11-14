@@ -73,6 +73,7 @@ class CheckoutCartProductAddAfter implements ObserverInterface
 
         $userClient = $this->insightsHelper->getUserInsightsClient();
         $queryId = $this->coreSession->getQueryId();
+        /** Adding algolia_query_param to the items to track the conversion when product is added to the cart */
         if ($this->configHelper->isClickConversionAnalyticsEnabled($storeId) && $queryId) {
             $conversionAnalyticsMode = $this->configHelper->getConversionAnalyticsMode($storeId);
             switch ($conversionAnalyticsMode) {
@@ -103,7 +104,7 @@ class CheckoutCartProductAddAfter implements ObserverInterface
                     }
             }
         }
-
+        /** Tracking the events for add to cart when personalization is enabled */
         if ($this->personalizationHelper->isPersoEnabled($storeId) && $this->personalizationHelper->isCartAddTracked($storeId) && (!$this->configHelper->isClickConversionAnalyticsEnabled($storeId) || $this->configHelper->getConversionAnalyticsMode($storeId) != 'add_to_cart')) {
             try {
                 $userClient->convertedObjectIDs(
