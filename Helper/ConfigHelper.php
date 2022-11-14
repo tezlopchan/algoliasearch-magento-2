@@ -107,8 +107,6 @@ class ConfigHelper
     public const EXTRA_SETTINGS_ADDITIONAL_SECTIONS =
         'algoliasearch_extra_settings/extra_settings/additional_sections_extra_settings';
 
-    public const DEFAULT_MAX_RECORD_SIZE = 10000;
-
     protected const IS_RECOMMEND_FREQUENTLY_BOUGHT_TOGETHER_ENABLED = 'algoliasearch_recommend/recommend/frequently_bought_together/is_frequently_bought_together_enabled';
     protected const IS_RECOMMEND_RELATED_PRODUCTS_ENABLED = 'algoliasearch_recommend/recommend/related_product/is_related_products_enabled';
     protected const IS_RECOMMEND_FREQUENTLY_BOUGHT_TOGETHER_ENABLED_ON_CART_PAGE = 'algoliasearch_recommend/recommend/frequently_bought_together/is_frequently_bought_together_enabled_in_cart_page';
@@ -530,7 +528,7 @@ class ConfigHelper
             $storeId
         );
     }
-    
+
      /**
      * @param int $storeId
      *
@@ -1313,14 +1311,13 @@ class ConfigHelper
         return $this->serializer->unserialize($value);
     }
 
-    public function getDefaultMaxRecordSize()
-    {
-        return self::DEFAULT_MAX_RECORD_SIZE;
-    }
-
     public function getMaxRecordSizeLimit($storeId = null)
     {
-        return self::getDefaultMaxRecordSize();
+        return (int) $this->configInterface->getValue(
+            self::MAX_RECORD_SIZE_LIMIT,
+            ScopeInterface::SCOPE_STORE,
+            $storeId
+        );
     }
 
     public function getArchiveLogClearLimit($storeId = null)
