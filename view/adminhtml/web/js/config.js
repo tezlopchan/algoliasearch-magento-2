@@ -37,11 +37,17 @@ require(
 			pageWarning += '<p>These settings are also available in the Algolia Dashboard. We advise you to manage it from this page, because saving Magento settings will override the Algolia settings.</p>';
 			pageWarning += '</div>';
 
+            var pageWarningSynonyms = '<div class="algolia_dashboard_warning algolia_dashboard_warning_page">';
+            pageWarningSynonyms += '<p>These settings are also available in the Algolia Dashboard. We advise you to configure synonyms configuration from the Algolia dashboard as this is going to be be deprecated in release 3.9.2.</p>';
+            pageWarningSynonyms += '</div>';
+
 			for (var i=0; i < pageIds.length; i++) {
 				var element = $(pageIds[i]);
-				if (element.length > 0) {
+				if (element.length > 0 && pageIds[i] != "#algoliasearch_synonyms_synonyms_group") {
 					element.find('.comment').append(pageWarning);
-				}
+				} else if (element.length > 0 && pageIds[i] == "#algoliasearch_synonyms_synonyms_group"){
+                    element.find('.comment').append(pageWarningSynonyms);
+                }
 			}
 		}
 
