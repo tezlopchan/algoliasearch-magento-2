@@ -18,27 +18,27 @@ abstract class ProductWithoutChildren
     /**
      * @var ConfigHelper
      */
-    protected ConfigHelper $configHelper;
+    protected $configHelper;
     /**
      * @var CollectionFactory
      */
-    protected CollectionFactory $customerGroupCollectionFactory;
+    protected $customerGroupCollectionFactory;
     /**
      * @var PriceCurrencyInterface
      */
-    protected PriceCurrencyInterface $priceCurrency;
+    protected $priceCurrency;
     /**
      * @var CatalogHelper
      */
-    protected CatalogHelper $catalogHelper;
+    protected $catalogHelper;
     /**
      * @var TaxHelper
      */
-    protected TaxHelper $taxHelper;
+    protected $taxHelper;
     /**
      * @var Rule
      */
-    protected Rule $rule;
+    protected $rule;
 
     protected $store;
     protected $baseCurrencyCode;
@@ -79,10 +79,10 @@ abstract class ProductWithoutChildren
     public function addPriceData($customData, Product $product, $subProducts): array
     {
         $this->customData = $customData;
-        $this->store = $product->getStore();
+        $store = $product->getStore();
         $this->areCustomersGroupsEnabled = $this->configHelper->isCustomerGroupsEnabled($product->getStoreId());
-        $currencies = $this->store->getAvailableCurrencyCodes();
-        $this->baseCurrencyCode = $this->store->getBaseCurrencyCode();
+        $currencies = $store->getAvailableCurrencyCodes();
+        $this->baseCurrencyCode = $store->getBaseCurrencyCode();
         $this->groups = $this->customerGroupCollectionFactory->create();
         $fields = $this->getFields();
         if (!$this->areCustomersGroupsEnabled) {

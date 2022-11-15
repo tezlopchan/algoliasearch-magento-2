@@ -15,28 +15,28 @@ class PriceManager
     /**
      * @var PriceManagerSimple
      */
-    protected PriceManagerSimple $priceManagerSimple;
+    protected $priceManagerSimple;
 
     /**
      * @var PriceManagerVirtual
      */
-    protected PriceManagerVirtual $priceManagerVirtual;
+    protected $priceManagerVirtual;
     /**
      * @var PriceManagerDownloadable
      */
-    protected PriceManagerDownloadable $priceManagerDownloadable;
+    protected $priceManagerDownloadable;
     /**
      * @var PriceManagerConfigurable
      */
-    protected PriceManagerConfigurable $priceManagerConfigurable;
+    protected $priceManagerConfigurable;
     /**
      * @var PriceManagerBundle
      */
-    protected PriceManagerBundle $priceManagerBundle;
+    protected $priceManagerBundle;
     /**
      * @var PriceManagerGrouped
      */
-    protected PriceManagerGrouped $priceManagerGrouped;
+    protected $priceManagerGrouped;
 
     /**
      * @param PriceManagerSimple $priceManagerSimple
@@ -74,7 +74,6 @@ class PriceManager
         if (!property_exists($this, $priceManager)) {
             $priceManager = 'priceManagerSimple';
         }
-
         return $this->{$priceManager}->addPriceData($customData, $product, $subProducts);
     }
 }
