@@ -79,10 +79,10 @@ abstract class ProductWithoutChildren
     public function addPriceData($customData, Product $product, $subProducts): array
     {
         $this->customData = $customData;
-        $store = $product->getStore();
+        $this->store = $product->getStore();
         $this->areCustomersGroupsEnabled = $this->configHelper->isCustomerGroupsEnabled($product->getStoreId());
-        $currencies = $store->getAvailableCurrencyCodes();
-        $this->baseCurrencyCode = $store->getBaseCurrencyCode();
+        $currencies = $this->store->getAvailableCurrencyCodes();
+        $this->baseCurrencyCode = $this->store->getBaseCurrencyCode();
         $this->groups = $this->customerGroupCollectionFactory->create();
         $fields = $this->getFields();
         if (!$this->areCustomersGroupsEnabled) {
