@@ -45,7 +45,6 @@ class CategoryHelper
     private $categoryRepository;
 
     private $isCategoryVisibleInMenuCache;
-    private $coreCategories;
     private $idColumn;
     private $categoryAttributes;
     private $rootCategoryId = -1;
@@ -403,7 +402,6 @@ class CategoryHelper
 
         $categoryId = (int) $categoryId;
         $storeId = (int) $storeId;
-
         if (!isset($this->categoryNames)) {
             $this->categoryNames = [];
 
@@ -434,7 +432,7 @@ class CategoryHelper
 
         $categoryName = null;
 
-        $categoryKeyId = $this->getCategoryKeyId($categoryId);
+        $categoryKeyId = $this->getCategoryKeyId($categoryId, $storeId);
 
         if ($categoryKeyId === null) {
             return $categoryName;
@@ -456,22 +454,21 @@ class CategoryHelper
         return $categoryName;
     }
 
-    private function getCategoryKeyId($categoryId)
+    private function getCategoryKeyId($categoryId, $storeId = null)
     {
         $categoryKeyId = $categoryId;
 
         if ($this->getCorrectIdColumn() === 'row_id') {
-            $category = $this->getCategoryById($categoryId);
-
+            $category = $this->getCategoryById($categoryId, $storeId);
             return $category ? $category->getRowId() : null;
         }
 
         return $categoryKeyId;
     }
 
-    private function getCategoryById($categoryId)
+    private function getCategoryById($categoryId, $storeId = null)
     {
-        $categories = $this->getCoreCategories(false);
+        $categories = $this->getCoreCategories(false, $storeId);
 
         return isset($categories[$categoryId]) ? $categories[$categoryId] : null;
     }
@@ -492,16 +489,13 @@ class CategoryHelper
         return $this->isCategoryVisibleInMenuCache[$key];
     }
 
-    public function getCoreCategories($filterNotIncludedCategories = true)
+    public function getCoreCategories($filterNotIncludedCategories = true, $storeId = null)
     {
         $key = $filterNotIncludedCategories ? 'filtered' : 'non_filtered';
 
-        if (isset($this->coreCategories[$key])) {
-            return $this->coreCategories[$key];
-        }
-
         $collection = $this->categoryCollectionFactory->create()
             ->distinct(true)
+            ->setStoreId($storeId)
             ->addNameToResult()
             ->addIsActiveFilter()
             ->addAttributeToSelect('name')
@@ -511,14 +505,14 @@ class CategoryHelper
             $collection->addAttributeToFilter('include_in_menu', '1');
         }
 
-        $this->coreCategories[$key] = [];
+        $coreCategories[$key] = [];
 
         /** @var \Magento\Catalog\Model\Category $category */
         foreach ($collection as $category) {
-            $this->coreCategories[$key][$category->getId()] = $category;
+                $coreCategories[$key][$category->getId()] = $category;
         }
 
-        return $this->coreCategories[$key];
+        return $coreCategories[$key];
     }
 
     private function getCorrectIdColumn()

@@ -447,8 +447,8 @@ class ProductHelper
 
     public function getAllCategories($categoryIds, $storeId)
     {
-        $filterNotIncludedCategories = !$this->configHelper->showCatsNotIncludedInNavigation($storeId);
-        $categories = $this->categoryHelper->getCoreCategories($filterNotIncludedCategories);
+        $filterNotIncludedCategories = $this->configHelper->showCatsNotIncludedInNavigation($storeId);
+        $categories = $this->categoryHelper->getCoreCategories($filterNotIncludedCategories, $storeId);
 
         $selectedCategories = [];
         foreach ($categoryIds as $id) {
@@ -501,30 +501,21 @@ class ProductHelper
         $customData = $this->addAttribute('ordered_qty', $defaultData, $customData, $additionalAttributes, $product);
         $customData = $this->addAttribute('total_ordered', $defaultData, $customData, $additionalAttributes, $product);
         $customData = $this->addAttribute('rating_summary', $defaultData, $customData, $additionalAttributes, $product);
-
         $customData = $this->addCategoryData($customData, $product);
         $customData = $this->addImageData($customData, $product, $additionalAttributes);
-
         $customData = $this->addInStock($defaultData, $customData, $product);
         $customData = $this->addStockQty($defaultData, $customData, $additionalAttributes, $product);
-
         $subProducts = $this->getSubProducts($product);
-
         $customData = $this->addAdditionalAttributes($customData, $additionalAttributes, $product, $subProducts);
-
         $customData = $this->priceManager->addPriceDataByProductType($customData, $product, $subProducts);
-
         $transport = new DataObject($customData);
         $this->eventManager->dispatch(
             'algolia_subproducts_index',
             ['custom_data' => $transport, 'sub_products' => $subProducts, 'productObject' => $product]
         );
         $customData = $transport->getData();
-
         $customData = array_merge($customData, $defaultData);
-
         $this->algoliaHelper->castProductObject($customData);
-
         $transport = new DataObject($customData);
         $this->eventManager->dispatch(
             'algolia_after_create_product_object',
@@ -621,7 +612,6 @@ class ProductHelper
     private function addCategoryData($customData, Product $product)
     {
         $storeId = $product->getStoreId();
-
         $categories = [];
         $categoriesWithPath = [];
         $categoryIds = [];
@@ -645,7 +635,6 @@ class ProductHelper
                 }
 
                 $categoryName = $this->categoryHelper->getCategoryName($category->getId(), $storeId);
-
                 if ($categoryName) {
                     $categories[] = $categoryName;
                 }
