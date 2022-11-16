@@ -22,35 +22,42 @@ use Magento\Store\Model\StoreManagerInterface;
 
 class CategoryHelper
 {
-    private $eventManager;
+    /** @var ManagerInterface */
+    protected $eventManager;
 
-    private $storeManager;
+    /** @var StoreManagerInterface */
+    protected $storeManager;
 
-    private $resourceConnection;
+    /** @var ResourceConnection */
+    protected $resourceConnection;
 
-    private $eavConfig;
+    /** @var Config */
+    protected $eavConfig;
 
-    private $configHelper;
+    /** @var ConfigHelper */
+    protected $configHelper;
 
     /** @var CategoryCollectionFactory */
-    private $categoryCollectionFactory;
+    protected $categoryCollectionFactory;
 
     /** @var Image */
-    private $imageHelper;
+    protected $imageHelper;
 
     /** @var CategoryResource */
-    private $categoryResource;
+    protected $categoryResource;
 
     /** @var CategoryRepository */
-    private $categoryRepository;
+    protected $categoryRepository;
 
-    private $isCategoryVisibleInMenuCache;
-    private $idColumn;
-    private $categoryAttributes;
-    private $rootCategoryId = -1;
-    private $activeCategories;
-    private $categoryNames;
-    private $moduleManager;
+    protected $isCategoryVisibleInMenuCache;
+    protected $idColumn;
+    protected $categoryAttributes;
+    protected $rootCategoryId = -1;
+    protected $activeCategories;
+    protected $categoryNames;
+
+    /** @var Manager*/
+    protected $moduleManager;
 
     /**
      * CategoryHelper constructor.
@@ -89,11 +96,18 @@ class CategoryHelper
         $this->moduleManager = $moduleManager;
     }
 
+    /**
+     * @return string
+     */
     public function getIndexNameSuffix()
     {
         return '_categories';
     }
 
+    /**
+     * @param $storeId
+     * @return array|mixed|null
+     */
     public function getIndexSettings($storeId)
     {
         $searchableAttributes = [];
@@ -143,6 +157,10 @@ class CategoryHelper
         return $indexSettings;
     }
 
+    /**
+     * @param $storeId
+     * @return array
+     */
     public function getAdditionalAttributes($storeId = null)
     {
         return $this->configHelper->getCategoryAdditionalAttributes($storeId);
@@ -210,6 +228,10 @@ class CategoryHelper
         return true;
     }
 
+    /**
+     * @return array
+     * @throws \Magento\Framework\Exception\LocalizedException
+     */
     public function getAllAttributes()
     {
         if (isset($this->categoryAttributes)) {
@@ -242,6 +264,11 @@ class CategoryHelper
         return $this->categoryAttributes;
     }
 
+    /**
+     * @param MagentoCategory $category
+     * @return array|mixed|null
+     * @throws \Magento\Framework\Exception\LocalizedException
+     */
     public function getObject(Category $category)
     {
         /** @var \Magento\Catalog\Model\ResourceModel\Product\Collection $productCollection */
@@ -326,6 +353,10 @@ class CategoryHelper
         return $data;
     }
 
+    /**
+     * @return int|mixed
+     * @throws \Magento\Framework\Exception\LocalizedException
+     */
     public function getRootCategoryId()
     {
         if ($this->rootCategoryId !== -1) {
@@ -342,6 +373,10 @@ class CategoryHelper
         return $this->rootCategoryId;
     }
 
+    /**
+     * @param MagentoCategory $category
+     * @return array|string|string[]
+     */
     private function getUrl(Category $category)
     {
         $categoryUrl = $category->getUrl();
@@ -454,6 +489,11 @@ class CategoryHelper
         return $categoryName;
     }
 
+    /**
+     * @param $categoryId
+     * @param $storeId
+     * @return mixed|null
+     */
     private function getCategoryKeyId($categoryId, $storeId = null)
     {
         $categoryKeyId = $categoryId;
@@ -466,6 +506,11 @@ class CategoryHelper
         return $categoryKeyId;
     }
 
+    /**
+     * @param $categoryId
+     * @param $storeId
+     * @return mixed|null
+     */
     private function getCategoryById($categoryId, $storeId = null)
     {
         $categories = $this->getCoreCategories(false, $storeId);
@@ -473,6 +518,12 @@ class CategoryHelper
         return isset($categories[$categoryId]) ? $categories[$categoryId] : null;
     }
 
+    /**
+     * @param $categoryId
+     * @param $storeId
+     * @return bool|mixed
+     * @throws \Magento\Framework\Exception\NoSuchEntityException
+     */
     public function isCategoryVisibleInMenu($categoryId, $storeId)
     {
         $key = $categoryId . '-' . $storeId;
@@ -489,6 +540,12 @@ class CategoryHelper
         return $this->isCategoryVisibleInMenuCache[$key];
     }
 
+    /**
+     * @param $filterNotIncludedCategories
+     * @param $storeId
+     * @return array
+     * @throws \Magento\Framework\Exception\LocalizedException
+     */
     public function getCoreCategories($filterNotIncludedCategories = true, $storeId = null)
     {
         $key = $filterNotIncludedCategories ? 'filtered' : 'non_filtered';
@@ -515,6 +572,9 @@ class CategoryHelper
         return $coreCategories[$key];
     }
 
+    /**
+     * @return string
+     */
     private function getCorrectIdColumn()
     {
         if (isset($this->idColumn)) {
