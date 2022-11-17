@@ -12,7 +12,6 @@ use Algolia\AlgoliaSearch\Helper\Entity\SuggestionHelper;
 use Magento\Catalog\Model\Category;
 use Magento\Catalog\Model\Product;
 use Magento\Catalog\Model\ResourceModel\Product\Collection;
-use Magento\CatalogInventory\Api\StockRegistryInterface;
 use Magento\Framework\App\Area;
 use Magento\Framework\App\Config\ScopeCodeResolver;
 use Magento\Framework\App\ResourceConnection;
@@ -86,7 +85,6 @@ class Data
      * @param PageHelper $pageHelper
      * @param SuggestionHelper $suggestionHelper
      * @param AdditionalSectionHelper $additionalSectionHelper
-     * @param StockRegistryInterface $stockRegistry
      * @param Emulation $emulation
      * @param Logger $logger
      * @param ResourceConnection $resource
@@ -102,7 +100,6 @@ class Data
         PageHelper $pageHelper,
         SuggestionHelper $suggestionHelper,
         AdditionalSectionHelper $additionalSectionHelper,
-        StockRegistryInterface $stockRegistry,
         Emulation $emulation,
         Logger $logger,
         ResourceConnection $resource,
@@ -203,7 +200,7 @@ class Data
             }
         }
 
-        $facetsFromAnswer = isset($answer['facets']) ? $answer['facets'] : [];
+        $facetsFromAnswer = $answer['facets'] ?? [];
 
         return [$data, $answer['nbHits'], $facetsFromAnswer];
     }
