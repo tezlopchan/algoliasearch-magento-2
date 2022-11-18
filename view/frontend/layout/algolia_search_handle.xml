@@ -32,5 +32,10 @@
             <block class="Magento\Framework\View\Element\Template" name="algolia.instant.refinements" template="Algolia_AlgoliaSearch::instant/refinements.phtml"/>
 
         </referenceBlock>
+        <referenceBlock name="top.search">
+            <action method="setTemplate" ifconfig="algoliasearch_autocomplete/autocomplete/is_popup_enabled">
+                <argument name="setTemplate" xsi:type="string">Algolia_AlgoliaSearch::autocomplete.phtml</argument>
+            </action>
+        </referenceBlock>
     </body>
 </page>
