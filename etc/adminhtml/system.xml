@@ -106,6 +106,18 @@
                         ]]>
                     </comment>
                 </field>
+                <field id="autocomplete_selector" translate="label comment" type="text" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Search input DOM Selector</label>
+                    <comment>
+                        <![CDATA[
+                            If you don't have the <code>top.search</code> block, you can specify a DOM selector of your dom container here to make the search work.
+                            Default value is <code>.algolia-search-input</code>.
+                        ]]>
+                    </comment>
+                    <depends>
+                        <field id="is_popup_enabled">1</field>
+                    </depends>
+                </field>
                 <field id="nb_of_products_suggestions" translate="label comment" type="text" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="1">
                     <validate>validate-digits</validate>
                     <label>Number of products</label>
@@ -1099,15 +1111,6 @@
                 <field id="remove_branding" translate="label comment" type="select" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Remove branding logo</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
-                </field>
-                <field id="autocomplete_selector" translate="label comment" type="text" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1">
-                    <label>Search Block Name</label>
-                    <comment>
-                        <![CDATA[
-                            Specify the block name of the search input (if the block name used in your theme is not <code>top.search</code>) to make the search work.
-                            Default value is <code>top.search</code>.
-                        ]]>
-                    </comment>
                 </field>
                 <field id="index_product_on_category_products_update" translate="label comment" type="select" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Update products in changed category?</label>

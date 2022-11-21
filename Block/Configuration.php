@@ -151,7 +151,7 @@ class Configuration extends Algolia implements CollectionDataSourceInterface
             ],
             'autocomplete' => [
                 'enabled' => $config->isAutoCompleteEnabled(),
-                'selector' => '.algolia-search-input',
+                'selector' => $config->getAutocompleteSelector(),
                 'sections' => $config->getAutocompleteSections(),
                 'nbOfProductsSuggestions' => $config->getNumberOfProductsSuggestions(),
                 'nbOfCategoriesSuggestions' => $config->getNumberOfCategoriesSuggestions(),

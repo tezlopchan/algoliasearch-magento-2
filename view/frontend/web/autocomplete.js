@@ -336,7 +336,7 @@ requirejs(['algoliaBundle', 'pagesHtml', 'categoriesHtml', 'productsHtml', 'sugg
         $(algoliaConfig.autocomplete.selector).each(function (i) {
             let querySuggestionsPlugin = "";
             var options = {
-                container: '#algoliaAutocomplete',
+                container: algoliaConfig.autocomplete.selector,
                 placeholder: 'Search for products, categories, ...',
                 debug: algoliaConfig.autocomplete.isDebugEnabled,
                 detachedMediaQuery: 'none',

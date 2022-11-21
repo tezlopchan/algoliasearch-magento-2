@@ -32,12 +32,19 @@ class AutocompleteConfigPatch implements SchemaPatchInterface
 
     public function apply()
     {
+        $movedConfigDirectives = [
+            'algoliasearch_advanced/advanced/autocomplete_selector' => 'algoliasearch_autocomplete/autocomplete/autocomplete_selector',
+        ];
         $this->moduleDataSetup->getConnection()->startSetup();
         $connection = $this->moduleDataSetup->getConnection();
         $table = $connection->getTableName('core_config_data');
-        $path = 'algoliasearch_advanced/advanced/autocomplete_selector';
-        $value = 'top.search';
-        $connection->query('UPDATE ' . $table . ' SET value = "' . $value . '" WHERE path = "' . $path . '"');
+        foreach ($movedConfigDirectives as $from => $to) {
+            try {
+                $connection->query('UPDATE ' . $table . ' SET path = "' . $to . '" WHERE path = "' . $from . '"');
+            } catch (\Magento\Framework\DB\Adapter\DuplicateException $e) {
+                //
+            }
+        }
         $this->moduleDataSetup->getConnection()->endSetup();
     }
 
