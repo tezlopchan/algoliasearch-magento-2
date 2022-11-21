@@ -141,7 +141,6 @@ class Data
         if ($this->isIndexingEnabled($storeId) === false) {
             return;
         }
-
         $this->algoliaHelper->deleteObjects($ids, $indexName);
     }
 
@@ -321,7 +320,6 @@ class Data
 
             if ($size > 0) {
                 $pages = ceil($size / $this->configHelper->getNumberOfElementByPage());
-                $collection->clear();
                 $page = 1;
                 while ($page <= $pages) {
                     $this->rebuildStoreCategoryIndexPage(
@@ -512,14 +510,11 @@ class Data
         unset($collection);
     }
 
-    public function rebuildStoreCategoryIndexPage($storeId, $collectionDefault, $page, $pageSize, $categoryIds = null)
+    public function rebuildStoreCategoryIndexPage($storeId, $collection, $page, $pageSize, $categoryIds = null)
     {
         if ($this->isIndexingEnabled($storeId) === false) {
             return;
         }
-
-        /** @var \Magento\Catalog\Model\ResourceModel\Category\Collection $collection */
-        $collection = clone $collectionDefault;
         $collection->setCurPage($page)->setPageSize($pageSize);
         $collection->load();
         $indexName = $this->getIndexName($this->categoryHelper->getIndexNameSuffix(), $storeId);
@@ -553,7 +548,7 @@ class Data
      * @return array
      * @throws \Exception
      */
-    private function getProductsRecords($storeId, $collection, $potentiallyDeletedProductsIds = null)
+    protected function getProductsRecords($storeId, $collection, $potentiallyDeletedProductsIds = null)
     {
         $productsToIndex = [];
         $productsToRemove = [];
@@ -631,7 +626,7 @@ class Data
      *
      * @return array
      */
-    private function getCategoryRecords($storeId, $collection, $potentiallyDeletedCategoriesIds = null)
+    protected function getCategoryRecords($storeId, $collection, $potentiallyDeletedCategoriesIds = null)
     {
         $categoriesToIndex = [];
         $categoriesToRemove = [];
@@ -811,7 +806,7 @@ class Data
      * @param $idsToRemove
      * @return array|mixed
      */
-    private function getIdsToRealRemove($indexName, $idsToRemove)
+    protected function getIdsToRealRemove($indexName, $idsToRemove)
     {
         if (count($idsToRemove) === 1) {
             return $idsToRemove;
@@ -835,7 +830,7 @@ class Data
      * @param Collection $collection
      * @return array
      */
-    private function getSalesData($storeId, Collection $collection)
+    protected function getSalesData($storeId, Collection $collection)
     {
         $additionalAttributes = $this->configHelper->getProductAdditionalAttributes($storeId);
         if ($this->productHelper->isAttributeEnabled($additionalAttributes, 'ordered_qty') === false
@@ -940,7 +935,7 @@ class Data
      * @param $indexName
      * @return void
      */
-    private function deleteInactiveIds($storeId, $objectIds, $indexName)
+    protected function deleteInactiveIds($storeId, $objectIds, $indexName)
     {
         $collection = $this->productHelper->getProductCollectionQuery($storeId, $objectIds);
         $dbIds = $collection->getAllIds();
