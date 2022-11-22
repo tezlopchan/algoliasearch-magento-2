@@ -34,8 +34,7 @@ require(
 			];
 
 			var pageWarning = '<div class="algolia_dashboard_warning algolia_dashboard_warning_page">';
-			pageWarning += '<p>These settings are also available in the Algolia Dashboard. We advise you to manage it from this page, 
-			cause saving Magento settings will override the Algolia settings.</p>';
+			pageWarning += '<p>These settings are also available in the Algolia Dashboard. We advise you to manage it from this page, cause saving Magento settings will override the Algolia settings.</p>';
 			pageWarning += '</div>';
 
 			var pageWarningSynonyms = '<div class="algolia_dashboard_warning algolia_dashboard_warning_page">';
