@@ -6,6 +6,7 @@ use Algolia\AlgoliaSearch\Helper\ConfigHelper;
 use DateTime;
 use Magento\Catalog\Helper\Data as CatalogHelper;
 use Magento\Catalog\Model\Product;
+use Magento\Catalog\Model\ProductFactory;
 use Magento\CatalogRule\Model\ResourceModel\Rule;
 use Magento\Customer\Model\Group;
 use Magento\Customer\Model\ResourceModel\Group\CollectionFactory;
@@ -39,6 +40,10 @@ abstract class ProductWithoutChildren
      * @var Rule
      */
     protected $rule;
+    /**
+     * @var ProductFactory
+     */
+    protected $productloader;
 
     protected $store;
     protected $baseCurrencyCode;
@@ -53,6 +58,7 @@ abstract class ProductWithoutChildren
      * @param CatalogHelper $catalogHelper
      * @param TaxHelper $taxHelper
      * @param Rule $rule
+     * @param ProductFactory $productloader
      */
     public function __construct(
         ConfigHelper $configHelper,
@@ -60,7 +66,8 @@ abstract class ProductWithoutChildren
         PriceCurrencyInterface $priceCurrency,
         CatalogHelper $catalogHelper,
         TaxHelper $taxHelper,
-        Rule $rule
+        Rule $rule,
+        ProductFactory $productloader
     ) {
         $this->configHelper = $configHelper;
         $this->customerGroupCollectionFactory = $customerGroupCollectionFactory;
@@ -68,6 +75,7 @@ abstract class ProductWithoutChildren
         $this->catalogHelper = $catalogHelper;
         $this->taxHelper = $taxHelper;
         $this->rule = $rule;
+        $this->productloader = $productloader;
     }
 
     /**
