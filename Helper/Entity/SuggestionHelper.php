@@ -12,20 +12,29 @@ use Magento\Search\Model\ResourceModel\Query\CollectionFactory as QueryCollectio
 
 class SuggestionHelper
 {
-    private $eventManager;
+    /**
+     * @var ManagerInterface
+     */
+    protected $eventManager;
 
     /**
      * @var QueryCollectionFactory
      */
-    private $queryCollectionFactory;
+    protected $queryCollectionFactory;
+    /**
+     * @var ConfigCache
+     */
+    protected $cache;
+    /**
+     * @var ConfigHelper
+     */
+    protected $configHelper;
+    /**
+     * @var SerializerInterface
+     */
+    protected $serializer;
 
-    private $cache;
-
-    private $configHelper;
-
-    private $serializer;
-
-    private $popularQueriesCacheId = 'algoliasearch_popular_queries_cache_tag';
+    protected $popularQueriesCacheId = 'algoliasearch_popular_queries_cache_tag';
 
     /**
      * SuggestionHelper constructor.
@@ -50,11 +59,18 @@ class SuggestionHelper
         $this->serializer = $serializer;
     }
 
+    /**
+     * @return string
+     */
     public function getIndexNameSuffix()
     {
         return '_suggestions';
     }
 
+    /**
+     * @param $storeId
+     * @return array|mixed|null
+     */
     public function getIndexSettings($storeId)
     {
         $indexSettings = [
@@ -69,11 +85,13 @@ class SuggestionHelper
             'algolia_suggestions_index_before_set_settings',
             ['store_id' => $storeId, 'index_settings' => $transport]
         );
-        $indexSettings = $transport->getData();
-
-        return $indexSettings;
+        return $transport->getData();
     }
 
+    /**
+     * @param Query $suggestion
+     * @return array|mixed|null
+     */
     public function getObject(Query $suggestion)
     {
         $suggestionObject = [
@@ -89,23 +107,27 @@ class SuggestionHelper
             'algolia_after_create_suggestion_object',
             ['suggestion' => $transport, 'suggestionObject' => $suggestion]
         );
-        $suggestionObject = $transport->getData();
-
-        return $suggestionObject;
+        return $transport->getData();
     }
 
-    public function getPopularQueries($storeId)
+    /**
+     * @param $storeId
+     * @return array|bool|float|int|string|null
+     */
+    public function getPopularQueries($storeId = null)
     {
+        if (!$this->configHelper->isInstantEnabled($storeId) || !$this->configHelper->showSuggestionsOnNoResultsPage($storeId)) {
+            return [];
+        }
         $queries = $this->cache->load($this->popularQueriesCacheId);
         if ($queries !== false) {
             return $this->serializer->unserialize($queries);
         }
 
-        /** @var \Magento\Search\Model\ResourceModel\Query\Collection $collection */
         $collection = $this->queryCollectionFactory->create();
         $collection->getSelect()->where(
-            'num_results >= ' . $this->configHelper->getMinNumberOfResults() . ' 
-            AND popularity >= ' . $this->configHelper->getMinPopularity() . ' 
+            'num_results >= ' . $this->configHelper->getMinNumberOfResults() . '
+            AND popularity >= ' . $this->configHelper->getMinPopularity() . '
             AND query_text != "__empty__" AND CHAR_LENGTH(query_text) >= 3'
         );
 
@@ -126,16 +148,19 @@ class SuggestionHelper
         return $queries;
     }
 
+    /**
+     * @param $storeId
+     * @return \Magento\Search\Model\ResourceModel\Query\Collection
+     */
     public function getSuggestionCollectionQuery($storeId)
     {
-        /** @var \Magento\Search\Model\ResourceModel\Query\Collection $collection */
         $collection = $this->queryCollectionFactory->create()
             ->addStoreFilter($storeId)
             ->setStoreId($storeId);
 
         $collection->getSelect()->where(
-            'num_results >= ' . $this->configHelper->getMinNumberOfResults($storeId) . ' 
-            AND popularity >= ' . $this->configHelper->getMinPopularity($storeId) . ' 
+            'num_results >= ' . $this->configHelper->getMinNumberOfResults($storeId) . '
+            AND popularity >= ' . $this->configHelper->getMinPopularity($storeId) . '
             AND query_text != "__empty__"'
         );
 

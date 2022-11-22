@@ -2,7 +2,6 @@
 
 namespace Algolia\AlgoliaSearch\Helper;
 
-use Algolia\AlgoliaSearch\Helper\Entity\SuggestionHelper;
 use Magento;
 use Magento\Customer\Model\ResourceModel\Group\Collection as GroupCollection;
 use Magento\Directory\Model\Currency as DirCurrency;
@@ -175,10 +174,6 @@ class ConfigHelper
      */
     protected $groupCollection;
 
-    /**
-     * @var SuggestionHelper
-     */
-    protected $suggestionHelper;
 
     /**
      * @param Magento\Framework\App\Config\ScopeConfigInterface $configInterface
@@ -191,7 +186,6 @@ class ConfigHelper
      * @param Magento\Framework\Event\ManagerInterface $eventManager
      * @param SerializerInterface $serializer
      * @param GroupCollection $groupCollection
-     * @param SuggestionHelper $suggestionHelper
      */
     public function __construct(
         Magento\Framework\App\Config\ScopeConfigInterface $configInterface,
@@ -203,8 +197,7 @@ class ConfigHelper
         Magento\Framework\App\ProductMetadataInterface    $productMetadata,
         Magento\Framework\Event\ManagerInterface          $eventManager,
         SerializerInterface                               $serializer,
-        GroupCollection                                   $groupCollection,
-        SuggestionHelper                                  $suggestionHelper
+        GroupCollection                                   $groupCollection
     ) {
         $this->configInterface = $configInterface;
         $this->currency = $currency;
@@ -216,7 +209,6 @@ class ConfigHelper
         $this->eventManager = $eventManager;
         $this->serializer = $serializer;
         $this->groupCollection = $groupCollection;
-        $this->suggestionHelper = $suggestionHelper;
     }
 
     /**
@@ -1237,23 +1229,6 @@ class ConfigHelper
         /** @var Magento\Store\Model\Store $store */
         $store = $this->storeManager->getStore($storeId);
         return $this->currency->getCurrency($store->getCurrentCurrencyCode())->getSymbol();
-    }
-
-    /**
-     * @param $storeId
-     * @return array|bool|float|int|string|null
-     * @throws Magento\Framework\Exception\NoSuchEntityException
-     */
-    public function getPopularQueries($storeId = null)
-    {
-        if (!$this->isInstantEnabled($storeId) || !$this->showSuggestionsOnNoResultsPage($storeId)) {
-            return [];
-        }
-        if ($storeId === null) {
-            $storeId = $this->storeManager->getStore()->getId();
-        }
-        $suggestionHelper = $this->suggestionHelper;
-        return $suggestionHelper->getPopularQueries($storeId);
     }
 
     /**
