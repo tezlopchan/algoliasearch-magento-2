@@ -213,6 +213,7 @@ class Configuration extends Algolia implements CollectionDataSourceInterface
             'priceFormat' => $priceFormat,
             'maxValuesPerFacet' => (int) $config->getMaxValuesPerFacet(),
             'autofocus' => true,
+            'resultPageUrl' => $this->getCatalogSearchHelper()->getResultUrl(),
             'request' => [
                 'query' => html_entity_decode($query),
                 'refinementKey' => $refinementKey,
@@ -228,7 +229,7 @@ class Configuration extends Algolia implements CollectionDataSourceInterface
             'popularQueries' => $config->getPopularQueries(),
             'useAdaptiveImage' => $config->useAdaptiveImage(),
             'urls' => [
-                'logo' => $this->getViewFileUrl('Algolia_AlgoliaSearch::images/search-by-algolia.svg'),
+                'logo' => $this->getViewFileUrl('Algolia_AlgoliaSearch::images/algolia-logo-blue.svg'),
             ],
             'ccAnalytics' => [
                 'enabled' => $config->isClickConversionAnalyticsEnabled(),
