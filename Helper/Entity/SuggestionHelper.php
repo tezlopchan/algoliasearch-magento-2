@@ -8,10 +8,14 @@ use Magento\Framework\DataObject;
 use Magento\Framework\Event\ManagerInterface;
 use Magento\Framework\Serialize\SerializerInterface;
 use Magento\Search\Model\Query;
+use Magento\Search\Model\ResourceModel\Query\Collection as QueryCollection;
 use Magento\Search\Model\ResourceModel\Query\CollectionFactory as QueryCollectionFactory;
 
 class SuggestionHelper
 {
+    /***
+     * @var ManagerInterface
+     */
     private $eventManager;
 
     /**
@@ -19,13 +23,26 @@ class SuggestionHelper
      */
     private $queryCollectionFactory;
 
+    /**
+     * @var ConfigCache
+     */
     private $cache;
 
+    /**
+     * @var ConfigHelper
+     */
     private $configHelper;
 
+    /**
+     * @var SerializerInterface
+     */
     private $serializer;
 
-    private $popularQueriesCacheId = 'algoliasearch_popular_queries_cache_tag';
+    /**
+     * @var string
+     */
+    public const POPULAR_QUERIES_CACHE_TAG = 'algoliasearch_popular_queries_cache_tag';
+
 
     /**
      * SuggestionHelper constructor.
@@ -50,11 +67,18 @@ class SuggestionHelper
         $this->serializer = $serializer;
     }
 
+    /**
+     * @return string
+     */
     public function getIndexNameSuffix()
     {
         return '_suggestions';
     }
 
+    /**
+     * @param $storeId
+     * @return array|mixed|null
+     */
     public function getIndexSettings($storeId)
     {
         $indexSettings = [
@@ -74,6 +98,10 @@ class SuggestionHelper
         return $indexSettings;
     }
 
+    /**
+     * @param Query $suggestion
+     * @return array|mixed|null
+     */
     public function getObject(Query $suggestion)
     {
         $suggestionObject = [
@@ -94,18 +122,22 @@ class SuggestionHelper
         return $suggestionObject;
     }
 
+    /**
+     * @param $storeId
+     * @return array|bool|float|int|string|null
+     */
     public function getPopularQueries($storeId)
     {
-        $queries = $this->cache->load($this->popularQueriesCacheId);
+        $queries = $this->cache->load(self::POPULAR_QUERIES_CACHE_TAG . '_' . $storeId);
         if ($queries !== false) {
             return $this->serializer->unserialize($queries);
         }
 
-        /** @var \Magento\Search\Model\ResourceModel\Query\Collection $collection */
+        /** @var QueryCollection $collection */
         $collection = $this->queryCollectionFactory->create();
         $collection->getSelect()->where(
-            'num_results >= ' . $this->configHelper->getMinNumberOfResults() . ' 
-            AND popularity >= ' . $this->configHelper->getMinPopularity() . ' 
+            'num_results >= ' . $this->configHelper->getMinNumberOfResults() . '
+            AND popularity >= ' . $this->configHelper->getMinPopularity() . '
             AND query_text != "__empty__" AND CHAR_LENGTH(query_text) >= 3'
         );
 
@@ -121,21 +153,30 @@ class SuggestionHelper
 
         $queries = $collection->getColumnValues('query_text');
 
-        $this->cache->save($this->serializer->serialize($queries), $this->popularQueriesCacheId, [], 24*3600);
+        $this->cache->save(
+            $this->serializer->serialize($queries),
+            self::POPULAR_QUERIES_CACHE_TAG . '_' . $storeId,
+            [],
+            $this->configHelper->getCacheTime($storeId)
+        );
 
         return $queries;
     }
 
+    /**
+     * @param $storeId
+     * @return QueryCollection
+     */
     public function getSuggestionCollectionQuery($storeId)
     {
-        /** @var \Magento\Search\Model\ResourceModel\Query\Collection $collection */
+        /** @var QueryCollection $collection */
         $collection = $this->queryCollectionFactory->create()
             ->addStoreFilter($storeId)
             ->setStoreId($storeId);
 
         $collection->getSelect()->where(
-            'num_results >= ' . $this->configHelper->getMinNumberOfResults($storeId) . ' 
-            AND popularity >= ' . $this->configHelper->getMinPopularity($storeId) . ' 
+            'num_results >= ' . $this->configHelper->getMinNumberOfResults($storeId) . '
+            AND popularity >= ' . $this->configHelper->getMinPopularity($storeId) . '
             AND query_text != "__empty__"'
         );
 
