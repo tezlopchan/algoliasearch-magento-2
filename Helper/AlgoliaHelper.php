@@ -611,13 +611,27 @@ class AlgoliaHelper extends AbstractHelper
         return $object;
     }
 
+    /**
+     * This method serves to prevent parse of float values that exceed PHP_FLOAT_MAX as INF will break
+     * JSON encoding.
+     *
+     * To further customize the handling of values that may be incorrectly interpreted as numeric by
+     * PHP you can implement an "after" plugin on this method.
+     *
+     * @param $value - what PHP thinks is a floating point number
+     * @return bool
+     */
+    public function isValidFloat(string $value) : bool {
+        return floatval($value) !== INF;
+    }
+
     private function castAttribute($value)
     {
         if (is_numeric($value) && floatval($value) === floatval((int) $value)) {
             return (int) $value;
         }
 
-        if (is_numeric($value)) {
+        if (is_numeric($value) && $this->isValidFloat($value)) {
             return floatval($value);
         }
 
