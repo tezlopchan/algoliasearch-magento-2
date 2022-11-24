@@ -502,8 +502,7 @@ class AlgoliaHelper extends AbstractHelper
     private function getMaxRecordSize()
     {
         if (!$this->maxRecordSize) {
-            $this->maxRecordSize = $this->config->getMaxRecordSizeLimit()
-                ? $this->config->getMaxRecordSizeLimit() : $this->config->getDefaultMaxRecordSize();
+            $this->maxRecordSize = $this->config->getMaxRecordSizeLimit();
         }
 
         return $this->maxRecordSize;

@@ -17,12 +17,10 @@ class SuggestionHelper
      * @var ManagerInterface
      */
     private $eventManager;
-
     /**
      * @var QueryCollectionFactory
      */
-    private $queryCollectionFactory;
-
+    protected $queryCollectionFactory;
     /**
      * @var ConfigCache
      */
@@ -42,7 +40,6 @@ class SuggestionHelper
      * @var string
      */
     public const POPULAR_QUERIES_CACHE_TAG = 'algoliasearch_popular_queries_cache_tag';
-
 
     /**
      * SuggestionHelper constructor.
@@ -93,9 +90,7 @@ class SuggestionHelper
             'algolia_suggestions_index_before_set_settings',
             ['store_id' => $storeId, 'index_settings' => $transport]
         );
-        $indexSettings = $transport->getData();
-
-        return $indexSettings;
+        return $transport->getData();
     }
 
     /**
@@ -117,17 +112,18 @@ class SuggestionHelper
             'algolia_after_create_suggestion_object',
             ['suggestion' => $transport, 'suggestionObject' => $suggestion]
         );
-        $suggestionObject = $transport->getData();
-
-        return $suggestionObject;
+        return $transport->getData();
     }
 
     /**
      * @param $storeId
      * @return array|bool|float|int|string|null
      */
-    public function getPopularQueries($storeId)
+    public function getPopularQueries($storeId = null)
     {
+        if (!$this->configHelper->isInstantEnabled($storeId) || !$this->configHelper->showSuggestionsOnNoResultsPage($storeId)) {
+            return [];
+        }
         $queries = $this->cache->load(self::POPULAR_QUERIES_CACHE_TAG . '_' . $storeId);
         if ($queries !== false) {
             return $this->serializer->unserialize($queries);
