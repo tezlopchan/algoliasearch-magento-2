@@ -40,6 +40,8 @@ class Configuration extends Algolia implements CollectionDataSourceInterface
 
         $categoryHelper = $this->getCategoryHelper();
 
+        $suggestionHelper = $this->getSuggestionHelper();
+
         $productHelper = $this->getProductHelper();
 
         $algoliaHelper = $this->getAlgoliaHelper();
@@ -226,7 +228,7 @@ class Configuration extends Algolia implements CollectionDataSourceInterface
             'showCatsNotIncludedInNavigation' => $config->showCatsNotIncludedInNavigation(),
             'showSuggestionsOnNoResultsPage' => $config->showSuggestionsOnNoResultsPage(),
             'baseUrl' => $baseUrl,
-            'popularQueries' => $config->getPopularQueries(),
+            'popularQueries' => $suggestionHelper->getPopularQueries(),
             'useAdaptiveImage' => $config->useAdaptiveImage(),
             'urls' => [
                 'logo' => $this->getViewFileUrl('Algolia_AlgoliaSearch::images/algolia-logo-blue.svg'),
@@ -306,17 +308,15 @@ class Configuration extends Algolia implements CollectionDataSourceInterface
 
         $transport = new DataObject($algoliaJsConfig);
         $this->_eventManager->dispatch('algolia_after_create_configuration', ['configuration' => $transport]);
-        $algoliaJsConfig = $transport->getData();
-
-        return $algoliaJsConfig;
+        return $transport->getData();
     }
 
-    private function areCategoriesInFacets($facets)
+    protected function areCategoriesInFacets($facets)
     {
         return in_array('categories', array_column($facets, 'attribute'));
     }
 
-    private function getUrlTrackedParameters()
+    protected function getUrlTrackedParameters()
     {
         $urlTrackedParameters = ['query', 'attribute:*', 'index'];
 
@@ -327,7 +327,7 @@ class Configuration extends Algolia implements CollectionDataSourceInterface
         return $urlTrackedParameters;
     }
 
-    private function getOrderedProductIds(ConfigHelper $configHelper, Http $request)
+    protected function getOrderedProductIds(ConfigHelper $configHelper, Http $request)
     {
         $ids = [];
 
@@ -350,22 +350,22 @@ class Configuration extends Algolia implements CollectionDataSourceInterface
         return $ids;
     }
 
-    private function isLandingPage()
+    protected function isLandingPage()
     {
         return $this->getRequest()->getFullActionName() === 'algolia_landingpage_view';
     }
 
-    private function getLandingPageId()
+    protected function getLandingPageId()
     {
         return $this->isLandingPage() ? $this->getCurrentLandingPage()->getId() : '';
     }
 
-    private function getLandingPageQuery()
+    protected function getLandingPageQuery()
     {
         return $this->isLandingPage() ? $this->getCurrentLandingPage()->getQuery() : '';
     }
 
-    private function getLandingPageConfiguration()
+    protected function getLandingPageConfiguration()
     {
         return $this->isLandingPage() ? $this->getCurrentLandingPage()->getConfiguration() : json_encode([]);
     }
