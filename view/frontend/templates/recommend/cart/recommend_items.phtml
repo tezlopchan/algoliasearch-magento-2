@@ -3,16 +3,21 @@
  * Copyright © Magento, Inc. All rights reserved.
  * See COPYING.txt for license details.
  */
-$cartItems = $this->getAllCartItems();
-?>
-<div id="frequentlyBoughtTogether" class="recommend-component"></div>
-<div id="relatedProducts" class="recommend-component"></div>
-<div id="trendItems" class="trendsItem recommend-component"></div>
-<script>
-    require([
-        'jquery',
-        'domReady!'
-    ], function($){
-        window.algoliObjectId = <?php echo json_encode($cartItems); ?>;
-    });
-</script>
+$recommendConfig = $this->getAlgoliaRecommendConfiguration();
+if (isset($recommendConfig['enabledRelatedInCart']) || isset($recommendConfig['enabledFBTInCart'])) {
+    $cartItems = $this->getAllCartItems(); ?>
+    <div id="frequentlyBoughtTogether" class="recommend-component"></div>
+    <div id="relatedProducts" class="recommend-component"></div>
+    <script>
+        require([
+            'jquery',
+            'domReady!'
+        ], function($){
+            window.algoliObjectId = <?php echo json_encode($cartItems); ?>;
+        });
+    </script>
+<?php
+} ?>
+<?php if (isset($recommendConfig['isTrendItemsEnabledInCartPage'])) {?>
+    <div id="trendItems" class="trendsItem recommend-component"></div>
+<?php } ?>

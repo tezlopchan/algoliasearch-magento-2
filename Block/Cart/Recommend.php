@@ -43,12 +43,23 @@ class Recommend extends Template
      */
     public function getAllCartItems()
     {
-        $cartItems = array();
+        $cartItems = [];
         $itemCollection = $this->checkoutSession->getQuote()->getAllVisibleItems();
-        foreach ( $itemCollection as $item) {
+        foreach ($itemCollection as $item) {
             $cartItems[] = $item->getProductId();
         }
         return array_unique($cartItems);
     }
 
+    /**
+     * @return array
+     */
+    public function getAlgoliaRecommendConfiguration()
+    {
+        return [
+            'enabledFBTInCart' => $this->configHelper->isRecommendFrequentlyBroughtTogetherEnabledOnCartPage(),
+            'enabledRelatedInCart' => $this->configHelper->isRecommendRelatedProductsEnabledOnCartPage(),
+            'isTrendItemsEnabledInCartPage' => $this->configHelper->isTrendItemsEnabledInShoppingCart()
+             ];
+    }
 }

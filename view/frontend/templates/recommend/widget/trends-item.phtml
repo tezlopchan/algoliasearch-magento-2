@@ -3,24 +3,27 @@
  * Copyright © Magento, Inc. All rights reserved.
  * See COPYING.txt for license details.
  */
-$trendConstainer =  'trendItems' . $block->generateUniqueToken();
-?>
-<div id="<?php echo $trendConstainer; ?>" class="trendsItem recommend-component"></div>
-<script>
-    require([
-        'jquery',
-        'domReady!'
-    ], function($){
-        window.recommendTrendContainer = "<?php echo $trendConstainer; ?>";
-        window.numOfTrendsItem = "<?php echo $block->getData('numOfTrendsItem') ?>";
-        window.facetName = "<?php echo $block->getData('facetName') ?>";
-        window.facetValue = "<?php echo $block->getData('facetValue') ?>";
-    });
-</script>
-<script type="text/x-magento-init">
-    {
-        "[data-role=tocart-form]": {
-            "catalogAddToCart": {}
+$isEnabled = $block->isTrendingItemEnabled();
+if ($isEnabled) {
+    $trendConstainer =  'trendItems' . $block->generateUniqueToken(); ?>
+    <div id="<?php echo $trendConstainer; ?>" class="trendsItem recommend-component"></div>
+    <script>
+        require([
+            'jquery',
+            'domReady!'
+        ], function($){
+            window.recommendTrendContainer = "<?php echo $trendConstainer; ?>";
+            window.numOfTrendsItem = "<?php echo $block->getData('numOfTrendsItem') ?>";
+            window.facetName = "<?php echo $block->getData('facetName') ?>";
+            window.facetValue = "<?php echo $block->getData('facetValue') ?>";
+        });
+    </script>
+    <script type="text/x-magento-init">
+        {
+            "[data-role=tocart-form]": {
+                "catalogAddToCart": {}
+            }
         }
-    }
-</script>
+    </script>
+<?php
+} ?>

@@ -8,7 +8,9 @@ var config = {
 			'pagesHtml': 'Algolia_AlgoliaSearch/internals/template/autocomplete/pages',
 			'categoriesHtml': 'Algolia_AlgoliaSearch/internals/template/autocomplete/categories',
 			'suggestionsHtml': 'Algolia_AlgoliaSearch/internals/template/autocomplete/suggestions',
-			'additionalHtml': 'Algolia_AlgoliaSearch/internals/template/autocomplete/additional-section'
+			'additionalHtml': 'Algolia_AlgoliaSearch/internals/template/autocomplete/additional-section',
+			// Recommend templates
+            'recommendItemsElement': 'Algolia_AlgoliaSearch/internals/template/recommend/recommendItems'
 		}
 	},
 	paths: {
