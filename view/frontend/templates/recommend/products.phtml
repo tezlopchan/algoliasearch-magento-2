@@ -1,11 +1,8 @@
 <?php
-/**
- * Copyright © Magento, Inc. All rights reserved.
- * See COPYING.txt for license details.
- */
+/** @var \Magento\Catalog\Block\Product\View $block */
 $recommendConfig = $this->getAlgoliaRecommendConfiguration();
-if (isset($recommendConfig['enabledFBT']) || isset($recommendConfig['enabledRelated']) || isset($recommendConfig['isTrendItemsEnabledInPDP'])) {
-    $product = $block->getProduct(); ?>
+$product = $block->getProduct();
+if (isset($recommendConfig['enabledFBT']) || isset($recommendConfig['enabledRelated']) || isset($recommendConfig['isTrendItemsEnabledInPDP'])):?>
     <div id="frequentlyBoughtTogether" class="recommend-component"></div>
     <div id="relatedProducts" class="recommend-component"></div>
     <div id="trendItems" class="trendsItem recommend-component"></div>
@@ -18,8 +15,7 @@ if (isset($recommendConfig['enabledFBT']) || isset($recommendConfig['enabledRela
             }
         }
     </script>
-<?php
-} ?>
+<?php endif;?>
 <?php if (isset($recommendConfig['enabledFBT']) || isset($recommendConfig['enabledRelated']) || isset($recommendConfig['isTrendItemsEnabledInPDP'])) { ?>
     <script type="text/x-magento-init">
         {
