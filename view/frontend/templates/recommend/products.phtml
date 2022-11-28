@@ -4,16 +4,22 @@
  * See COPYING.txt for license details.
  */
 $recommendConfig = $this->getAlgoliaRecommendConfiguration();
-$product = $block->getProduct();
-if (isset($recommendConfig['enabledFBT']) || isset($recommendConfig['enabledRelated'])) {
-     ?>
+if (isset($recommendConfig['enabledFBT']) || isset($recommendConfig['enabledRelated']) || isset($recommendConfig['isTrendItemsEnabledInPDP'])) {
+    $product = $block->getProduct(); ?>
     <div id="frequentlyBoughtTogether" class="recommend-component"></div>
     <div id="relatedProducts" class="recommend-component"></div>
+    <div id="trendItems" class="trendsItem recommend-component"></div>
+    <script type="text/x-magento-init">
+        {
+            "*": {
+                "Algolia_AlgoliaSearch/recommend" : {
+                    "algoliObjectId" : ["<?php echo $product->getId() ?>"]
+                }
+            }
+        }
+    </script>
 <?php
 } ?>
-<?php if (isset($recommendConfig['isTrendItemsEnabledInPDP'])) { ?>
-    <div id="trendItems" class="trendsItem recommend-component"></div>
-<?php } ?>
 <?php if (isset($recommendConfig['enabledFBT']) || isset($recommendConfig['enabledRelated']) || isset($recommendConfig['isTrendItemsEnabledInPDP'])) { ?>
     <script type="text/x-magento-init">
         {
@@ -23,12 +29,4 @@ if (isset($recommendConfig['enabledFBT']) || isset($recommendConfig['enabledRela
         }
     </script>
 <?php } ?>
-<script type="text/x-magento-init">
-    {
-        "*": {
-            "Algolia_AlgoliaSearch/recommend" : {
-                "algoliObjectId" : ["<?php echo $product->getId() ?>"]
-            }
-        }
-    }
-</script>
+
