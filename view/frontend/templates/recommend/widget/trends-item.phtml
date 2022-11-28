@@ -7,16 +7,17 @@ $isEnabled = $block->isTrendingItemEnabled();
 if ($isEnabled) {
     $trendConstainer =  'trendItems' . $block->generateUniqueToken(); ?>
     <div id="<?php echo $trendConstainer; ?>" class="trendsItem recommend-component"></div>
-    <script>
-        require([
-            'jquery',
-            'domReady!'
-        ], function($){
-            window.recommendTrendContainer = "<?php echo $trendConstainer; ?>";
-            window.numOfTrendsItem = "<?php echo $block->getData('numOfTrendsItem') ?>";
-            window.facetName = "<?php echo $block->getData('facetName') ?>";
-            window.facetValue = "<?php echo $block->getData('facetValue') ?>";
-        });
+    <script type="text/x-magento-init">
+        {
+            "*": {
+                "Algolia_AlgoliaSearch/recommend" : {
+                    "recommendTrendContainer" : "<?php echo $trendConstainer; ?>",
+                    "numOfTrendsItem" : "<?php echo $block->getData('numOfTrendsItem') ?>",
+                    "facetName" : "<?php echo $block->getData('facetName') ?>",
+                    "facetValue" : "<?php echo $block->getData('facetValue') ?>"
+                }
+            }
+        }
     </script>
     <script type="text/x-magento-init">
         {

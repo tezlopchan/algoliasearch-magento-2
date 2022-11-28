@@ -4,20 +4,20 @@
  * See COPYING.txt for license details.
  */
 $recommendConfig = $this->getAlgoliaRecommendConfiguration();
-if (isset($recommendConfig['enabledRelatedInCart']) || isset($recommendConfig['enabledFBTInCart'])) {
-    $cartItems = $this->getAllCartItems(); ?>
+if (isset($recommendConfig['enabledRelatedInCart']) || isset($recommendConfig['enabledFBTInCart']) || isset($recommendConfig['isTrendItemsEnabledInCartPage'])) {
+    $cartItems = $this->getAllCartItems();
+    ?>
     <div id="frequentlyBoughtTogether" class="recommend-component"></div>
     <div id="relatedProducts" class="recommend-component"></div>
-    <script>
-        require([
-            'jquery',
-            'domReady!'
-        ], function($){
-            window.algoliObjectId = <?php echo json_encode($cartItems); ?>;
-        });
+    <div id="trendItems" class="trendsItem recommend-component"></div>
+    <script type="text/x-magento-init">
+        {
+            "*": {
+                "Algolia_AlgoliaSearch/recommend" : {
+                    "algoliObjectId" : <?php echo json_encode($cartItems); ?>
+                }
+            }
+        }
     </script>
 <?php
 } ?>
-<?php if (isset($recommendConfig['isTrendItemsEnabledInCartPage'])) {?>
-    <div id="trendItems" class="trendsItem recommend-component"></div>
-<?php } ?>
