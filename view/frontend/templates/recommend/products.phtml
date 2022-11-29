@@ -1,8 +1,8 @@
 <?php
-/** @var \Magento\Catalog\Block\Product\View $block */
+/** @var \Algolia\AlgoliaSearch\Block\RecommendProductView $block */
 $recommendConfig = $this->getAlgoliaRecommendConfiguration();
-$product = $block->getProduct();
-if (isset($recommendConfig['enabledFBT']) || isset($recommendConfig['enabledRelated']) || isset($recommendConfig['isTrendItemsEnabledInPDP'])):?>
+if (isset($recommendConfig['enabledFBT']) || isset($recommendConfig['enabledRelated']) || isset($recommendConfig['isTrendItemsEnabledInPDP'])):
+    $product = $block->getProduct(); ?>
     <div id="frequentlyBoughtTogether" class="recommend-component"></div>
     <div id="relatedProducts" class="recommend-component"></div>
     <div id="trendItems" class="trendsItem recommend-component"></div>
@@ -10,13 +10,11 @@ if (isset($recommendConfig['enabledFBT']) || isset($recommendConfig['enabledRela
         {
             "*": {
                 "Algolia_AlgoliaSearch/recommend" : {
-                    "algoliObjectId" : ["<?php echo $product->getId() ?>"]
+                    "algoliObjectId" : ["<?= $product->getId() ?>"]
                 }
             }
         }
     </script>
-<?php endif;?>
-<?php if (isset($recommendConfig['enabledFBT']) || isset($recommendConfig['enabledRelated']) || isset($recommendConfig['isTrendItemsEnabledInPDP'])) { ?>
     <script type="text/x-magento-init">
         {
             "[data-role=tocart-form]": {
@@ -24,5 +22,4 @@ if (isset($recommendConfig['enabledFBT']) || isset($recommendConfig['enabledRela
             }
         }
     </script>
-<?php } ?>
-
+<?php endif; ?>

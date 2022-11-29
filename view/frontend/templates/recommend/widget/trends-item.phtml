@@ -1,20 +1,17 @@
 <?php
-/**
- * Copyright © Magento, Inc. All rights reserved.
- * See COPYING.txt for license details.
- */
+/** @var \Algolia\AlgoliaSearch\Block\Widget\TrendsItem $block */
 $isEnabled = $block->isTrendingItemEnabled();
-if ($isEnabled) {
+if ($isEnabled):
     $trendConstainer =  'trendItems' . $block->generateUniqueToken(); ?>
-    <div id="<?php echo $trendConstainer; ?>" class="trendsItem recommend-component"></div>
+    <div id="<?= $trendConstainer ?>" class="trendsItem recommend-component"></div>
     <script type="text/x-magento-init">
         {
             "*": {
                 "Algolia_AlgoliaSearch/recommend" : {
-                    "recommendTrendContainer" : "<?php echo $trendConstainer; ?>",
-                    "numOfTrendsItem" : "<?php echo $block->getData('numOfTrendsItem') ?>",
-                    "facetName" : "<?php echo $block->getData('facetName') ?>",
-                    "facetValue" : "<?php echo $block->getData('facetValue') ?>"
+                    "recommendTrendContainer" : "<?= $trendConstainer ?>",
+                    "numOfTrendsItem" : "<?= $block->getData('numOfTrendsItem') ?>",
+                    "facetName" : "<?= $block->getData('facetName') ?>",
+                    "facetValue" : "<?= $block->getData('facetValue') ?>"
                 }
             }
         }
@@ -26,5 +23,4 @@ if ($isEnabled) {
             }
         }
     </script>
-<?php
-} ?>
+<?php endif; ?>
