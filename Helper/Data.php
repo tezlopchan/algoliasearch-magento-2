@@ -314,7 +314,7 @@ class Data
             $collection = $this->categoryHelper->getCategoryCollectionQuery($storeId, $categoryIds);
 
             $size = $collection->getSize();
-            if ($categoryIds && $categoryIds !== []) {
+            if (!empty($categoryIds)) {
                 $size = max(count($categoryIds), $size);
             }
 
@@ -407,7 +407,7 @@ class Data
             $this->logger->start('ok');
             $collection = $this->productHelper->getProductCollectionQuery($storeId, $productIds);
             $size = $collection->getSize();
-            if ($productIds && $productIds !== []) {
+            if (!empty($productIds)) {
                 $size = max(count($productIds), $size);
             }
             $this->logger->log('Store ' . $this->logger->getStoreName($storeId) . ' collection size : ' . $size);
@@ -519,16 +519,16 @@ class Data
         $collection->load();
         $indexName = $this->getIndexName($this->categoryHelper->getIndexNameSuffix(), $storeId);
         $indexData = $this->getCategoryRecords($storeId, $collection, $categoryIds);
-        if ($indexData['toIndex'] && $indexData['toIndex'] !== []) {
+        if (!empty($indexData['toIndex'])) {
             $this->logger->start('ADD/UPDATE TO ALGOLIA');
             $this->algoliaHelper->addObjects($indexData['toIndex'], $indexName);
             $this->logger->log('Product IDs: ' . implode(', ', array_keys($indexData['toIndex'])));
             $this->logger->stop('ADD/UPDATE TO ALGOLIA');
         }
 
-        if ($indexData['toRemove'] && $indexData['toRemove'] !== []) {
+        if (!empty($indexData['toRemove'])) {
             $toRealRemove = $this->getIdsToRealRemove($indexName, $indexData['toRemove']);
-            if ($toRealRemove && $toRealRemove !== []) {
+            if (!empty($toRealRemove)) {
                 $this->logger->start('REMOVE FROM ALGOLIA');
                 $this->algoliaHelper->deleteObjects($toRealRemove, $indexName);
                 $this->logger->log('Category IDs: ' . implode(', ', $toRealRemove));
@@ -732,16 +732,16 @@ class Data
         $this->logger->stop($logMessage);
         $indexName = $this->getIndexName($this->productHelper->getIndexNameSuffix(), $storeId, $useTmpIndex);
         $indexData = $this->getProductsRecords($storeId, $collection, $productIds);
-        if ($indexData['toIndex'] && $indexData['toIndex'] !== []) {
+        if (!empty($indexData['toIndex'])) {
             $this->logger->start('ADD/UPDATE TO ALGOLIA');
             $this->algoliaHelper->addObjects($indexData['toIndex'], $indexName);
             $this->logger->log('Product IDs: ' . implode(', ', array_keys($indexData['toIndex'])));
             $this->logger->stop('ADD/UPDATE TO ALGOLIA');
         }
 
-        if ($indexData['toRemove'] && $indexData['toRemove'] !== []) {
+        if (!empty($indexData['toRemove'])) {
             $toRealRemove = $this->getIdsToRealRemove($indexName, $indexData['toRemove']);
-            if ($toRealRemove && $toRealRemove !== []) {
+            if (!empty($toRealRemove)) {
                 $this->logger->start('REMOVE FROM ALGOLIA');
                 $this->algoliaHelper->deleteObjects($toRealRemove, $indexName);
                 $this->logger->log('Product IDs: ' . implode(', ', $toRealRemove));
@@ -883,7 +883,7 @@ class Data
                 $counter = 0;
             }
         }
-        if ($objectIds && $objectIds !== []) {
+        if (!empty($objectIds)) {
             $this->deleteInactiveIds($storeId, $objectIds, $indexName);
         }
     }
