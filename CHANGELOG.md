@@ -3,25 +3,24 @@
 ## 3.9.1
 
 ### UPDATES
-- Refactored the Autocomplete to provide an extensible model for function-based templates by utilizing tagged template literals. The approach supports the use of RequireJS mixins for overriding the template functionality.
-- Update the synonym area text in the Magento configuration to point customers to use the Algolia dashboard as Synonym management from Magento Dashboard will be deprecated in a future release
+- Refactored the Autocomplete to provide an extensible model for function-based templates by utilizing tagged template literals. The approach supports the use of RequireJS mixins for overriding the template functionality. 
+- Update the synonym area notice in the Magento admin to point customers to use the Algolia dashboard for Synonym management as Magento Dashboard will be deprecated in a future release
 - Refactored the casting Attributes
 - Managing Max record size via the admin
-
 
 
 ### FIXES
 - Autocomplete category links not preselecting facets on the target URL
 - Fixed bug related to conjunctive facets and adaptive images in autocomplete
-- When autocomplete was disabled __empty__ was showing in the URL
+- Fixed issue with showing __empty__ in the url if autocomplete was disabled 
+- Fixed autocomplete suggestions
 - Instant search fixes when the price was set to retrievable = 'no'
 - Price attribute fixes in autocomplete when the price attribute is set to Non-Retrievable
 - Add to cart triggering duplicate view event for the Algolia recommend products
 - Issues while saving and loading data by the wrong cache key for the popular queries
 - Issues with max_retries in clear old jobs function in the queue
 - Place Order duplicate Conversion issue for Grouped Product
-- Fixes the issues with store-specific category index
-
+- Fixes issues with store-specific category index
 
 
 
