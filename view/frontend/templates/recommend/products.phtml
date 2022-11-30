@@ -16,4 +16,10 @@ $product = $block->getProduct();
             window.algoliObjectId = ["<?php echo $product->getId() ?>"];
     });
 </script>
-
+<script type="text/x-magento-init">
+    {
+        "[data-role=tocart-form]": {
+            "catalogAddToCart": {}
+        }
+    }
+</script>

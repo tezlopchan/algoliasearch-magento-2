@@ -1,17 +1,22 @@
 define([], function () {
     return {
-        getCategoriesHtml: function (item, components, html) {
-            return html `<a class="algoliasearch-autocomplete-hit" href="${item.url}">
+        getNoResultHtml: function ({html}) {
+            return html`<p>No Results</p>`;
+        },
+
+        getHeaderHtml: function ({section}) {
+            return section.name;
+        },
+
+        getItemHtml: function ({item, components, html}) {
+            return html `<a class="algoliasearch-autocomplete-hit" href="${item.url}"
+                data-objectId=${item.objectID} data-index=${item.__autocomplete_indexName} data-queryId=${item.__autocomplete_queryID}>
                 ${components.Highlight({ hit: item, attribute: 'path' })} (${item.product_count})
             </a>`;
         },
 
-        getHeaderHtml: function (section) {
-            return section.name;
+        getFooterHtml: function () {
+            return "";
         },
-
-        getNoResultHtml: function () {
-            return 'No Results';
-        }
     };
 });
