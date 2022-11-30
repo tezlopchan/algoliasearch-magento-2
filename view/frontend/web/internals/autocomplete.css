@@ -1,4 +1,7 @@
 /** Auto-completion menu */
+html {
+    --autocomplete-muted-color: #969faf;
+}
 
 #algolia-autocomplete-container .aa-dropdown-menu .before_special, .aa-Panel .before_special {
     color: #aaaaaa;
@@ -370,6 +373,19 @@
     color: #222;
 }
 
+.algoliasearch-autocomplete-hit .info .algoliasearch-autocomplete-category span:nth-child(n+2):before {
+    content: " | ";
+}
+
+.algoliasearch-autocomplete-hit .info .algoliasearch-autocomplete-price .after_special:after {
+    content: " ";
+}
+
+.algoliasearch-autocomplete-hit .info .algoliasearch-autocomplete-price .tier_price {
+    padding-left: 5px;
+}
+
+
 #algolia-autocomplete-container .aa-dropdown-menu .footer_algolia {
     position: absolute;
     width: 100%;
@@ -504,7 +520,22 @@
 .footer_algolia{
     position: absolute;
     bottom: 0;
+    display: flex;
+    flex-wrap: nowrap;
+    flex-direction: row;
+    align-items: flex-start;
 }
+
+.footer_algolia .algolia-search-by-label {
+    color: var(--autocomplete-muted-color);
+    font-size: .9em;
+    margin-right: 5px;
+}
+
+.footer_algolia img {
+    min-width: 80px;
+}
+
 @media (min-width: 992px) {
     .aa-Panel.productColumn2 .aa-PanelLayout section:nth-child(2), .aa-Panel.productColumn1 .aa-PanelLayout section:nth-child(1){
         margin-left: 2.5rem !important;
@@ -567,8 +598,15 @@
 }
 
 @media (max-width: 768px) {
-    .aa-Panel .aa-PanelLayout, .footer_algolia{
+    .aa-Panel .aa-PanelLayout {
+        justify-content: start;
+        width:100%;
+        display: flex;
+        flex-direction: column;
+    }
+    .footer_algolia{
         width: 100%;
+        justify-content: center;
     }
     .aa-Panel .aa-List {
         padding-left: 0px;

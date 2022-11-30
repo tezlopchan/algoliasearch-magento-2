@@ -5,7 +5,7 @@
  */
 $trendConstainer =  'trendItems' . $block->generateUniqueToken();
 ?>
-<div id="<?php echo $trendConstainer; ?>" class="trendsItem"></div>
+<div id="<?php echo $trendConstainer; ?>" class="trendsItem recommend-component"></div>
 <script>
     require([
         'jquery',
@@ -16,4 +16,11 @@ $trendConstainer =  'trendItems' . $block->generateUniqueToken();
         window.facetName = "<?php echo $block->getData('facetName') ?>";
         window.facetValue = "<?php echo $block->getData('facetValue') ?>";
     });
+</script>
+<script type="text/x-magento-init">
+    {
+        "[data-role=tocart-form]": {
+            "catalogAddToCart": {}
+        }
+    }
 </script>

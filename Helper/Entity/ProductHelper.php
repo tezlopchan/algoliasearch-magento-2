@@ -35,35 +35,86 @@ use Magento\Store\Model\StoreManagerInterface;
 
 class ProductHelper
 {
+    /**
+     * @var CollectionFactory
+     */
     protected $productCollectionFactory;
+    /**
+     * @var GroupCollection
+     */
     protected $groupCollection;
-    private $eavConfig;
-    private $configHelper;
-    private $algoliaHelper;
-    private $logger;
-    private $storeManager;
-    private $eventManager;
-    private $visibility;
-    private $stockHelper;
-    private $stockRegistry;
-    private $currencyManager;
-    private $categoryHelper;
-    private $priceManager;
-    private $imageHelper;
+    /**
+     * @var Config
+     */
+    protected $eavConfig;
+    /**
+     * @var ConfigHelper
+     */
+    protected $configHelper;
+    /**
+     * @var AlgoliaHelper
+     */
+    protected $algoliaHelper;
+    /**
+     * @var Logger
+     */
+    protected $logger;
+    /**
+     * @var StoreManagerInterface
+     */
+    protected $storeManager;
+    /**
+     * @var ManagerInterface
+     */
+    protected $eventManager;
+    /**
+     * @var Visibility
+     */
+    protected $visibility;
+    /**
+     * @var Stock
+     */
+    protected $stockHelper;
+    /**
+     * @var StockRegistryInterface
+     */
+    protected $stockRegistry;
+    /**
+     * @var CurrencyHelper
+     */
+    protected $currencyManager;
+    /**
+     * @var CategoryHelper
+     */
+    protected $categoryHelper;
+    /**
+     * @var PriceManager
+     */
+    protected $priceManager;
+    /**
+     * @var ImageHelper
+     */
+    protected $imageHelper;
 
     /**
      * @var Type
      */
-    private $productType;
+    protected $productType;
 
     /**
      * @var AbstractType[]
      */
-    private $compositeTypes;
+    protected $compositeTypes;
 
-    private $productAttributes;
+    /**
+     * @var
+     */
+    protected $productAttributes;
 
-    private $predefinedProductAttributes = [
+    /**
+     * @var string[]
+     */
+    protected $predefinedProductAttributes = [
         'name',
         'url_key',
         'image',
@@ -72,7 +123,10 @@ class ProductHelper
         'msrp_enabled', // Needed to handle MSRP behavior
     ];
 
-    private $createdAttributes = [
+    /**
+     * @var string[]
+     */
+    protected $createdAttributes = [
         'path',
         'categories',
         'categories_without_path',
@@ -84,7 +138,10 @@ class ProductHelper
         'in_stock',
     ];
 
-    private $attributesToIndexAsArray = [
+    /**
+     * @var string[]
+     */
+    protected $attributesToIndexAsArray = [
         'sku',
         'color',
     ];
@@ -145,11 +202,19 @@ class ProductHelper
         $this->imageHelper = $imageHelper;
     }
 
+    /**
+     * @return string
+     */
     public function getIndexNameSuffix()
     {
         return '_products';
     }
 
+    /**
+     * @param $addEmptyRow
+     * @return array
+     * @throws \Magento\Framework\Exception\LocalizedException
+     */
     public function getAllAttributes($addEmptyRow = false)
     {
         if (!isset($this->productAttributes)) {
@@ -202,6 +267,11 @@ class ProductHelper
         return $attributes;
     }
 
+    /**
+     * @param $additionalAttributes
+     * @param $attributeName
+     * @return bool
+     */
     public function isAttributeEnabled($additionalAttributes, $attributeName)
     {
         foreach ($additionalAttributes as $attr) {
@@ -213,6 +283,13 @@ class ProductHelper
         return false;
     }
 
+    /**
+     * @param $storeId
+     * @param $productIds
+     * @param $onlyVisible
+     * @param $includeNotVisibleIndividually
+     * @return \Magento\Catalog\Model\ResourceModel\Product\Collection
+     */
     public function getProductCollectionQuery(
         $storeId,
         $productIds = null,
@@ -272,6 +349,11 @@ class ProductHelper
         return $products;
     }
 
+    /**
+     * @param $products
+     * @param $storeId
+     * @return void
+     */
     protected function addStockFilter($products, $storeId)
     {
         if ($this->configHelper->getShowOutOfStock($storeId) === false) {
@@ -279,6 +361,10 @@ class ProductHelper
         }
     }
 
+    /**
+     * @param $products
+     * @return void
+     */
     protected function addMandatoryAttributes($products)
     {
         /** @var \Magento\Catalog\Model\ResourceModel\Product\Collection $products */
@@ -290,11 +376,23 @@ class ProductHelper
             ->addAttributeToSelect('status');
     }
 
+    /**
+     * @param $storeId
+     * @return array
+     */
     public function getAdditionalAttributes($storeId = null)
     {
         return $this->configHelper->getProductAdditionalAttributes($storeId);
     }
 
+    /**
+     * @param $indexName
+     * @param $indexNameTmp
+     * @param $storeId
+     * @param $saveToTmpIndicesToo
+     * @return void
+     * @throws AlgoliaException
+     */
     public function setSettings($indexName, $indexNameTmp, $storeId, $saveToTmpIndicesToo = false)
     {
         $searchableAttributes = $this->getSearchableAttributes($storeId);
@@ -445,10 +543,16 @@ class ProductHelper
         }
     }
 
+    /**
+     * @param $categoryIds
+     * @param $storeId
+     * @return array
+     * @throws \Magento\Framework\Exception\LocalizedException
+     */
     public function getAllCategories($categoryIds, $storeId)
     {
-        $filterNotIncludedCategories = !$this->configHelper->showCatsNotIncludedInNavigation($storeId);
-        $categories = $this->categoryHelper->getCoreCategories($filterNotIncludedCategories);
+        $filterNotIncludedCategories = $this->configHelper->showCatsNotIncludedInNavigation($storeId);
+        $categories = $this->categoryHelper->getCoreCategories($filterNotIncludedCategories, $storeId);
 
         $selectedCategories = [];
         foreach ($categoryIds as $id) {
@@ -460,6 +564,11 @@ class ProductHelper
         return $selectedCategories;
     }
 
+    /**
+     * @param Product $product
+     * @return array|mixed|null
+     * @throws \Exception
+     */
     public function getObject(Product $product)
     {
         $storeId = $product->getStoreId();
@@ -501,30 +610,21 @@ class ProductHelper
         $customData = $this->addAttribute('ordered_qty', $defaultData, $customData, $additionalAttributes, $product);
         $customData = $this->addAttribute('total_ordered', $defaultData, $customData, $additionalAttributes, $product);
         $customData = $this->addAttribute('rating_summary', $defaultData, $customData, $additionalAttributes, $product);
-
         $customData = $this->addCategoryData($customData, $product);
         $customData = $this->addImageData($customData, $product, $additionalAttributes);
-
         $customData = $this->addInStock($defaultData, $customData, $product);
         $customData = $this->addStockQty($defaultData, $customData, $additionalAttributes, $product);
-
         $subProducts = $this->getSubProducts($product);
-
         $customData = $this->addAdditionalAttributes($customData, $additionalAttributes, $product, $subProducts);
-
         $customData = $this->priceManager->addPriceDataByProductType($customData, $product, $subProducts);
-
         $transport = new DataObject($customData);
         $this->eventManager->dispatch(
             'algolia_subproducts_index',
             ['custom_data' => $transport, 'sub_products' => $subProducts, 'productObject' => $product]
         );
         $customData = $transport->getData();
-
         $customData = array_merge($customData, $defaultData);
-
         $this->algoliaHelper->castProductObject($customData);
-
         $transport = new DataObject($customData);
         $this->eventManager->dispatch(
             'algolia_after_create_product_object',
@@ -537,7 +637,11 @@ class ProductHelper
         return $customData;
     }
 
-    private function getSubProducts(Product $product)
+    /**
+     * @param Product $product
+     * @return array|\Magento\Catalog\Api\Data\ProductInterface[]|DataObject[]
+     */
+    protected function getSubProducts(Product $product)
     {
         $type = $product->getTypeId();
 
@@ -595,7 +699,7 @@ class ProductHelper
      *
      * @see \Magento\Catalog\Model\Indexer\Product\Flat\AbstractAction::_getProductTypeInstances
      */
-    private function getCompositeTypes()
+    protected function getCompositeTypes()
     {
         if ($this->compositeTypes === null) {
             $productEmulator = new \Magento\Framework\DataObject();
@@ -608,7 +712,15 @@ class ProductHelper
         return $this->compositeTypes;
     }
 
-    private function addAttribute($attribute, $defaultData, $customData, $additionalAttributes, Product $product)
+    /**
+     * @param $attribute
+     * @param $defaultData
+     * @param $customData
+     * @param $additionalAttributes
+     * @param Product $product
+     * @return mixed
+     */
+    protected function addAttribute($attribute, $defaultData, $customData, $additionalAttributes, Product $product)
     {
         if (isset($defaultData[$attribute]) === false
             && $this->isAttributeEnabled($additionalAttributes, $attribute)) {
@@ -618,10 +730,16 @@ class ProductHelper
         return $customData;
     }
 
-    private function addCategoryData($customData, Product $product)
+    /**
+     * @param $customData
+     * @param Product $product
+     * @return mixed
+     * @throws \Magento\Framework\Exception\LocalizedException
+     * @throws \Magento\Framework\Exception\NoSuchEntityException
+     */
+    protected function addCategoryData($customData, Product $product)
     {
         $storeId = $product->getStoreId();
-
         $categories = [];
         $categoriesWithPath = [];
         $categoryIds = [];
@@ -645,7 +763,6 @@ class ProductHelper
                 }
 
                 $categoryName = $this->categoryHelper->getCategoryName($category->getId(), $storeId);
-
                 if ($categoryName) {
                     $categories[] = $categoryName;
                 }
@@ -685,7 +802,11 @@ class ProductHelper
         return $customData;
     }
 
-    private function getHierarchicalCategories($categoriesWithPath)
+    /**
+     * @param $categoriesWithPath
+     * @return array
+     */
+    protected function getHierarchicalCategories($categoriesWithPath)
     {
         $hierachivalCategories = [];
 
@@ -713,7 +834,13 @@ class ProductHelper
         return $hierachivalCategories;
     }
 
-    private function addImageData(array $customData, Product $product, $additionalAttributes)
+    /**
+     * @param array $customData
+     * @param Product $product
+     * @param $additionalAttributes
+     * @return array
+     */
+    protected function addImageData(array $customData, Product $product, $additionalAttributes)
     {
         if (false === isset($customData['thumbnail_url'])) {
             $customData['thumbnail_url'] = $this->imageHelper
@@ -745,6 +872,12 @@ class ProductHelper
         return $customData;
     }
 
+    /**
+     * @param $defaultData
+     * @param $customData
+     * @param Product $product
+     * @return mixed
+     */
     protected function addInStock($defaultData, $customData, Product $product)
     {
         if (isset($defaultData['in_stock']) === false) {
@@ -755,7 +888,14 @@ class ProductHelper
         return $customData;
     }
 
-    private function addStockQty($defaultData, $customData, $additionalAttributes, Product $product)
+    /**
+     * @param $defaultData
+     * @param $customData
+     * @param $additionalAttributes
+     * @param Product $product
+     * @return mixed
+     */
+    protected function addStockQty($defaultData, $customData, $additionalAttributes, Product $product)
     {
         if (isset($defaultData['stock_qty']) === false
             && $this->isAttributeEnabled($additionalAttributes, 'stock_qty')) {
@@ -770,7 +910,15 @@ class ProductHelper
         return $customData;
     }
 
-    private function addAdditionalAttributes($customData, $additionalAttributes, Product $product, $subProducts)
+    /**
+     * @param $customData
+     * @param $additionalAttributes
+     * @param Product $product
+     * @param $subProducts
+     * @return mixed
+     * @throws \Magento\Framework\Exception\LocalizedException
+     */
+    protected function addAdditionalAttributes($customData, $additionalAttributes, Product $product, $subProducts)
     {
         foreach ($additionalAttributes as $attribute) {
             $attributeName = $attribute['attribute'];
@@ -811,7 +959,14 @@ class ProductHelper
         return $customData;
     }
 
-    private function addNullValue($customData, $subProducts, $attribute, AttributeResource $attributeResource)
+    /**
+     * @param $customData
+     * @param $subProducts
+     * @param $attribute
+     * @param AttributeResource $attributeResource
+     * @return mixed
+     */
+    protected function addNullValue($customData, $subProducts, $attribute, AttributeResource $attributeResource)
     {
         $attributeName = $attribute['attribute'];
 
@@ -852,7 +1007,13 @@ class ProductHelper
         return $customData;
     }
 
-    private function getValues($valueText, Product $subProduct, AttributeResource $attributeResource)
+    /**
+     * @param $valueText
+     * @param Product $subProduct
+     * @param AttributeResource $attributeResource
+     * @return array
+     */
+    protected function getValues($valueText, Product $subProduct, AttributeResource $attributeResource)
     {
         $values = [];
 
@@ -871,7 +1032,14 @@ class ProductHelper
         return $values;
     }
 
-    private function addSubProductImage($subProductImages, $attribute, $subProduct, $valueText)
+    /**
+     * @param $subProductImages
+     * @param $attribute
+     * @param $subProduct
+     * @param $valueText
+     * @return mixed
+     */
+    protected function addSubProductImage($subProductImages, $attribute, $subProduct, $valueText)
     {
         if (mb_strtolower($attribute['attribute'], 'utf-8') !== 'color') {
             return $subProductImages;
@@ -900,7 +1068,15 @@ class ProductHelper
         return $subProductImages;
     }
 
-    private function addNonNullValue(
+    /**
+     * @param $customData
+     * @param $value
+     * @param Product $product
+     * @param $attribute
+     * @param AttributeResource $attributeResource
+     * @return mixed
+     */
+    protected function addNonNullValue(
         $customData,
         $value,
         Product $product,
@@ -927,7 +1103,11 @@ class ProductHelper
         return $customData;
     }
 
-    private function getSearchableAttributes($storeId = null)
+    /**
+     * @param $storeId
+     * @return array
+     */
+    protected function getSearchableAttributes($storeId = null)
     {
         $searchableAttributes = [];
 
@@ -951,7 +1131,11 @@ class ProductHelper
         return $searchableAttributes;
     }
 
-    private function getCustomRanking($storeId)
+    /**
+     * @param $storeId
+     * @return array
+     */
+    protected function getCustomRanking($storeId)
     {
         $customRanking = [];
 
@@ -963,7 +1147,11 @@ class ProductHelper
         return $customRanking;
     }
 
-    private function getUnretrieveableAttributes($storeId = null)
+    /**
+     * @param $storeId
+     * @return array
+     */
+    protected function getUnretrieveableAttributes($storeId = null)
     {
         $unretrievableAttributes = [];
 
@@ -976,7 +1164,11 @@ class ProductHelper
         return $unretrievableAttributes;
     }
 
-    private function getAttributesForFaceting($storeId)
+    /**
+     * @param $storeId
+     * @return array
+     */
+    protected function getAttributesForFaceting($storeId)
     {
         $attributesForFaceting = [];
 
@@ -1022,7 +1214,13 @@ class ProductHelper
         return $attributesForFaceting;
     }
 
-    private function deleteUnusedReplicas($indexName, $replicas, $setReplicasTaskId)
+    /**
+     * @param $indexName
+     * @param $replicas
+     * @param $setReplicasTaskId
+     * @return void
+     */
+    protected function deleteUnusedReplicas($indexName, $replicas, $setReplicasTaskId)
     {
         $indicesToDelete = [];
 
@@ -1046,7 +1244,12 @@ class ProductHelper
         }
     }
 
-    private function setFacetsQueryRules($indexName)
+    /**
+     * @param $indexName
+     * @return void
+     * @throws AlgoliaException
+     */
+    protected function setFacetsQueryRules($indexName)
     {
         $index = $this->algoliaHelper->getIndex($indexName);
 
@@ -1090,7 +1293,12 @@ class ProductHelper
         }
     }
 
-    private function clearFacetsQueryRules(SearchIndex $index)
+    /**
+     * @param SearchIndex $index
+     * @return void
+     * @throws AlgoliaException
+     */
+    protected function clearFacetsQueryRules(SearchIndex $index)
     {
         try {
             $hitsPerPage = 100;
@@ -1123,7 +1331,11 @@ class ProductHelper
         }
     }
 
-    private function explodeSynonyms($synonyms)
+    /**
+     * @param $synonyms
+     * @return array
+     */
+    protected function explodeSynonyms($synonyms)
     {
         return array_map('trim', explode(',', $synonyms));
     }
