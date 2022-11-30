@@ -86,7 +86,7 @@ requirejs(['algoliaBundle'], function(algoliaBundle) {
 
             if (helper && algoliaConfig.useAdaptiveImage === true) {
                 if (hit.images_data && helper.state.facetsRefinements.color) {
-                    matchedColors = helper.state.disjunctiveFacetsRefinements.color.slice(0); // slice to clone
+                    matchedColors = helper.state.facetsRefinements.color.slice(0); // slice to clone
                 }
 
                 if (hit.images_data && helper.state.disjunctiveFacetsRefinements.color) {
@@ -142,20 +142,20 @@ requirejs(['algoliaBundle'], function(algoliaBundle) {
             if (Array.isArray(hit._highlightResult.name))
                 hit._highlightResult.name = hit._highlightResult.name[0];
 
-            if (Array.isArray(hit.price))
+            if (Array.isArray(hit.price)) {
                 hit.price = hit.price[0];
+                if (hit['price'] !== undefined && price_key !== '.' + algoliaConfig.currencyCode + '.default' && hit['price'][algoliaConfig.currencyCode][price_key.substr(1) + '_formated'] !== hit['price'][algoliaConfig.currencyCode]['default_formated']) {
+                    hit['price'][algoliaConfig.currencyCode][price_key.substr(1) + '_original_formated'] = hit['price'][algoliaConfig.currencyCode]['default_formated'];
+                }
 
-            if (hit['price'] !== undefined && price_key !== '.' + algoliaConfig.currencyCode + '.default' && hit['price'][algoliaConfig.currencyCode][price_key.substr(1) + '_formated'] !== hit['price'][algoliaConfig.currencyCode]['default_formated']) {
-                hit['price'][algoliaConfig.currencyCode][price_key.substr(1) + '_original_formated'] = hit['price'][algoliaConfig.currencyCode]['default_formated'];
-            }
+                if (hit['price'][algoliaConfig.currencyCode]['default_original_formated']
+                    && hit['price'][algoliaConfig.currencyCode]['special_to_date']) {
+                    var priceExpiration = hit['price'][algoliaConfig.currencyCode]['special_to_date'];
 
-            if (hit['price'][algoliaConfig.currencyCode]['default_original_formated']
-                && hit['price'][algoliaConfig.currencyCode]['special_to_date']) {
-                var priceExpiration = hit['price'][algoliaConfig.currencyCode]['special_to_date'];
-
-                if (algoliaConfig.now > priceExpiration + 1) {
-                    hit['price'][algoliaConfig.currencyCode]['default_formated'] = hit['price'][algoliaConfig.currencyCode]['default_original_formated'];
-                    hit['price'][algoliaConfig.currencyCode]['default_original_formated'] = false;
+                    if (algoliaConfig.now > priceExpiration + 1) {
+                        hit['price'][algoliaConfig.currencyCode]['default_formated'] = hit['price'][algoliaConfig.currencyCode]['default_original_formated'];
+                        hit['price'][algoliaConfig.currencyCode]['default_original_formated'] = false;
+                    }
                 }
             }
 
@@ -323,7 +323,7 @@ requirejs(['algoliaBundle'], function(algoliaBundle) {
                         return protocol + '//' + hostname + portWithPrefix + pathname;
                     }
                     else {
-                        if (queryString) {
+                        if (queryString && queryString != 'q=__empty__') {
                             return protocol + '//' + hostname + portWithPrefix + pathname + '?' + queryString;
                         } else {
                             return protocol + '//' + hostname + portWithPrefix + pathname;

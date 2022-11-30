@@ -25,50 +25,58 @@ class Queue
     public const ERROR_LOG = 'algoliasearch_queue_errors.log';
 
     /** @var AdapterInterface */
-    private $db;
+    protected $db;
 
     /** @var string */
-    private $table;
+    protected $table;
 
     /** @var string */
-    private $logTable;
+    protected $logTable;
 
     /** @var string */
-    private $archiveTable;
+    protected $archiveTable;
 
     /** @var ObjectManagerInterface */
-    private $objectManager;
+    protected $objectManager;
 
     /** @var ConsoleOutput */
-    private $output;
+    protected $output;
 
     /** @var int */
-    private $elementsPerPage;
+    protected $elementsPerPage;
 
     /** @var ConfigHelper */
-    private $configHelper;
+    protected $configHelper;
 
     /** @var Logger */
-    private $logger;
+    protected $logger;
 
-    private $jobCollectionFactory;
-
-    /** @var int */
-    private $maxSingleJobDataSize;
+    protected $jobCollectionFactory;
 
     /** @var int */
-    private $noOfFailedJobs = 0;
+    protected $maxSingleJobDataSize;
+
+    /** @var int */
+    protected $noOfFailedJobs = 0;
 
     /** @var array */
-    private $staticJobMethods = [
+    protected $staticJobMethods = [
         'saveConfigurationToAlgolia',
         'moveIndexWithSetSettings',
         'deleteObjects',
     ];
 
     /** @var array */
-    private $logRecord;
+    protected $logRecord;
 
+    /**
+     * @param ConfigHelper $configHelper
+     * @param Logger $logger
+     * @param JobCollectionFactory $jobCollectionFactory
+     * @param ResourceConnection $resourceConnection
+     * @param ObjectManagerInterface $objectManager
+     * @param ConsoleOutput $output
+     */
     public function __construct(
         ConfigHelper $configHelper,
         Logger $logger,
@@ -117,6 +125,7 @@ class Queue
                 'data'      => json_encode($data),
                 'data_size' => $dataSize,
                 'pid'       => null,
+                'max_retries' => $this->configHelper->getRetryLimit(),
                 'is_full_reindex' => $isFullReindex ? 1 : 0,
             ]);
         } else {
@@ -136,8 +145,8 @@ class Queue
     public function getAverageProcessingTime()
     {
         $select = $this->db->select()
-           ->from($this->logTable, ['number_of_runs' => 'COUNT(duration)', 'average_time' => 'AVG(duration)'])
-           ->where('processed_jobs > 0 AND with_empty_queue = 0 AND started >= (CURDATE() - INTERVAL 2 DAY)');
+            ->from($this->logTable, ['number_of_runs' => 'COUNT(duration)', 'average_time' => 'AVG(duration)'])
+            ->where('processed_jobs > 0 AND with_empty_queue = 0 AND started >= (CURDATE() - INTERVAL 2 DAY)');
 
         $data = $this->db->query($select)->fetch();
 
@@ -264,11 +273,11 @@ class Queue
     /**
      * @param string $whereClause
      */
-    private function archiveFailedJobs($whereClause)
+    protected function archiveFailedJobs($whereClause)
     {
         $select = $this->db->select()
-           ->from($this->table, ['pid', 'class', 'method', 'data', 'error_log', 'data_size', 'NOW()'])
-           ->where($whereClause);
+            ->from($this->table, ['pid', 'class', 'method', 'data', 'error_log', 'data_size', 'NOW()'])
+            ->where($whereClause);
 
         $query = $this->db->insertFromSelect(
             $select,
@@ -287,7 +296,7 @@ class Queue
      * @return Job[]
      *
      */
-    private function getJobs($maxJobs)
+    protected function getJobs($maxJobs)
     {
         $maxJobs = ($maxJobs === -1) ? $this->configHelper->getNumberOfJobToRun() : $maxJobs;
 
@@ -334,7 +343,7 @@ class Queue
      *
      * @return Job[]
      */
-    private function fetchJobs($jobsLimit, $fetchFullReindexJobs = false, $lastJobId = null)
+    protected function fetchJobs($jobsLimit, $fetchFullReindexJobs = false, $lastJobId = null)
     {
         $jobs = [];
 
@@ -353,8 +362,8 @@ class Queue
                 ->addFieldToFilter('is_full_reindex', $fetchFullReindexJobs)
                 ->setOrder('job_id', Collection::SORT_ORDER_ASC)
                 ->getSelect()
-                    ->limit($limit, $offset)
-                    ->forUpdate();
+                ->limit($limit, $offset)
+                ->forUpdate();
 
             if ($lastJobId !== null) {
                 $jobsCollection->addFieldToFilter('job_id', ['gt' => $lastJobId]);
@@ -404,7 +413,7 @@ class Queue
      *
      * @return Job[]
      */
-    private function mergeJobs(array $unmergedJobs)
+    protected function mergeJobs(array $unmergedJobs)
     {
         $unmergedJobs = $this->sortJobs($unmergedJobs);
 
@@ -441,7 +450,7 @@ class Queue
      *
      * @return Job[]
      */
-    private function sortJobs(array $jobs)
+    protected function sortJobs(array $jobs)
     {
         $sortedJobs = [];
 
@@ -473,7 +482,7 @@ class Queue
      *
      * @return array
      */
-    private function stackSortedJobs(array $sortedJobs, array $tempSortableJobs, Job $job = null)
+    protected function stackSortedJobs(array $sortedJobs, array $tempSortableJobs, Job $job = null)
     {
         if ($tempSortableJobs && $tempSortableJobs !== []) {
             $tempSortableJobs = $this->jobSort(
@@ -501,7 +510,7 @@ class Queue
     /**
      * @return array
      */
-    private function jobSort()
+    protected function jobSort()
     {
         $args = func_get_args();
 
@@ -533,7 +542,7 @@ class Queue
     /**
      * @param Job[] $jobs
      */
-    private function lockJobs(array $jobs)
+    protected function lockJobs(array $jobs)
     {
         $jobsIds = $this->getJobsIdsFromMergedJobs($jobs);
 
@@ -551,7 +560,7 @@ class Queue
      *
      * @return string[]
      */
-    private function getJobsIdsFromMergedJobs(array $mergedJobs)
+    protected function getJobsIdsFromMergedJobs(array $mergedJobs)
     {
         $jobsIds = [];
         foreach ($mergedJobs as $job) {
@@ -561,17 +570,11 @@ class Queue
         return $jobsIds;
     }
 
-    private function clearOldFailingJobs()
+    /**
+     * @return void
+     */
+    protected function clearOldFailingJobs()
     {
-        $retryLimit = $this->configHelper->getRetryLimit();
-
-        if ($retryLimit > 0) {
-            $where = $this->db->quoteInto('retries >= ?', $retryLimit);
-            $this->archiveFailedJobs($where);
-
-            return;
-        }
-
         $this->archiveFailedJobs('retries > max_retries');
         $this->db->delete($this->table, 'retries > max_retries');
     }
@@ -579,12 +582,12 @@ class Queue
     /**
      * @throws Zend_Db_Statement_Exception
      */
-    private function clearOldLogRecords()
+    protected function clearOldLogRecords()
     {
         $select = $this->db->select()
-           ->from($this->logTable, ['id'])
-           ->order(['started DESC', 'id DESC'])
-           ->limit(PHP_INT_MAX, 25000);
+            ->from($this->logTable, ['id'])
+            ->order(['started DESC', 'id DESC'])
+            ->limit(PHP_INT_MAX, 25000);
 
         $idsToDelete = $this->db->query($select)->fetchAll(PDO::FETCH_COLUMN, 0);
 
@@ -593,7 +596,10 @@ class Queue
         }
     }
 
-    private function clearOldArchiveRecords()
+    /**
+     * @return void
+     */
+    protected function clearOldArchiveRecords()
     {
         $archiveLogClearLimit = $this->configHelper->getArchiveLogClearLimit();
         // Adding a fallback in case this configuration was not set in a consistent way
@@ -607,7 +613,10 @@ class Queue
         );
     }
 
-    private function unlockStackedJobs()
+    /**
+     * @return void
+     */
+    protected function unlockStackedJobs()
     {
         $this->db->update($this->table, [
             'locked_at' => null,
@@ -618,7 +627,7 @@ class Queue
     /**
      * @return bool
      */
-    private function shouldEmptyQueue()
+    protected function shouldEmptyQueue()
     {
         if (getenv('PROCESS_FULL_QUEUE') && getenv('PROCESS_FULL_QUEUE') === '1') {
             return true;
