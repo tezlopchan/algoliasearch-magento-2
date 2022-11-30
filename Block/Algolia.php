@@ -8,7 +8,9 @@ use Algolia\AlgoliaSearch\Helper\Configuration\PersonalizationHelper;
 use Algolia\AlgoliaSearch\Helper\Data as CoreHelper;
 use Algolia\AlgoliaSearch\Helper\Entity\CategoryHelper;
 use Algolia\AlgoliaSearch\Helper\Entity\ProductHelper;
+use Algolia\AlgoliaSearch\Helper\Entity\SuggestionHelper;
 use Algolia\AlgoliaSearch\Helper\LandingPageHelper;
+use Magento\Catalog\Model\Product;
 use Magento\Checkout\Model\Session as CheckoutSession;
 use Magento\Customer\Model\Context as CustomerContext;
 use Magento\Framework\App\ActionInterface;
@@ -21,29 +23,103 @@ use Magento\Framework\Registry;
 use Magento\Framework\Stdlib\DateTime\DateTime;
 use Magento\Framework\Url\Helper\Data;
 use Magento\Framework\View\Element\Template;
+use Magento\Sales\Model\Order;
 use Magento\Search\Helper\Data as CatalogSearchHelper;
 
 class Algolia extends Template implements CollectionDataSourceInterface
 {
-    private $config;
-    private $catalogSearchHelper;
-    private $registry;
-    private $productHelper;
-    private $currency;
-    private $format;
-    private $algoliaHelper;
-    private $urlHelper;
-    private $formKey;
-    private $httpContext;
-    private $coreHelper;
-    private $categoryHelper;
-    private $landingPageHelper;
-    private $personalizationHelper;
-    private $checkoutSession;
-    private $date;
+    /**
+     * @var ConfigHelper
+     */
+    protected $config;
+    /**
+     * @var CatalogSearchHelper
+     */
+    protected $catalogSearchHelper;
+    /**
+     * @var Registry
+     */
+    protected $registry;
+    /**
+     * @var ProductHelper
+     */
+    protected $productHelper;
+    /**
+     * @var Currency
+     */
+    protected $currency;
+    /**
+     * @var Format
+     */
+    protected $format;
+    /**
+     * @var AlgoliaHelper
+     */
+    protected $algoliaHelper;
+    /**
+     * @var Data
+     */
+    protected $urlHelper;
+    /**
+     * @var FormKey
+     */
+    protected $formKey;
+    /**
+     * @var HttpContext
+     */
+    protected $httpContext;
+    /**
+     * @var CoreHelper
+     */
+    protected $coreHelper;
+    /**
+     * @var CategoryHelper
+     */
+    protected $categoryHelper;
+    /**
+     * @var SuggestionHelper
+     */
+    protected $suggestionHelper;
+    /**
+     * @var LandingPageHelper
+     */
+    protected $landingPageHelper;
+    /**
+     * @var PersonalizationHelper
+     */
+    protected $personalizationHelper;
+    /**
+     * @var CheckoutSession
+     */
+    protected $checkoutSession;
+    /**
+     * @var DateTime
+     */
+    protected $date;
 
-    private $priceKey;
+    protected $priceKey;
 
+    /**
+     * @param Template\Context $context
+     * @param ConfigHelper $config
+     * @param CatalogSearchHelper $catalogSearchHelper
+     * @param ProductHelper $productHelper
+     * @param Currency $currency
+     * @param Format $format
+     * @param Registry $registry
+     * @param AlgoliaHelper $algoliaHelper
+     * @param Data $urlHelper
+     * @param FormKey $formKey
+     * @param HttpContext $httpContext
+     * @param CoreHelper $coreHelper
+     * @param CategoryHelper $categoryHelper
+     * @param SuggestionHelper $suggestionHelper
+     * @param LandingPageHelper $landingPageHelper
+     * @param PersonalizationHelper $personalizationHelper
+     * @param CheckoutSession $checkoutSession
+     * @param DateTime $date
+     * @param array $data
+     */
     public function __construct(
         Template\Context $context,
         ConfigHelper $config,
@@ -58,6 +134,7 @@ class Algolia extends Template implements CollectionDataSourceInterface
         HttpContext $httpContext,
         CoreHelper $coreHelper,
         CategoryHelper $categoryHelper,
+        SuggestionHelper $suggestionHelper,
         LandingPageHelper $landingPageHelper,
         PersonalizationHelper $personalizationHelper,
         CheckoutSession $checkoutSession,
@@ -76,6 +153,7 @@ class Algolia extends Template implements CollectionDataSourceInterface
         $this->httpContext = $httpContext;
         $this->coreHelper = $coreHelper;
         $this->categoryHelper = $categoryHelper;
+        $this->suggestionHelper = $suggestionHelper;
         $this->landingPageHelper = $landingPageHelper;
         $this->personalizationHelper = $personalizationHelper;
         $this->checkoutSession = $checkoutSession;
@@ -113,6 +191,11 @@ class Algolia extends Template implements CollectionDataSourceInterface
     public function getCategoryHelper()
     {
         return $this->categoryHelper;
+    }
+
+    public function getSuggestionHelper()
+    {
+        return $this->suggestionHelper;
     }
 
     public function getCatalogSearchHelper()
@@ -175,13 +258,13 @@ class Algolia extends Template implements CollectionDataSourceInterface
         return $this->registry->registry('current_category');
     }
 
-    /** @return \Magento\Catalog\Model\Product */
+    /** @return Product */
     public function getCurrentProduct()
     {
         return $this->registry->registry('product');
     }
 
-    /** @return \Magento\Sales\Model\Order */
+    /** @return Order */
     public function getLastOrder()
     {
         return $this->checkoutSession->getLastRealOrder();
@@ -202,20 +285,17 @@ class Algolia extends Template implements CollectionDataSourceInterface
         return $this->date->gmtTimestamp('today midnight');
     }
 
-    private function getAddToCartUrl($additional = [])
+    protected function getAddToCartUrl($additional = [])
     {
         $continueUrl = $this->urlHelper->getEncodedUrl($this->_urlBuilder->getCurrentUrl());
         $urlParamName = ActionInterface::PARAM_NAME_URL_ENCODED;
-
         $routeParams = [
             $urlParamName => $continueUrl,
             '_secure' => $this->algoliaHelper->getRequest()->isSecure(),
         ];
-
         if ($additional !== []) {
             $routeParams = array_merge($routeParams, $additional);
         }
-
         return $this->_urlBuilder->getUrl('checkout/cart/add', $routeParams);
     }
 
@@ -225,7 +305,6 @@ class Algolia extends Template implements CollectionDataSourceInterface
         if (!$landingPageId) {
             return null;
         }
-
         return $this->landingPageHelper->getLandingPage($landingPageId);
     }
 }

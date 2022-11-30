@@ -1,15 +1,23 @@
 define([], function () {
     return {
-        getAdditionalHtml: function (item, components, html) {
-            return html`${components.Highlight({ hit: item, attribute: 'value' })}`;
+        getNoResultHtml: function ({html}) {
+            return html`<p>No Results</p>`;
         },
 
-        getHeaderHtml: function (section) {
-            return section.name;
+        getHeaderHtml: function ({section}) {
+            return section.label || section.name;
         },
 
-        getNoResultHtml: function () {
-            return 'No Results';
+        getItemHtml: function ({item, components, html, section}) {
+            return html`<a class="aa-ItemLink" href="${algoliaConfig.resultPageUrl}?q=${encodeURIComponent(item.query)}&${section.name}=${encodeURIComponent(item.value)}"
+                data-objectId=${item.objectID} data-index=${item.__autocomplete_indexName} data-queryId=${item.__autocomplete_queryID}>
+                ${components.Highlight({ hit: item, attribute: 'value' })}
+            </a>`;
+
+        },
+
+        getFooterHtml: function () {
+            return "";
         }
     };
 });
