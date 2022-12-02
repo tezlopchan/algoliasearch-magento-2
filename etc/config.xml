@@ -55,5 +55,10 @@
                 </trends_item>
             </recommend>
         </algoliasearch_recommend>
+        <algoliasearch_advanced>
+            <advanced>
+                <max_record_size_limit>10000</max_record_size_limit>
+            </advanced>
+        </algoliasearch_advanced>
     </default>
 </config>
