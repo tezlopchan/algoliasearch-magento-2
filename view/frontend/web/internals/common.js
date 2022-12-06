@@ -411,6 +411,9 @@ requirejs(['algoliaBundle'], function(algoliaBundle) {
                             // Handle sliders
                             if (currentFacet.type == 'slider' || currentFacet.type == 'priceRanges') {
                                 var currentFacetAttribute = currentFacet.attribute;
+                                if (currentFacetAttribute.indexOf("price") !== -1) {
+                                    currentFacetAttribute += algoliaConfig.priceKey;
+                                }
                                 uiStateProductIndex['range'][currentFacetAttribute] = routeParameters[currentFacetAttribute] && routeParameters[currentFacetAttribute];
                                 if (algoliaConfig.isLandingPage &&
                                     typeof uiStateProductIndex['range'][currentFacetAttribute] === 'undefined' &&
