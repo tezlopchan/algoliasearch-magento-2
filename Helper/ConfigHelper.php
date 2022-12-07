@@ -123,6 +123,7 @@ class ConfigHelper
     protected const IS_ADDTOCART_ENABLED_IN_FREQUENTLY_BOUGHT_TOGETHER = 'algoliasearch_recommend/recommend/frequently_bought_together/is_addtocart_enabled';
     protected const IS_ADDTOCART_ENABLED_IN_RELATED_PRODUCTS = 'algoliasearch_recommend/recommend/related_product/is_addtocart_enabled';
     protected const IS_ADDTOCART_ENABLED_IN_TRENDS_ITEM = 'algoliasearch_recommend/recommend/trends_item/is_addtocart_enabled';
+    protected const AUTOCOMPLETE_KEYBORAD_NAVIAGATION = 'algoliasearch_autocomplete/autocomplete/navigator';
 
     /**
      * @var Magento\Framework\App\Config\ScopeConfigInterface
@@ -1599,7 +1600,7 @@ class ConfigHelper
             $storeId
         );
     }
-    
+
     /**
      * @param $storeId
      * @return mixed
@@ -1607,6 +1608,18 @@ class ConfigHelper
     public function getCacheTime($storeId = null) {
         return $this->configInterface->getValue(self::MAGENTO_DEFAULT_CACHE_TIME,
             ScopeInterface::SCOPE_STORE,
+            $storeId
+        );
+    }
+
+    /**
+     * @param $storeId
+     * @return mixed
+     */
+    public function isAutocompleteNavigatorEnabled($storeId = null)
+    {
+        return $this->configInterface->isSetFlag(self::AUTOCOMPLETE_KEYBORAD_NAVIAGATION,
+        ScopeInterface::SCOPE_STORE,
             $storeId
         );
     }
