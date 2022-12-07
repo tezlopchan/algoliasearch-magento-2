@@ -107,7 +107,7 @@
                     </comment>
                 </field>
                 <field id="autocomplete_selector" translate="label comment" type="text" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1">
-                    <label>Search input DOM Selector</label>
+                    <label>Search Input Container Selector</label>
                     <comment>
                         <![CDATA[
                             If you don't have the <code>top.search</code> block, you can specify a DOM selector of your dom container here to make the search work.
