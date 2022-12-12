@@ -8,7 +8,10 @@
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="1column" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <body>
         <referenceContainer name="checkout.cart.items">
-            <block class="Algolia\AlgoliaSearch\Block\Cart\Recommend" name="checkout.cart.recommend" template="Algolia_AlgoliaSearch::recommend/cart/recommend_items.phtml" after="checkout.cart.container">
+            <block name="checkout.cart.recommend" template="Algolia_AlgoliaSearch::recommend/cart/recommend_items.phtml" >
+                <arguments>
+                    <argument name="view_model" xsi:type="object">Algolia\AlgoliaSearch\ViewModel\Recommend\Cart</argument>
+                </arguments>
             </block>
         </referenceContainer>
     </body>

@@ -8,7 +8,10 @@
 <page layout="1column" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <body>
         <referenceContainer name="content.aside">
-            <block class="Algolia\AlgoliaSearch\Block\RecommendProductView" name="algolia.recommend.product" template="Algolia_AlgoliaSearch::recommend/products.phtml">
+            <block name="algolia.product.view" template="Algolia_AlgoliaSearch::recommend/products.phtml" >
+            <arguments>
+                <argument name="view_model" xsi:type="object">Algolia\AlgoliaSearch\ViewModel\Recommend\ProductView</argument>
+            </arguments>
             </block>
         </referenceContainer>
     </body>
