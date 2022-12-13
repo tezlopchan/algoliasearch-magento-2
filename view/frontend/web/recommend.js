@@ -2,9 +2,9 @@ define([
     'algoliaBundle',
     'recommend',
     'recommendJs',
-    'recommendItemsElement',
+    'recommendProductsHtml',
     'domReady!'
-],function (algoliaBundle, recommend, recommendJs, recommendItemsElement) {
+],function (algoliaBundle, recommend, recommendJs, recommendProductsHtml) {
     'use strict';
 
     return function (config, element) {
@@ -24,11 +24,7 @@ define([
                         objectIDs: config.algoliObjectId,
                         maxRecommendations: algoliaConfig.recommend.limitFBTProducts,
                         itemComponent({item, html}) {
-                            if (algoliaConfig.recommend.isAddToCartEnabledInFBT) {
-                                return recommendItemsElement.getRecommendItemsWithAddToCart(item, html);
-                            } else {
-                                return recommendItemsElement.getRecommendDataWithNoAddToCart(item, html);
-                            }
+                            return recommendProductsHtml.getItemHtml(item, html, algoliaConfig.recommend.isAddToCartEnabledInFBT);
                         },
                     });
                 }
@@ -40,11 +36,7 @@ define([
                         objectIDs: config.algoliObjectId,
                         maxRecommendations: algoliaConfig.recommend.limitRelatedProducts,
                         itemComponent({item, html}) {
-                            if (algoliaConfig.recommend.isAddToCartEnabledInRelatedProduct) {
-                                return recommendItemsElement.getRecommendItemsWithAddToCart(item, html);
-                            } else {
-                                return recommendItemsElement.getRecommendDataWithNoAddToCart(item, html);
-                            }
+                            return recommendProductsHtml.getItemHtml(item, html, algoliaConfig.recommend.isAddToCartEnabledInRelatedProduct);
                         },
                     });
                 }
@@ -59,11 +51,7 @@ define([
                     indexName,
                     maxRecommendations: algoliaConfig.recommend.limitTrendingItems,
                     itemComponent({item, html}) {
-                        if (algoliaConfig.recommend.isAddToCartEnabledInTrendsItem) {
-                            return recommendItemsElement.getRecommendItemsWithAddToCart(item, html);
-                        } else {
-                            return recommendItemsElement.getRecommendDataWithNoAddToCart(item, html);
-                        }
+                        return recommendProductsHtml.getItemHtml(item, html, algoliaConfig.recommend.isAddToCartEnabledInTrendsItem);
                     },
                 });
             } else if (algoliaConfig.recommend.enabledTrendItems && typeof config.recommendTrendContainer !== "undefined") {
@@ -76,11 +64,7 @@ define([
                     indexName,
                     maxRecommendations: config.numOfTrendsItem ? parseInt(config.numOfTrendsItem) : algoliaConfig.recommend.limitTrendingItems,
                     itemComponent({item, html}) {
-                        if (algoliaConfig.recommend.isAddToCartEnabledInTrendsItem) {
-                            return recommendItemsElement.getRecommendItemsWithAddToCart(item, html);
-                        } else {
-                            return recommendItemsElement.getRecommendDataWithNoAddToCart(item, html);
-                        }
+                        return recommendProductsHtml.getItemHtml(item, html, algoliaConfig.recommend.isAddToCartEnabledInTrendsItem);
                     },
                 });
             }
