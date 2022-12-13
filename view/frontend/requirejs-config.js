@@ -10,7 +10,7 @@ var config = {
 			'suggestionsHtml': 'Algolia_AlgoliaSearch/internals/template/autocomplete/suggestions',
 			'additionalHtml': 'Algolia_AlgoliaSearch/internals/template/autocomplete/additional-section',
 			// Recommend templates
-                        'recommendItemsElement': 'Algolia_AlgoliaSearch/internals/template/recommend/recommendItems'
+			'recommendItemsElement': 'Algolia_AlgoliaSearch/internals/template/recommend/products'
 		}
 	},
 	paths: {

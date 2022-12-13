@@ -23,11 +23,11 @@ define([
                         indexName,
                         objectIDs: config.algoliObjectId,
                         maxRecommendations: algoliaConfig.recommend.limitFBTProducts,
-                        itemComponent({item, createElement, Fragment}) {
+                        itemComponent({item, html}) {
                             if (algoliaConfig.recommend.isAddToCartEnabledInFBT) {
-                                return recommendItemsElement.getRecommendItemsWithAddToCart(item, createElement);
+                                return recommendItemsElement.getRecommendItemsWithAddToCart(item, html);
                             } else {
-                                return recommendItemsElement.getRecommendDataWithNoAddToCart(item, createElement);
+                                return recommendItemsElement.getRecommendDataWithNoAddToCart(item, html);
                             }
                         },
                     });
@@ -39,11 +39,11 @@ define([
                         indexName,
                         objectIDs: config.algoliObjectId,
                         maxRecommendations: algoliaConfig.recommend.limitRelatedProducts,
-                        itemComponent({item, createElement, Fragment}) {
+                        itemComponent({item, html}) {
                             if (algoliaConfig.recommend.isAddToCartEnabledInRelatedProduct) {
-                                return recommendItemsElement.getRecommendItemsWithAddToCart(item, createElement);
+                                return recommendItemsElement.getRecommendItemsWithAddToCart(item, html);
                             } else {
-                                return recommendItemsElement.getRecommendDataWithNoAddToCart(item, createElement);
+                                return recommendItemsElement.getRecommendDataWithNoAddToCart(item, html);
                             }
                         },
                     });
@@ -58,11 +58,11 @@ define([
                     recommendClient,
                     indexName,
                     maxRecommendations: algoliaConfig.recommend.limitTrendingItems,
-                    itemComponent({item, createElement, Fragment}) {
+                    itemComponent({item, html}) {
                         if (algoliaConfig.recommend.isAddToCartEnabledInTrendsItem) {
-                            return recommendItemsElement.getRecommendItemsWithAddToCart(item, createElement);
+                            return recommendItemsElement.getRecommendItemsWithAddToCart(item, html);
                         } else {
-                            return recommendItemsElement.getRecommendDataWithNoAddToCart(item, createElement);
+                            return recommendItemsElement.getRecommendDataWithNoAddToCart(item, html);
                         }
                     },
                 });
@@ -75,11 +75,11 @@ define([
                     recommendClient,
                     indexName,
                     maxRecommendations: config.numOfTrendsItem ? parseInt(config.numOfTrendsItem) : algoliaConfig.recommend.limitTrendingItems,
-                    itemComponent({item, createElement, Fragment}) {
+                    itemComponent({item, html}) {
                         if (algoliaConfig.recommend.isAddToCartEnabledInTrendsItem) {
-                            return recommendItemsElement.getRecommendItemsWithAddToCart(item, createElement);
+                            return recommendItemsElement.getRecommendItemsWithAddToCart(item, html);
                         } else {
-                            return recommendItemsElement.getRecommendDataWithNoAddToCart(item, createElement);
+                            return recommendItemsElement.getRecommendDataWithNoAddToCart(item, html);
                         }
                     },
                 });
