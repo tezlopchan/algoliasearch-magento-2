@@ -303,6 +303,7 @@ class Configuration extends Algolia implements CollectionDataSourceInterface
                 'searchBy' => __('Search by'),
                 'searchForFacetValuesPlaceholder' => __('Search for other ...'),
                 'showMore' => __('Show more products'),
+                'placeholder' => __('Search for products, categories, ...'),
             ],
         ];
 
