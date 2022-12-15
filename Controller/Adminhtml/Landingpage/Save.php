@@ -105,10 +105,10 @@ class Save extends AbstractAction
                     $customerGroups = $this->customerGroupCollectionFactory->create();
                     $store = $this->storeManager->getStore($data['store_id']);
                     $baseCurrencyCode = $store->getBaseCurrencyCode();
-                        foreach ($customerGroups as $group) {
-                            $groupId = (int) $group->getData('customer_group_id');
-                            $configuration['price.'.$baseCurrencyCode.'.group_'.$groupId] = $priceConfig;
-                        }
+                    foreach ($customerGroups as $group) {
+                        $groupId = (int) $group->getData('customer_group_id');
+                        $configuration['price.'.$baseCurrencyCode.'.group_'.$groupId] = $priceConfig;
+                    }
                     $data['configuration'] = json_encode($configuration);
                 }
             }
