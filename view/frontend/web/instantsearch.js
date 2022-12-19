@@ -226,7 +226,11 @@ requirejs(['algoliaBundle', 'Magento_Catalog/js/price-utils'], function (algolia
 			searchBox: {
 				container: instant_selector,
 				placeholder: algoliaConfig.translations.searchFor,
-				showSubmit: false
+				showSubmit: false,
+                queryHook : function(inputValue, search) {
+                    $(".page-title-wrapper span.base").html(inputValue);
+                    return search(inputValue);
+                }
 			},
 			/**
 			 * stats
