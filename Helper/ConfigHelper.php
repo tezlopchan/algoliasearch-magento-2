@@ -123,7 +123,7 @@ class ConfigHelper
     protected const IS_ADDTOCART_ENABLED_IN_FREQUENTLY_BOUGHT_TOGETHER = 'algoliasearch_recommend/recommend/frequently_bought_together/is_addtocart_enabled';
     protected const IS_ADDTOCART_ENABLED_IN_RELATED_PRODUCTS = 'algoliasearch_recommend/recommend/related_product/is_addtocart_enabled';
     protected const IS_ADDTOCART_ENABLED_IN_TRENDS_ITEM = 'algoliasearch_recommend/recommend/trends_item/is_addtocart_enabled';
-
+    protected const USE_VIRTUAL_REPLICA_ENABLED = 'algoliasearch_instant/instant/use_virtual_replica';
     /**
      * @var Magento\Framework\App\Config\ScopeConfigInterface
      */
@@ -1599,13 +1599,24 @@ class ConfigHelper
             $storeId
         );
     }
-    
+
     /**
      * @param $storeId
      * @return mixed
      */
     public function getCacheTime($storeId = null) {
         return $this->configInterface->getValue(self::MAGENTO_DEFAULT_CACHE_TIME,
+            ScopeInterface::SCOPE_STORE,
+            $storeId
+        );
+    }
+
+    /**
+     * @param $storeId
+     * @return mixed
+     */
+    public function useVirtualReplica($storeId = null) {
+        return $this->configInterface->isSetFlag(self::USE_VIRTUAL_REPLICA_ENABLED,
             ScopeInterface::SCOPE_STORE,
             $storeId
         );

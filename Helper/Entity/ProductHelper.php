@@ -450,6 +450,11 @@ class ProductHelper
             }, $sortingIndices));
         }
 
+        // Managing Virtual Replica
+        if ($this->configHelper->useVirtualReplica($storeId)) {
+            $replicas = $this->handleVirtualReplica($replicas, $indexName);
+        }
+
         // Merge current replicas with sorting replicas to not delete A/B testing replica indices
         try {
             $currentSettings = $this->algoliaHelper->getSettings($indexName);
@@ -464,19 +469,20 @@ class ProductHelper
 
         if (count($replicas) > 0) {
             $this->algoliaHelper->setSettings($indexName, ['replicas' => $replicas]);
-
             $this->logger->log('Setting replicas to "' . $indexName . '" index.');
             $this->logger->log('Replicas: ' . json_encode($replicas));
             $setReplicasTaskId = $this->algoliaHelper->getLastTaskId();
 
-            foreach ($sortingIndices as $values) {
-                $replicaName = $values['name'];
-                $indexSettings['ranking'] = $values['ranking'];
+            if (!$this->configHelper->useVirtualReplica($storeId)) {
+                foreach ($sortingIndices as $values) {
+                    $replicaName = $values['name'];
+                    $indexSettings['ranking'] = $values['ranking'];
 
-                $this->algoliaHelper->setSettings($replicaName, $indexSettings, false, true);
+                    $this->algoliaHelper->setSettings($replicaName, $indexSettings, false, true);
 
-                $this->logger->log('Setting settings to "' . $replicaName . '" replica.');
-                $this->logger->log('Settings: ' . json_encode($indexSettings));
+                    $this->logger->log('Setting settings to "' . $replicaName . '" replica.');
+                    $this->logger->log('Settings: ' . json_encode($indexSettings));
+                }
             }
         } else {
             $this->algoliaHelper->setSettings($indexName, ['replicas' => []]);
@@ -1401,5 +1407,18 @@ class ProductHelper
         $stockItem = $this->stockRegistry->getStockItem($product->getId());
 
         return $product->isSaleable() && $stockItem->getIsInStock();
+    }
+
+    /**
+     * @param $replica
+     * @return array
+     */
+    protected function handleVirtualReplica($replicas, $indexName) {
+        $this->algoliaHelper->setSettings($indexName, ['replicas' => []]);
+        $virtualReplicaArray = [];
+        foreach ($replicas as $replica) {
+            $virtualReplicaArray[] = 'virtual('.$replica.')';
+        }
+        return $virtualReplicaArray;
     }
 }

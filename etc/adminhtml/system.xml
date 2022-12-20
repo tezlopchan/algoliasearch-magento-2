@@ -302,6 +302,18 @@
                         ]]>
                     </comment>
                 </field>
+                <field id="use_virtual_replica" translate="label comment" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Use Virtual Replica</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>
+                        <![CDATA[
+                            This feature is only applicable for permium customer
+                        ]]>
+                    </comment>
+                    <depends>
+                        <field id="is_instant_enabled">1</field>
+                    </depends>
+                </field>
                 <field id="sorts" translate="label comment" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Sorts</label>
                     <frontend_model>Algolia\AlgoliaSearch\Model\Source\Sorts</frontend_model>
