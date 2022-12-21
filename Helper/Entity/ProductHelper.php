@@ -423,6 +423,7 @@ class ProductHelper
                 'index_settings' => $transport,
             ]
         );
+
         $indexSettings = $transport->getData();
 
         $this->algoliaHelper->setSettings($indexName, $indexSettings, false, true);
@@ -477,11 +478,17 @@ class ProductHelper
                 foreach ($sortingIndices as $values) {
                     $replicaName = $values['name'];
                     $indexSettings['ranking'] = $values['ranking'];
-
                     $this->algoliaHelper->setSettings($replicaName, $indexSettings, false, true);
-
                     $this->logger->log('Setting settings to "' . $replicaName . '" replica.');
                     $this->logger->log('Settings: ' . json_encode($indexSettings));
+                }
+            } else {
+                foreach ($sortingIndices as $values) {
+                    $replicaName = $values['name'];
+                    $replicaSetting['customRanking'] = [$values['ranking'][0], ...$customRanking];
+                    $this->algoliaHelper->setSettings($replicaName, $replicaSetting, false, false);
+                    $this->logger->log('Setting settings to "' . $replicaName . '" replica.');
+                    $this->logger->log('Settings: ' . json_encode($replicaSetting));
                 }
             }
         } else {
