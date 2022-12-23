@@ -1421,7 +1421,6 @@ class ProductHelper
      * @return array
      */
     protected function handleVirtualReplica($replicas, $indexName) {
-        $this->algoliaHelper->setSettings($indexName, ['replicas' => []]);
         $virtualReplicaArray = [];
         foreach ($replicas as $replica) {
             $virtualReplicaArray[] = 'virtual('.$replica.')';
