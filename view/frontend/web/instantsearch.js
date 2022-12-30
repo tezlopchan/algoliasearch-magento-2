@@ -82,7 +82,8 @@ requirejs(['algoliaBundle', 'Magento_Catalog/js/price-utils'], function (algolia
 		var indexName = algoliaConfig.indexName + '_products';
 		var searchParameters = {
 			hitsPerPage: algoliaConfig.hitsPerPage,
-			ruleContexts: ruleContexts
+			ruleContexts: ruleContexts,
+            filters:'categoryIds:' + algoliaConfig.request.categoryId
 		};
 		var instantsearchOptions = {
 			searchClient: searchClient,
@@ -228,7 +229,9 @@ requirejs(['algoliaBundle', 'Magento_Catalog/js/price-utils'], function (algolia
 				placeholder: algoliaConfig.translations.searchFor,
 				showSubmit: false,
                 queryHook : function(inputValue, search) {
-                    $(".page-title-wrapper span.base").html(inputValue);
+                    if (algoliaConfig.isSearchPage && algoliaConfig.request.categoryId.length <= 0) {
+                        $(".page-title-wrapper span.base").html("Search results for: '"+inputValue+"'");
+                    }
                     return search(inputValue);
                 }
 			},
@@ -408,6 +411,29 @@ requirejs(['algoliaBundle', 'Magento_Catalog/js/price-utils'], function (algolia
 					next: algoliaConfig.translations.nextPage
 				},
 			};
+
+            /**
+             * pagination
+             * Docs: https://www.algolia.com/doc/api-reference/widgets/breadcrumb/js/
+             **/
+            if (algoliaConfig.isCategoryPage) {
+                var hierarchical_levels = [];
+                for (var l = 0; l < 10; l++) {
+                    hierarchical_levels.push('categories.level' + l.toString());
+                }
+
+                allWidgetConfiguration.breadcrumb = {
+                    container: '#instant-search-breadcrumb-container',
+                    attributes: hierarchical_levels,
+                    separator: ' / ',
+                    transformItems(items) {
+                        return items.map(item => ({
+                            ...item,
+                            label: item.label,
+                        }));
+                    },
+                };
+            }
 
 			delete allWidgetConfiguration.infiniteHits;
 		}
