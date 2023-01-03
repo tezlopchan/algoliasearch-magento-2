@@ -412,31 +412,31 @@ requirejs(['algoliaBundle', 'Magento_Catalog/js/price-utils'], function (algolia
 				},
 			};
 
-            /**
-             * pagination
-             * Docs: https://www.algolia.com/doc/api-reference/widgets/breadcrumb/js/
-             **/
-            if (algoliaConfig.isCategoryPage) {
-                var hierarchical_levels = [];
-                for (var l = 0; l < 10; l++) {
-                    hierarchical_levels.push('categories.level' + l.toString());
-                }
-
-                allWidgetConfiguration.breadcrumb = {
-                    container: '#instant-search-breadcrumb-container',
-                    attributes: hierarchical_levels,
-                    separator: ' / ',
-                    transformItems(items) {
-                        return items.map(item => ({
-                            ...item,
-                            label: item.label,
-                        }));
-                    },
-                };
-            }
-
 			delete allWidgetConfiguration.infiniteHits;
 		}
+
+		/**
+         * breadcrumb
+         * Docs: https://www.algolia.com/doc/api-reference/widgets/breadcrumb/js/
+         **/
+        if (algoliaConfig.isCategoryPage) {
+            var hierarchical_levels = [];
+            for (var l = 0; l < 10; l++) {
+                hierarchical_levels.push('categories.level' + l.toString());
+            }
+
+            allWidgetConfiguration.breadcrumb = {
+                container: '#instant-search-breadcrumb-container',
+                attributes: hierarchical_levels,
+                separator: ' / ',
+                transformItems(items) {
+                    return items.map(item => ({
+                        ...item,
+                        label: item.label,
+                    }));
+                },
+            };
+        }
 
 		/**
 		 * Here are specified custom attributes widgets which require special code to run properly
