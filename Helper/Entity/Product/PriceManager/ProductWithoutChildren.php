@@ -121,6 +121,7 @@ abstract class ProductWithoutChildren
                 $this->addAdditionalData($product, $withTax, $subProducts, $currencyCode, $field);
             }
         }
+
         return $this->customData;
     }
 
