@@ -319,3 +319,10 @@ button.ais-CurrentRefinements-delete:focus {
     padding: 3em 0;
     text-align: center;
 }
+/*Breadcrumb*/
+.ais-Breadcrumb-list, .ais-Breadcrumb-item{
+    font-size: 1.2rem;
+}
+.ais-Breadcrumb-separator {
+    margin: 0 10px;
+}
