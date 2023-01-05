@@ -1,4 +1,4 @@
-define(['mage/translate'], function ($tr) {
+define([], function () {
     return {
         getItemHtml: function (item, html, addTocart) {
             let correctFKey = getCookie('form_key');
@@ -18,7 +18,7 @@ define(['mage/translate'], function ($tr) {
                             <input type="hidden" name="unec" value="${AlgoliaBase64.mageEncode(action)}"/>
                             <input type="hidden" name="product" value="${item.objectID}" />
                             <button type="submit" class="action tocart primary">
-                                <span>Add To Cart</span>
+                                <span>${algoliaConfig.translations.addToCart}</span>
                             </button>
                         </form>`
                     }
