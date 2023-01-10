@@ -2,13 +2,13 @@ var config = {
 	map: {
 		'*': {
 			'autocomplete': 'Algolia_AlgoliaSearch/autocomplete',
-			
 			// Autocomplete templates
 			'productsHtml': 'Algolia_AlgoliaSearch/internals/template/autocomplete/products',
 			'pagesHtml': 'Algolia_AlgoliaSearch/internals/template/autocomplete/pages',
 			'categoriesHtml': 'Algolia_AlgoliaSearch/internals/template/autocomplete/categories',
 			'suggestionsHtml': 'Algolia_AlgoliaSearch/internals/template/autocomplete/suggestions',
 			'additionalHtml': 'Algolia_AlgoliaSearch/internals/template/autocomplete/additional-section',
+
 			// Recommend templates
 			'recommendProductsHtml': 'Algolia_AlgoliaSearch/internals/template/recommend/products'
 		}

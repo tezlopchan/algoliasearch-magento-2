@@ -25,5 +25,8 @@ define([], function () {
                 </a>
             </div>`;
         },
+        getHeaderHtml: function (html,title) {
+            return html`<h3 class="auc-Recommend-title">${title}</h3>`;
+        }
     };
 });

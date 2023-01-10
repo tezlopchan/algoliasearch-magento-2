@@ -23,6 +23,9 @@ define([
                         indexName,
                         objectIDs: config.algoliObjectId,
                         maxRecommendations: algoliaConfig.recommend.limitFBTProducts,
+                        headerComponent({html}) {
+                            return recommendProductsHtml.getHeaderHtml(html,algoliaConfig.recommend.FBTTitle);
+                        },
                         itemComponent({item, html}) {
                             return recommendProductsHtml.getItemHtml(item, html, algoliaConfig.recommend.isAddToCartEnabledInFBT);
                         },
@@ -35,6 +38,9 @@ define([
                         indexName,
                         objectIDs: config.algoliObjectId,
                         maxRecommendations: algoliaConfig.recommend.limitRelatedProducts,
+                        headerComponent({html}) {
+                            return recommendProductsHtml.getHeaderHtml(html,algoliaConfig.recommend.relatedProductsTitle);
+                        },
                         itemComponent({item, html}) {
                             return recommendProductsHtml.getItemHtml(item, html, algoliaConfig.recommend.isAddToCartEnabledInRelatedProduct);
                         },
@@ -50,6 +56,9 @@ define([
                     recommendClient,
                     indexName,
                     maxRecommendations: algoliaConfig.recommend.limitTrendingItems,
+                    headerComponent({html}) {
+                        return recommendProductsHtml.getHeaderHtml(html,algoliaConfig.recommend.trendingItemsTitle);
+                    },
                     itemComponent({item, html}) {
                         return recommendProductsHtml.getItemHtml(item, html, algoliaConfig.recommend.isAddToCartEnabledInTrendsItem);
                     },
@@ -63,6 +72,9 @@ define([
                     recommendClient,
                     indexName,
                     maxRecommendations: config.numOfTrendsItem ? parseInt(config.numOfTrendsItem) : algoliaConfig.recommend.limitTrendingItems,
+                    headerComponent({html}) {
+                        return recommendProductsHtml.getHeaderHtml(html,algoliaConfig.recommend.trendingItemsTitle);
+                    },
                     itemComponent({item, html}) {
                         return recommendProductsHtml.getItemHtml(item, html, algoliaConfig.recommend.isAddToCartEnabledInTrendsItem);
                     },
