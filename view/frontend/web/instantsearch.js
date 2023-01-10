@@ -83,7 +83,7 @@ requirejs(['algoliaBundle', 'Magento_Catalog/js/price-utils'], function (algolia
 		var searchParameters = {
 			hitsPerPage: algoliaConfig.hitsPerPage,
 			ruleContexts: ruleContexts,
-            filters:'categoryIds:' + algoliaConfig.request.categoryId
+            filters:!algoliaConfig.isSearchPage ? 'categoryIds:' + algoliaConfig.request.categoryId : ''
 		};
 		var instantsearchOptions = {
 			searchClient: searchClient,
@@ -230,7 +230,7 @@ requirejs(['algoliaBundle', 'Magento_Catalog/js/price-utils'], function (algolia
 				showSubmit: false,
                 queryHook : function(inputValue, search) {
                     if (algoliaConfig.isSearchPage && algoliaConfig.request.categoryId.length <= 0) {
-                        $(".page-title-wrapper span.base").html("Search results for: '"+inputValue+"'");
+                        $(".page-title-wrapper span.base").html(algoliaConfig.translations.searchTitle+": '"+inputValue+"'");
                     }
                     return search(inputValue);
                 }
