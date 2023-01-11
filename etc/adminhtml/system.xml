@@ -307,7 +307,7 @@
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                     <comment>
                         <![CDATA[
-                            This feature is only applicable for permium customer
+                            This feature is only applicable with premium plans
                         ]]>
                     </comment>
                     <depends>
