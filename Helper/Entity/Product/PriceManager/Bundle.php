@@ -8,8 +8,17 @@ use Magento\Customer\Model\Group;
 
 class Bundle extends ProductWithChildren
 {
+    /**
+     * Overide parent addAdditionalData function
+     * @param $product
+     * @param $withTax
+     * @param $subProducts
+     * @param $currencyCode
+     * @param $field
+     * @return void
+     */
     protected function addAdditionalData($product, $withTax, $subProducts, $currencyCode, $field) {
-        $data = $this->getBundleMinMaxPrices($product, $withTax, $subProducts, $currencyCode);
+        $data = $this->getMinMaxPrices($product, $withTax, $subProducts, $currencyCode);
         $dashedFormat = $this->getDashedPriceFormat($data['min_price'], $data['max'], $currencyCode);
         if ($data['min_price'] !== $data['max']) {
             $this->handleBundleNonEqualMinMaxPrices($field, $currencyCode, $data['min_price'], $data['max'], $dashedFormat);
@@ -23,6 +32,7 @@ class Bundle extends ProductWithChildren
             $this->setFinalGroupPricesBundle($field, $currencyCode, $data['min'], $data['max'], $groupedDashedFormat);
         }
     }
+
     /**
      * @param Product $product
      * @param $withTax
@@ -30,7 +40,7 @@ class Bundle extends ProductWithChildren
      * @param $currencyCode
      * @return array
      */
-    protected function getBundleMinMaxPrices(Product $product, $withTax, $subProducts, $currencyCode)
+    protected function getMinMaxPrices(Product $product, $withTax, $subProducts, $currencyCode)
     {
         $regularPrice = $product->getPriceInfo()->getPrice('regular_price')->getMinimalPrice()->getValue();
         $minPrice = $product->getPriceInfo()->getPrice('final_price')->getMinimalPrice()->getValue();
@@ -52,7 +62,7 @@ class Bundle extends ProductWithChildren
         foreach ($minArray as $groupId => $min) {
             $minPriceArray[$groupId] = min($min);
         }
-        //$minPrice = min($minPriceArray);
+
         if ($currencyCode !== $this->baseCurrencyCode) {
             $minPrice = $this->convertPrice($minPrice, $currencyCode);
             $minOriginalPrice = $this->convertPrice($minOriginalPrice, $currencyCode);
@@ -74,6 +84,14 @@ class Bundle extends ProductWithChildren
         ];
     }
 
+    /**
+     * @param $field
+     * @param $currencyCode
+     * @param $min
+     * @param $max
+     * @param $dashedFormat
+     * @return void
+     */
     protected function handleBundleNonEqualMinMaxPrices($field, $currencyCode, $min, $max, $dashedFormat) {
         if (isset($this->customData[$field][$currencyCode]['default_original_formated']) === false
             || $min <= $this->customData[$field][$currencyCode]['default']) {
@@ -90,6 +108,12 @@ class Bundle extends ProductWithChildren
         $this->customData[$field][$currencyCode]['default_max'] = $max;
     }
 
+    /**
+     * @param $minPrices
+     * @param $max
+     * @param $currencyCode
+     * @return array
+     */
     protected function getBundleDashedPriceFormat($minPrices, $max, $currencyCode) {
         $dashedFormatPrice = [];
         foreach ($minPrices as $groupId => $min) {
@@ -101,20 +125,26 @@ class Bundle extends ProductWithChildren
         return $dashedFormatPrice;
     }
 
+    /**
+     * @param $field
+     * @param $currencyCode
+     * @param $min
+     * @param $max
+     * @param $dashedFormat
+     * @return void
+     */
     protected function setFinalGroupPricesBundle($field, $currencyCode, $min, $max, $dashedFormat)
     {
         /** @var \Magento\Customer\Model\Group $group */
         foreach ($this->groups as $group) {
             $groupId = (int) $group->getData('customer_group_id');
-            //if ($this->customData[$field][$currencyCode]['group_' . $groupId] == 0) {
-                $this->customData[$field][$currencyCode]['group_' . $groupId] = $min[$groupId];
-                if ($min === $max) {
-                    $this->customData[$field][$currencyCode]['group_' . $groupId . '_formated'] =
-                        $this->customData[$field][$currencyCode]['default_formated'];
-                } else {
-                    $this->customData[$field][$currencyCode]['group_' . $groupId . '_formated'] = $dashedFormat[$groupId];
-                }
-            //}
+            $this->customData[$field][$currencyCode]['group_' . $groupId] = $min[$groupId];
+            if ($min === $max) {
+                $this->customData[$field][$currencyCode]['group_' . $groupId . '_formated'] =
+                    $this->customData[$field][$currencyCode]['default_formated'];
+            } else {
+                $this->customData[$field][$currencyCode]['group_' . $groupId . '_formated'] = $dashedFormat[$groupId];
+            }
         }
     }
 }
