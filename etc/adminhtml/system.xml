@@ -502,7 +502,7 @@
                         </comment>
                     </field>
                     <field id="title" translate="label comment" type="text" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1">
-                        <validate>required-entry validate-greater-than-zero</validate>
+                        <validate>required-entry</validate>
                         <label>Title</label>
                     </field>
                     <field id="num_of_frequently_bought_together_products" translate="label comment" type="text" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="1">
@@ -559,7 +559,7 @@
                         </comment>
                     </field>
                     <field id="title" translate="label comment" type="text" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="1">
-                        <validate>required-entry validate-greater-than-zero</validate>
+                        <validate>required-entry</validate>
                         <label>Title</label>
                     </field>
                     <field id="num_of_related_products" translate="label comment" type="text" sortOrder="4" showInDefault="1" showInWebsite="1" showInStore="1">
@@ -618,9 +618,9 @@
                         <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                     </field>
                     <field id="title" translate="label comment" type="text" sortOrder="4" showInDefault="1" showInWebsite="1" showInStore="1">
-                        <validate>required-entry validate-greater-than-zero</validate>
+                        <validate>required-entry</validate>
                         <label>Title</label>
-                    </field>4
+                    </field>
                     <field id="facet_name" translate="label comment" type="text" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="1">
                         <label>Facet Name</label>
                         <comment>

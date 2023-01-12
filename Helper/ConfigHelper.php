@@ -837,7 +837,7 @@ class ConfigHelper
      */
     public function getFBTTitle($storeId = null)
     {
-        return $this->configInterface->isSetFlag(self::FREQUENTLY_BOUGHT_TOGETHER_TITLE, ScopeInterface::SCOPE_STORE, $storeId);
+        return $this->configInterface->getValue(self::FREQUENTLY_BOUGHT_TOGETHER_TITLE, ScopeInterface::SCOPE_STORE, $storeId);
     }
 
     /**
@@ -846,7 +846,7 @@ class ConfigHelper
      */
     public function getRelatedProductsTitle($storeId = null)
     {
-        return $this->configInterface->isSetFlag(self::RELATED_PRODUCTS_TITLE, ScopeInterface::SCOPE_STORE, $storeId);
+        return $this->configInterface->getValue(self::RELATED_PRODUCTS_TITLE, ScopeInterface::SCOPE_STORE, $storeId);
     }
 
     /**
@@ -855,7 +855,7 @@ class ConfigHelper
      */
     public function getTrendingItemsTitle($storeId = null)
     {
-        return $this->configInterface->isSetFlag(self::TRENDING_ITEMS_TITLE, ScopeInterface::SCOPE_STORE, $storeId);
+        return $this->configInterface->getValue(self::TRENDING_ITEMS_TITLE, ScopeInterface::SCOPE_STORE, $storeId);
     }
 
     /**
