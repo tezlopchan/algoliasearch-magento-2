@@ -150,6 +150,7 @@ class Configuration extends Algolia implements CollectionDataSourceInterface
                 'addToCartParams' => $addToCartParams,
                 'infiniteScrollEnabled' => $config->isInfiniteScrollEnabled(),
                 'urlTrackedParameters' => $this->getUrlTrackedParameters(),
+                'isSearchBoxEnabled' => $config->isInstantSearchBoxEnabled(),
             ],
             'autocomplete' => [
                 'enabled' => $config->isAutoCompleteEnabled(),
