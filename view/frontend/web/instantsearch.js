@@ -82,8 +82,7 @@ requirejs(['algoliaBundle', 'Magento_Catalog/js/price-utils'], function (algolia
 		var indexName = algoliaConfig.indexName + '_products';
 		var searchParameters = {
 			hitsPerPage: algoliaConfig.hitsPerPage,
-			ruleContexts: ruleContexts,
-            filters:!algoliaConfig.isSearchPage ? 'categoryIds:' + algoliaConfig.request.categoryId : ''
+			ruleContexts: ruleContexts
 		};
 		var instantsearchOptions = {
 			searchClient: searchClient,
@@ -221,21 +220,6 @@ requirejs(['algoliaBundle', 'Magento_Catalog/js/price-utils'], function (algolia
 				}
 			],
 			/**
-			 * searchBox
-			 * Docs: https://www.algolia.com/doc/api-reference/widgets/search-box/js/
-			 **/
-			searchBox: {
-				container: instant_selector,
-				placeholder: algoliaConfig.translations.searchFor,
-				showSubmit: false,
-                queryHook : function(inputValue, search) {
-                    if (algoliaConfig.isSearchPage && algoliaConfig.request.categoryId.length <= 0) {
-                        $(".page-title-wrapper span.base").html(algoliaConfig.translations.searchTitle+": '"+inputValue+"'");
-                    }
-                    return search(inputValue);
-                }
-			},
-			/**
 			 * stats
 			 * Docs: https://www.algolia.com/doc/api-reference/widgets/stats/js/
 			 **/
@@ -339,6 +323,24 @@ requirejs(['algoliaBundle', 'Magento_Catalog/js/price-utils'], function (algolia
 				}
 			}
 		};
+
+        if (algoliaConfig.instant.isSearchBoxEnabled === true){
+            /**
+             * searchBox
+             * Docs: https://www.algolia.com/doc/api-reference/widgets/search-box/js/
+             **/
+            allWidgetConfiguration.searchBox = {
+                container: instant_selector,
+                    placeholder: algoliaConfig.translations.searchFor,
+                    showSubmit: false,
+                    queryHook : function(inputValue, search) {
+                    if (algoliaConfig.isSearchPage && algoliaConfig.request.categoryId.length <= 0) {
+                        $(".page-title-wrapper span.base").html(algoliaConfig.translations.searchTitle+": '"+inputValue+"'");
+                    }
+                    return search(inputValue);
+                }
+            }
+        }
 
 		if (algoliaConfig.instant.infiniteScrollEnabled === true) {
 			/**
