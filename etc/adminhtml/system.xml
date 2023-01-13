@@ -225,7 +225,7 @@
                     </depends>
                 </field>
                 <field id="navigator" translate="label comment" type="select" sortOrder="80" showInDefault="1" showInWebsite="1" showInStore="1">
-                    <label>Enabled Keyboard Navigation</label>
+                    <label>Enable Keyboard Navigation</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                     <depends>
                         <field id="is_popup_enabled">1</field>
