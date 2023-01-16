@@ -262,7 +262,9 @@ requirejs(['algoliaBundle', 'Magento_Catalog/js/price-utils'], function (algolia
 					item: $('#current-refinements-template').html()
 				},
 				includedAttributes: attributes.map(function (attribute) {
-					return attribute.name
+                    if (!(algoliaConfig.isCategoryPage && attribute.name.indexOf('categories') > -1)) {
+                        return attribute.name;
+                    }
 				}),
 				transformItems: function (items) {
 					return items.map(function (item) {
@@ -436,7 +438,20 @@ requirejs(['algoliaBundle', 'Magento_Catalog/js/price-utils'], function (algolia
 					templates: templates,
 					alwaysGetRootLevel: true,
 					limit: algoliaConfig.maxValuesPerFacet,
-					sortBy: ['name:asc']
+					sortBy: ['name:asc'],
+                    transformItems(items) {
+                        var filteredData = [];
+                        items.forEach(element => {
+                            if(element.label == algoliaConfig.request.parentCategory) {
+                                filteredData.push(element);
+                            };
+                        });
+                        items = filteredData;
+                        return items.map(item => ({
+                            ...item,
+                            label: item.label,
+                        }));
+                    },
 				};
 
 				hierarchicalMenuParams.templates.item = '' +
