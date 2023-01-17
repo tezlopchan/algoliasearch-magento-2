@@ -440,12 +440,15 @@ requirejs(['algoliaBundle', 'Magento_Catalog/js/price-utils'], function (algolia
 					limit: algoliaConfig.maxValuesPerFacet,
 					sortBy: ['name:asc'],
                     transformItems(items) {
-                        var filteredData = [];
-                        items.forEach(element => {
-                            if(element.label == algoliaConfig.request.parentCategory) {
-                                filteredData.push(element);
-                            };
-                        });
+                    	if(algoliaConfig.isCategoryPage) {
+                            var filteredData = [];
+                            items.forEach(element => {
+                                if (element.label == algoliaConfig.request.parentCategory) {
+                                    filteredData.push(element);
+                                };
+                            });
+                            items = filteredData;
+                        }
                         items = filteredData;
                         return items.map(item => ({
                             ...item,
