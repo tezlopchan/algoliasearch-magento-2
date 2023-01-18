@@ -34,6 +34,13 @@ class SaveSettings implements ObserverInterface
      */
     protected $productHelper;
 
+    /**
+     * @param StoreManagerInterface $storeManager
+     * @param IndicesConfigurator $indicesConfigurator
+     * @param AlgoliaHelper $algoliaHelper
+     * @param Data $helper
+     * @param ProductHelper $productHelper
+     */
     public function __construct(
         StoreManagerInterface $storeManager,
         IndicesConfigurator $indicesConfigurator,
