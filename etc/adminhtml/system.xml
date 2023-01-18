@@ -730,6 +730,20 @@
                 </field>
             </group>
         </section>
+        <section id="algoliasearch_synonyms" translate="label" type="text" sortOrder="66" showInDefault="1" showInWebsite="1" showInStore="1">
+            <label>Synonyms</label>
+            <tab>algolia</tab>
+            <resource>Algolia_AlgoliaSearch::algolia_algoliasearch</resource>
+            <group id="synonyms_group" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Synonyms</label>
+                <field id="notice" translate="label comment" type="label" sortOrder="10" showInDefault="1">
+                    <label>Notice:</label>
+                    <comment>
+                        <![CDATA[Synonyms has deprecated from the Magento dashboard.We advise you to configure synonyms from the Algolia dashboard]]>
+                    </comment>
+                </field>
+            </group>
+        </section>
         <section id="algoliasearch_cc_analytics" translate="label" type="text" sortOrder="67" showInDefault="1" showInWebsite="1" showInStore="1">
             <label><![CDATA[Click & Conversion Analytics]]></label>
             <tab>algolia</tab>
