@@ -319,7 +319,7 @@
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                     <comment>
                         <![CDATA[
-                            The searchBox widget is used to let the user perform a text-based query
+                            The searchBox widget is used to let the user perform a text-based query. <a target="_blank" href="https://www.algolia.com/doc/api-reference/widgets/search-box/js/#about"> Know More </a>
                         ]]>
                     </comment>
                 </field>
