@@ -739,7 +739,7 @@
                 <field id="notice" translate="label comment" type="label" sortOrder="10" showInDefault="1">
                     <label>Notice:</label>
                     <comment>
-                        <![CDATA[Synonyms has deprecated from the Magento dashboard.We advise you to configure synonyms from the Algolia dashboard]]>
+                        <![CDATA[Configurations related to Synonyms have been deprecated from the Magento dashboard. We advise you to configure synonyms from the Algolia dashboard]]>
                     </comment>
                 </field>
             </group>
