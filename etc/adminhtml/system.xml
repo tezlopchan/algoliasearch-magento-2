@@ -513,7 +513,11 @@
                             ]]>
                         </comment>
                     </field>
-                    <field id="num_of_frequently_bought_together_products" translate="label comment" type="text" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <field id="title" translate="label comment" type="text" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <validate>required-entry</validate>
+                        <label>Title</label>
+                    </field>
+                    <field id="num_of_frequently_bought_together_products" translate="label comment" type="text" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="1">
                         <validate>required-entry validate-digits validate-greater-than-zero</validate>
                         <label>Number of Products</label>
                         <comment>
@@ -522,7 +526,7 @@
                         ]]>
                         </comment>
                     </field>
-                    <field id="is_addtocart_enabled" translate="label comment" type="select" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <field id="is_addtocart_enabled" translate="label comment" type="select" sortOrder="4" showInDefault="1" showInWebsite="1" showInStore="1">
                         <label>Enable Add To Cart Button</label>
                         <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                         <comment>
@@ -531,7 +535,7 @@
                             ]]>
                         </comment>
                     </field>
-                    <field id="is_remove_core_upsell_products_block" translate="label comment" type="select" sortOrder="4" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <field id="is_remove_core_upsell_products_block" translate="label comment" type="select" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="1">
                         <label>Remove The Magento Upsell Products Block</label>
                         <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                         <comment>
@@ -566,7 +570,11 @@
                             ]]>
                         </comment>
                     </field>
-                    <field id="num_of_related_products" translate="label comment" type="text" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <field id="title" translate="label comment" type="text" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <validate>required-entry</validate>
+                        <label>Title</label>
+                    </field>
+                    <field id="num_of_related_products" translate="label comment" type="text" sortOrder="4" showInDefault="1" showInWebsite="1" showInStore="1">
                         <validate>required-entry validate-digits validate-greater-than-zero</validate>
                         <label>Number of Related Products</label>
                         <comment>
@@ -575,7 +583,7 @@
                             ]]>
                         </comment>
                     </field>
-                    <field id="is_addtocart_enabled" translate="label comment" type="select" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <field id="is_addtocart_enabled" translate="label comment" type="select" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="1">
                         <label>Enable Add To Cart Button</label>
                         <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                         <comment>
@@ -584,7 +592,7 @@
                             ]]>
                         </comment>
                     </field>
-                    <field id="is_remove_core_related_products_block" translate="label comment" type="select" sortOrder="4" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <field id="is_remove_core_related_products_block" translate="label comment" type="select" sortOrder="6" showInDefault="1" showInWebsite="1" showInStore="1">
                         <label>Remove The Magento Related Products Block</label>
                         <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                         <comment>
@@ -621,7 +629,11 @@
                         <label>Enable Trending Items Widgets</label>
                         <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                     </field>
-                    <field id="facet_name" translate="label comment" type="text" sortOrder="4" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <field id="title" translate="label comment" type="text" sortOrder="4" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <validate>required-entry</validate>
+                        <label>Title</label>
+                    </field>
+                    <field id="facet_name" translate="label comment" type="text" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="1">
                         <label>Facet Name</label>
                         <comment>
                             <![CDATA[
@@ -629,7 +641,7 @@
                             ]]>
                         </comment>
                     </field>
-                    <field id="facet_value" translate="label comment" type="text" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <field id="facet_value" translate="label comment" type="text" sortOrder="6" showInDefault="1" showInWebsite="1" showInStore="1">
                         <label>Facet Value</label>
                         <comment>
                             <![CDATA[
@@ -637,7 +649,7 @@
                             ]]>
                         </comment>
                     </field>
-                    <field id="num_of_trending_items" translate="label comment" type="text" sortOrder="6" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <field id="num_of_trending_items" translate="label comment" type="text" sortOrder="7" showInDefault="1" showInWebsite="1" showInStore="1">
                         <label>Number of Trending Items</label>
                         <validate>required-entry validate-digits validate-greater-than-zero</validate>
                         <comment>
@@ -646,7 +658,7 @@
                             ]]>
                         </comment>
                     </field>
-                    <field id="is_addtocart_enabled" translate="label comment" type="select" sortOrder="7" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <field id="is_addtocart_enabled" translate="label comment" type="select" sortOrder="8" showInDefault="1" showInWebsite="1" showInStore="1">
                         <label>Enable Add To Cart Button</label>
                         <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                         <comment>
