@@ -500,46 +500,6 @@ class ProductHelper
         // Commented out as it doesn't delete anything now because of merging replica indices earlier
         // $this->deleteUnusedReplicas($indexName, $replicas, $setReplicasTaskId);
 
-        if ($this->configHelper->isEnabledSynonyms($storeId) === true) {
-            if ($synonymsFile = $this->configHelper->getSynonymsFile($storeId)) {
-                $synonymsToSet = json_decode(file_get_contents($synonymsFile), true);
-            } else {
-                $synonymsToSet = [];
-
-                $synonyms = $this->configHelper->getSynonyms($storeId);
-                foreach ($synonyms as $objectID => $synonym) {
-                    $synonymsToSet[] = [
-                        'objectID' => $objectID,
-                        'type' => 'synonym',
-                        'synonyms' => $this->explodeSynonyms($synonym['synonyms']),
-                    ];
-                }
-
-                $onewaySynonyms = $this->configHelper->getOnewaySynonyms($storeId);
-                foreach ($onewaySynonyms as $objectID => $onewaySynonym) {
-                    $synonymsToSet[] = [
-                        'objectID' => $objectID,
-                        'type' => 'oneWaySynonym',
-                        'input' => $onewaySynonym['input'],
-                        'synonyms' => $this->explodeSynonyms($onewaySynonym['synonyms']),
-                    ];
-                }
-            }
-
-            $this->algoliaHelper->setSynonyms($indexName, $synonymsToSet);
-            $this->logger->log('Setting synonyms to "' . $indexName . '"');
-            if ($saveToTmpIndicesToo === true) {
-                $this->algoliaHelper->setSynonyms($indexNameTmp, $synonymsToSet);
-                $this->logger->log('Setting synonyms to "' . $indexNameTmp . '"');
-            }
-        } elseif ($saveToTmpIndicesToo === true) {
-            $this->algoliaHelper->copySynonyms($indexName, $indexNameTmp);
-            $this->logger->log('
-                Synonyms management disabled.
-                Copying synonyms from production index to TMP one to not to erase them with the index move.
-            ');
-        }
-
         if ($saveToTmpIndicesToo === true) {
             try {
                 $this->algoliaHelper->copyQueryRules($indexName, $indexNameTmp);
@@ -1342,15 +1302,6 @@ class ProductHelper
                 throw $e;
             }
         }
-    }
-
-    /**
-     * @param $synonyms
-     * @return array
-     */
-    protected function explodeSynonyms($synonyms)
-    {
-        return array_map('trim', explode(',', $synonyms));
     }
 
     /**

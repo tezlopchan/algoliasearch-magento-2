@@ -62,11 +62,6 @@ class ConfigHelper
     public const XML_PATH_IMAGE_HEIGHT = 'algoliasearch_images/image/height';
     public const XML_PATH_IMAGE_TYPE = 'algoliasearch_images/image/type';
 
-    public const ENABLE_SYNONYMS = 'algoliasearch_synonyms/synonyms_group/enable_synonyms';
-    public const SYNONYMS = 'algoliasearch_synonyms/synonyms_group/synonyms';
-    public const ONEWAY_SYNONYMS = 'algoliasearch_synonyms/synonyms_group/oneway_synonyms';
-    public const SYNONYMS_FILE = 'algoliasearch_synonyms/synonyms_group/synonyms_file';
-
     public const CC_ANALYTICS_ENABLE = 'algoliasearch_cc_analytics/cc_analytics_group/enable';
     public const CC_ANALYTICS_IS_SELECTOR = 'algoliasearch_cc_analytics/cc_analytics_group/is_selector';
     public const CC_CONVERSION_ANALYTICS_MODE = 'algoliasearch_cc_analytics/cc_analytics_group/conversion_analytics_mode';
@@ -1452,64 +1447,6 @@ class ConfigHelper
         $attributes = array_unique($attributes);
         $attributes = array_values($attributes);
         return count($attributes) ? ['filters' => implode(' AND ', $attributes)] : [];
-    }
-
-    /**
-     * @param $storeId
-     * @return bool
-     */
-    public function isEnabledSynonyms($storeId = null)
-    {
-        return $this->configInterface->isSetFlag(self::ENABLE_SYNONYMS, ScopeInterface::SCOPE_STORE, $storeId);
-    }
-
-    /**
-     * @param $storeId
-     * @return array
-     */
-    public function getSynonyms($storeId = null)
-    {
-        $synonyms = $this->unserialize($this->configInterface->getValue(
-            self::SYNONYMS,
-            ScopeInterface::SCOPE_STORE,
-            $storeId
-        ));
-        if (is_array($synonyms)) {
-            return $synonyms;
-        }
-        return [];
-    }
-
-    /**
-     * @param $storeId
-     * @return array
-     */
-    public function getOnewaySynonyms($storeId = null)
-    {
-        $onewaySynonyms = $this->unserialize($this->configInterface->getValue(
-            self::ONEWAY_SYNONYMS,
-            ScopeInterface::SCOPE_STORE,
-            $storeId
-        ));
-        if (is_array($onewaySynonyms)) {
-            return $onewaySynonyms;
-        }
-        return [];
-    }
-
-    /**
-     * @param $storeId
-     * @return string|null
-     * @throws Magento\Framework\Exception\FileSystemException
-     */
-    public function getSynonymsFile($storeId = null)
-    {
-        $filename = $this->configInterface->getValue(self::SYNONYMS_FILE, ScopeInterface::SCOPE_STORE, $storeId);
-        if (!$filename) {
-            return null;
-        }
-        $baseDirectory = $this->directoryList->getPath(DirectoryList::MEDIA);
-        return $baseDirectory . '/algoliasearch_admin_config_uploads/' . $filename;
     }
 
     /**

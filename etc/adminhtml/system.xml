@@ -779,62 +779,10 @@
             <resource>Algolia_AlgoliaSearch::algolia_algoliasearch</resource>
             <group id="synonyms_group" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
                 <label>Synonyms</label>
-                <comment>
-                    <![CDATA[
-                    <div class="algolia-admin-content"></div>
-                ]]>
-                </comment>
-                <field id="enable_synonyms" translate="label comment" type="select" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="1">
-                    <label>Enable Synonyms Management</label>
-                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                <field id="notice" translate="label comment" type="label" sortOrder="10" showInDefault="1">
+                    <label>Notice:</label>
                     <comment>
-                        <![CDATA[
-                            Do you want to manage <a target="_blank" href="https://www.algolia.com/doc/guides/managing-results/optimize-search-results/adding-synonyms/?utm_source=magento&utm_medium=extension&utm_campaign=magento_2&utm_term=shop-owner&utm_content=doc-link">synonyms</a> in Magento?
-                            If not, synonyms will be managed only in <a target="_blank" href="https://www.algolia.com/dashboard/">Algolia's dashboard</a> and won't be overridden by Magento.
-                        ]]>
-                    </comment>
-                </field>
-                <field id="synonyms" translate="label comment" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
-                    <label>Synonyms</label>
-                    <frontend_model>Algolia\AlgoliaSearch\Model\Source\Synonyms</frontend_model>
-                    <backend_model>Magento\Config\Model\Config\Backend\Serialized\ArraySerialized</backend_model>
-                    <comment>
-                        <![CDATA[
-                            <a href="https://www.algolia.com/doc/guides/managing-results/optimize-search-results/adding-synonyms/?utm_source=magento&utm_medium=extension&utm_campaign=magento_2&utm_term=shop-owner&utm_content=doc-link#regular-synonyms-default" target="_blank">Synonyms</a> can be defined by a comma-separated list of words that will be considered equivalent by the Algolia engine.<br>
-                            For instance: <code>tv, television, tv set</code><br>
-                            Using that set, if a record contains “television” and a user searches for “TV”, this record will be returned.
-                        ]]>
-                    </comment>
-                </field>
-                <field id="oneway_synonyms" translate="label comment" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
-                    <label>One-way Synonyms</label>
-                    <frontend_model>Algolia\AlgoliaSearch\Model\Source\OnewaySynonyms</frontend_model>
-                    <backend_model>Magento\Config\Model\Config\Backend\Serialized\ArraySerialized</backend_model>
-                    <comment>
-                        <![CDATA[
-                        <a href="https://www.algolia.com/doc/guides/managing-results/optimize-search-results/adding-synonyms/?utm_source=magento&utm_medium=extension&utm_campaign=magento_2&utm_term=shop-owner&utm_content=doc-link#one-way-synonyms" target="_blank">One-way synonyms</a>
-                        allow you to define alternative words for a search term, which are not synonyms to each other.<br>
-                        Let’s take an example: when a user searches for “tablet”, you want him to be able to find iPads and Galaxy Note tablets alike, but you might not want Android tablets to show up when he searches for “iPad”.<br>
-                        To do this, you’d define a one-way synonym set between <code>tablet</code> (as input) and <code>ipad, galaxy note</code> (as synonyms). When the user types in “tablet”, records containing “iPad” and “Galaxy Note” will be returned. However records containing only “tablet” or “Galaxy Note” won’t be returned if he searches for “iPad”.
-                        <br>
-                        <br>
-                        Algolia offers more synonymys’ types - placeholders and alternative corrections. These types can be managed directly from your <a href="https://www.algolia.com/dashboard" target="_blank">Algolia’s dashboard</a>.
-                        Any changes you make to placeholders and alternative corrections in Algolia’s dashboard won’t be overridden.
-                        ]]>
-                    </comment>
-                </field>
-                <field id="synonyms_file" translate="label comment" type="file" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
-                    <label>Synonyms File</label>
-                    <backend_model>Algolia\AlgoliaSearch\Model\Source\SynonymsFile</backend_model>
-                    <upload_dir config="system/filesystem/media" scope_info="1">algoliasearch_admin_config_uploads</upload_dir>
-                    <base_url type="media" scope_info="1">algoliasearch_admin_config_uploads</base_url>
-                    <comment>
-                        <![CDATA[
-                            If you have a large amount of synonyms (more than 1 hundred), you don't have to manually enter them in the inputs above.
-                            You can upload a <a href="https://www.algolia.com/doc/guides/managing-results/optimize-search-results/adding-synonyms/how-to/managing-synonyms-from-the-dashboard/?utm_source=magento&utm_medium=extension&utm_campaign=magento_2&utm_term=shop-owner&utm_content=doc-link&language=php#importing-synonyms-from-a-file" target="_blank">JSON file</a> with synonyms instead.
-                            <br><span class="algolia-config-warning">&#9888;</span>
-                            When you upload a JSON file, all the synonyms settings from above will be ignored and only synonyms from the JSON file will be pushed to Algolia.
-                        ]]>
+                        <![CDATA[Configurations related to Synonyms have been deprecated from the Magento dashboard. We advise you to configure synonyms from the Algolia dashboard]]>
                     </comment>
                 </field>
             </group>
