@@ -436,7 +436,8 @@ requirejs(['algoliaBundle', 'Magento_Catalog/js/price-utils'], function (algolia
 					attributes: hierarchical_levels,
 					separator: ' /// ',
 					templates: templates,
-					alwaysGetRootLevel: true,
+					alwaysGetRootLevel: false,
+					showParentLevel:false,
 					limit: algoliaConfig.maxValuesPerFacet,
 					sortBy: ['name:asc'],
                     transformItems(items) {
@@ -449,7 +450,6 @@ requirejs(['algoliaBundle', 'Magento_Catalog/js/price-utils'], function (algolia
                             });
                             items = filteredData;
                         }
-                        items = filteredData;
                         return items.map(item => ({
                             ...item,
                             label: item.label,
