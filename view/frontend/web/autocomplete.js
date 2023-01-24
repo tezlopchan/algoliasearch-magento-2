@@ -341,7 +341,7 @@ define(
             let autocompleteConfig = [];
             let options = {
                 container: algoliaConfig.autocomplete.selector,
-                placeholder: 'Search for products, categories, ...',
+                placeholder: algoliaConfig.translations.placeholder,
                 debug: algoliaConfig.autocomplete.isDebugEnabled,
                 detachedMediaQuery: 'none',
                 onSubmit(data){
