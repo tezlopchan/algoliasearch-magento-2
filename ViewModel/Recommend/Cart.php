@@ -1,13 +1,13 @@
 <?php
 
-namespace Algolia\AlgoliaSearch\Block\Cart;
+namespace Algolia\AlgoliaSearch\ViewModel\Recommend;
 
 use Algolia\AlgoliaSearch\Helper\ConfigHelper;
 use Magento\Checkout\Model\Session;
-use Magento\Framework\View\Element\Template;
+use Magento\Framework\View\Element\Block\ArgumentInterface;
 use Magento\Framework\View\Element\Template\Context;
 
-class Recommend extends Template
+class Cart implements ArgumentInterface
 {
     /**
      * @var Session
@@ -31,7 +31,6 @@ class Recommend extends Template
         ConfigHelper $configHelper,
         array $data = []
     ) {
-        parent::__construct($context, $data);
         $this->checkoutSession = $checkoutSession;
         $this->configHelper = $configHelper;
     }
@@ -60,6 +59,6 @@ class Recommend extends Template
             'enabledFBTInCart' => $this->configHelper->isRecommendFrequentlyBroughtTogetherEnabledOnCartPage(),
             'enabledRelatedInCart' => $this->configHelper->isRecommendRelatedProductsEnabledOnCartPage(),
             'isTrendItemsEnabledInCartPage' => $this->configHelper->isTrendItemsEnabledInShoppingCart()
-             ];
+        ];
     }
 }
