@@ -35,6 +35,7 @@ $isConfig = [
 <input type="hidden" name="algolia_merchandising_positions" value="" data-form-part="algolia_algoliasearch_landingpage_form" />
 <input type="hidden" name="algolia_query" value="<?php echo htmlentities($landingPage->getQuery()) ?>" data-form-part="algolia_algoliasearch_landingpage_form" />
 <input type="hidden" name="algolia_configuration" value="<?php echo htmlentities($landingPage->getConfiguration()) ?>" data-form-part="algolia_algoliasearch_landingpage_form" />
+<input type="hidden" name="price_key" value="" data-form-part="algolia_algoliasearch_landingpage_form">
 
 <div class="with-facets" id="algolia_instant_selector">
     <div class="merchandising-tutorial">
@@ -455,7 +456,6 @@ $isConfig = [
             formattedConfig[attribute] = rawConfig[attribute].join("~");
           }
         }
-
         var priceFacet = 'price' + getCurrentPriceKey();
         if (typeof numericRefinements[priceFacet] !== "undefined") {
           formattedConfig[priceFacet] =  numericRefinements[priceFacet];
@@ -463,6 +463,7 @@ $isConfig = [
 
         $('input[name="configuration"]').val(JSON.stringify(formattedConfig)).change();
         $('input[name="algolia_configuration"]').val(JSON.stringify(formattedConfig)).change();
+        $('input[name="price_key"]').val(getCurrentPriceKey()).change();
       }
 
       function getCurrentIndexName() {
