@@ -2,12 +2,14 @@
 
 namespace Algolia\AlgoliaSearch\Controller\Adminhtml\Landingpage;
 
+use Algolia\AlgoliaSearch\Helper\ConfigHelper;
 use Algolia\AlgoliaSearch\Helper\MerchandisingHelper;
 use Algolia\AlgoliaSearch\Model\LandingPageFactory;
 use Magento\Framework\App\Request\DataPersistorInterface;
 use Magento\Framework\Controller\ResultFactory;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Store\Model\StoreManagerInterface;
+use Magento\Customer\Model\ResourceModel\Group\CollectionFactory;
 
 class Save extends AbstractAction
 {
@@ -15,6 +17,16 @@ class Save extends AbstractAction
      * @var DataPersistorInterface
      */
     protected $dataPersistor;
+
+    /**
+     * @var CollectionFactory
+     */
+    protected $customerGroupCollectionFactory;
+
+    /**
+     * @var ConfigHelper
+     */
+    protected $configHelper;
 
     /**
      * PHP Constructor
@@ -25,7 +37,7 @@ class Save extends AbstractAction
      * @param MerchandisingHelper $merchandisingHelper
      * @param StoreManagerInterface $storeManager
      * @param DataPersistorInterface $dataPersistor
-     *
+     * @param CollectionFactory $customerGroupCollectionFactory
      * @return Save
      */
     public function __construct(
@@ -34,10 +46,13 @@ class Save extends AbstractAction
         LandingPageFactory $landingPageFactory,
         MerchandisingHelper $merchandisingHelper,
         StoreManagerInterface $storeManager,
-        DataPersistorInterface $dataPersistor
+        DataPersistorInterface $dataPersistor,
+        CollectionFactory $customerGroupCollectionFactory,
+        ConfigHelper $configHelper
     ) {
         $this->dataPersistor = $dataPersistor;
-
+        $this->customerGroupCollectionFactory = $customerGroupCollectionFactory;
+        $this->configHelper = $configHelper;
         parent::__construct(
             $context,
             $coreRegistry,
@@ -84,6 +99,18 @@ class Save extends AbstractAction
 
             if (isset($data['algolia_configuration']) && $data['algolia_configuration'] != $data['configuration']) {
                 $data['configuration'] = $data['algolia_configuration'];
+                if ($this->configHelper->isCustomerGroupsEnabled($data['store_id'])) {
+                    $configuration = json_decode($data['algolia_configuration'], true);
+                    $priceConfig = $configuration['price'.$data['price_key']];
+                    $customerGroups = $this->customerGroupCollectionFactory->create();
+                    $store = $this->storeManager->getStore($data['store_id']);
+                    $baseCurrencyCode = $store->getBaseCurrencyCode();
+                    foreach ($customerGroups as $group) {
+                        $groupId = (int) $group->getData('customer_group_id');
+                        $configuration['price.'.$baseCurrencyCode.'.group_'.$groupId] = $priceConfig;
+                    }
+                    $data['configuration'] = json_encode($configuration);
+                }
             }
 
             $landingPage->setData($data);
@@ -120,7 +147,12 @@ class Save extends AbstractAction
         return $resultRedirect->setPath('*/*/');
     }
 
-    private function manageQueryRules($landingPageId, $data)
+    /**
+     * @param $landingPageId
+     * @param $data
+     * @return void
+     */
+    protected function manageQueryRules($landingPageId, $data)
     {
         $positions = json_decode($data['algolia_merchandising_positions'], true);
         $stores = [];

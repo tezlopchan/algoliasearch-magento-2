@@ -310,6 +310,12 @@ define(
             return source;
         };
 
+        const getNavigatorUrl = function (url) {
+            if (algoliaConfig.autocomplete.isNavigatorEnabled) {
+                return url;
+            }
+        }
+
         /** Add products and categories that are required sections **/
         /** Add autocomplete menu sections **/
         if (algoliaConfig.autocomplete.nbOfProductsSuggestions > 0) {
@@ -334,8 +340,8 @@ define(
             let sources = [];
             let autocompleteConfig = [];
             let options = {
-                container: '#algoliaAutocomplete',
                 placeholder: algoliaConfig.translations.placeholder,
+                container: algoliaConfig.autocomplete.selector,
                 debug: algoliaConfig.autocomplete.isDebugEnabled,
                 detachedMediaQuery: 'none',
                 onSubmit(data){
@@ -400,7 +406,7 @@ define(
                             return {
                                 ...source,
                                 getItemUrl({ item }) {
-                                    return algoliaConfig.resultPageUrl+`?q=${item.query}`;
+                                    return getNavigatorUrl(algoliaConfig.resultPageUrl+`?q=${item.query}`);
                                 },
                                 templates: {
                                     noResults({html}) {
@@ -422,6 +428,9 @@ define(
                 }else if(data.name === "products"){
                     autocompleteConfig.unshift({
                         sourceId: data.name,
+                        getItemUrl({ item }) {
+                            return getNavigatorUrl(item.url);
+                        },
                         getItems({ query }) {
                             return algoliaBundle.getAlgoliaResults({
                                 searchClient,
@@ -454,6 +463,9 @@ define(
                 }else{
                     autocompleteConfig.push({
                         sourceId: data.name,
+                        getItemUrl({ item }) {
+                            return getNavigatorUrl(item.url);
+                        },
                         getItems({ query }) {
                             return algoliaBundle.getAlgoliaResults({
                                 searchClient,
@@ -506,6 +518,10 @@ define(
                         algoliaInsights.trackClick(eventData);
                         $this.attr('data-clicked', true);
                     });
+            }
+
+            if (algoliaConfig.autocomplete.isNavigatorEnabled) {
+                $("body").append('<style>.aa-Item[aria-selected="true"]{background-color: #f2f2f2;}</style>');
             }
         });
     });

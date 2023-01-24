@@ -54,12 +54,6 @@ class Observer implements ObserverInterface
                     $layout = $observer->getData('layout');
                     $layout->getUpdate()->addHandle('algolia_search_handle');
 
-                    if ($this->config->isDefaultSelector()) {
-                        $layout->getUpdate()->addHandle('algolia_search_handle_with_topsearch');
-                    } else {
-                        $layout->getUpdate()->addHandle('algolia_search_handle_no_topsearch');
-                    }
-
                     $this->loadPreventBackendRenderingHandle($layout);
                 }
             }
