@@ -11,6 +11,7 @@
             <autocomplete>
                 <sections><![CDATA[{"_1600351750374_374":{"name":"pages","label":"Pages","hitsPerPage":"2"}}]]></sections>
                 <excluded_pages><![CDATA[{"_1600351757831_831":{"attribute":"no-route"}}]]></excluded_pages>
+                <navigator>1</navigator>
             </autocomplete>
         </algoliasearch_autocomplete>
         <algoliasearch_instant>
@@ -46,12 +47,15 @@
         <algoliasearch_recommend>
             <recommend>
                 <frequently_bought_together>
+                    <title>Frequently bought together</title>
                     <num_of_frequently_bought_together_products>6</num_of_frequently_bought_together_products>
                 </frequently_bought_together>
                 <related_product>
+                    <title>Related products</title>
                     <num_of_related_products>6</num_of_related_products>
                 </related_product>
                 <trends_item>
+                    <title>Trending items</title>
                     <num_of_trending_items>6</num_of_trending_items>
                 </trends_item>
             </recommend>

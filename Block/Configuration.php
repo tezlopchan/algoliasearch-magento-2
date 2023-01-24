@@ -159,6 +159,7 @@ class Configuration extends Algolia implements CollectionDataSourceInterface
                 'nbOfCategoriesSuggestions' => $config->getNumberOfCategoriesSuggestions(),
                 'nbOfQueriesSuggestions' => $config->getNumberOfQueriesSuggestions(),
                 'isDebugEnabled' => $config->isAutocompleteDebugEnabled(),
+                'isNavigatorEnabled' => $config->isAutocompleteNavigatorEnabled()
             ],
             'landingPage' => [
                 'query' => $this->getLandingPageQuery(),
@@ -180,6 +181,9 @@ class Configuration extends Algolia implements CollectionDataSourceInterface
                 'isAddToCartEnabledInFBT' => $config->isAddToCartEnabledInFrequentlyBoughtTogether(),
                 'isAddToCartEnabledInRelatedProduct' => $config->isAddToCartEnabledInRelatedProducts(),
                 'isAddToCartEnabledInTrendsItem' => $config->isAddToCartEnabledInTrendsItem(),
+                'FBTTitle' => __($config->getFBTTitle()),
+                'relatedProductsTitle' => __($config->getRelatedProductsTitle()),
+                'trendingItemsTitle' => __($config->getTrendingItemsTitle()),
                 'addToCartParams' => $addToCartParams,
             ],
             'extensionVersion' => $config->getExtensionVersion(),
@@ -303,6 +307,8 @@ class Configuration extends Algolia implements CollectionDataSourceInterface
                 'searchBy' => __('Search by'),
                 'searchForFacetValuesPlaceholder' => __('Search for other ...'),
                 'showMore' => __('Show more products'),
+                'placeholder' => __('Search for products, categories, ...'),
+                'addToCart' => __('Add to Cart'),
             ],
         ];
 

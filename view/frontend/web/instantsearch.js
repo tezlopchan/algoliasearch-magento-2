@@ -5,10 +5,6 @@ requirejs(['algoliaBundle', 'Magento_Catalog/js/price-utils'], function (algolia
 			return;
 		}
 
-		if (!algoliaConfig.autocomplete.enabled && $(algoliaConfig.autocomplete.selector).length == 0) {
-			return;
-		}
-
 		if ($(algoliaConfig.instant.selector).length <= 0) {
 			throw '[Algolia] Invalid instant-search selector: ' + algoliaConfig.instant.selector;
 		}
@@ -47,7 +43,7 @@ requirejs(['algoliaBundle', 'Magento_Catalog/js/price-utils'], function (algolia
 		 * Docs: http://twitter.github.io/hogan.js/
 		 **/
 		var wrapperTemplate = algoliaBundle.Hogan.compile($('#instant_wrapper_template').html());
-		var instant_selector = !algoliaConfig.autocomplete.enabled ? algoliaConfig.autocomplete.selector : "#instant-search-bar";
+		var instant_selector = "#instant-search-bar";
 
 		var div = document.createElement('div');
 		$(div).addClass('algolia-instant-results-wrapper');
@@ -57,7 +53,7 @@ requirejs(['algoliaBundle', 'Magento_Catalog/js/price-utils'], function (algolia
 
 		$('.algolia-instant-results-wrapper').append('<div class="algolia-instant-selector-results"></div>');
 		$('.algolia-instant-selector-results').html(wrapperTemplate.render({
-			second_bar: algoliaConfig.autocomplete.enabled,
+			second_bar: algoliaConfig.instant.enabled,
 			findAutocomplete: findAutocomplete,
 			config: algoliaConfig.instant,
 			translations: algoliaConfig.translations
@@ -591,39 +587,6 @@ requirejs(['algoliaBundle', 'Magento_Catalog/js/price-utils'], function (algolia
 				triggerOnUIInteraction: algoliaConfig.analytics.triggerOnUiInteraction,
 				pushInitialSearch: algoliaConfig.analytics.pushInitialSearch
 			};
-		}
-
-		if (!algoliaConfig.autocomplete.enabled) {
-			var customSearchBox = algoliaBundle.instantsearch.connectors.connectSearchBox(function(renderOptions, isFirstRendering) {
-				if (isFirstRendering) {
-					var input = document.querySelector(instant_selector);
-					var clearBtn = input.parentElement.getElementsByClassName('clear-query-autocomplete')[0];
-
-					input.addEventListener('input', function (event) {
-						var query = event.target.value;
-						renderOptions.refine(query);
-						if (clearBtn) {
-							if (query.length > 0) {
-								$(clearBtn).show();
-							} else {
-								$(clearBtn).hide();
-							}
-						}
-					});
-
-					if (clearBtn) {
-						clearBtn.addEventListener('click', function () {
-							renderOptions.refine('');
-							input.value = '';
-						});
-					}
-
-					input.value = renderOptions.query;
-				}
-			});
-
-			delete allWidgetConfiguration['searchBox'];
-			allWidgetConfiguration.custom.push(customSearchBox());
 		}
 
 		allWidgetConfiguration = algolia.triggerHooks('beforeWidgetInitialization', allWidgetConfiguration, algoliaBundle);

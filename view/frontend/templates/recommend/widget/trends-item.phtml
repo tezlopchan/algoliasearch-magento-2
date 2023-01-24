@@ -1,26 +1,26 @@
 <?php
-/**
- * Copyright © Magento, Inc. All rights reserved.
- * See COPYING.txt for license details.
- */
-$trendConstainer =  'trendItems' . $block->generateUniqueToken();
-?>
-<div id="<?php echo $trendConstainer; ?>" class="trendsItem recommend-component"></div>
-<script>
-    require([
-        'jquery',
-        'domReady!'
-    ], function($){
-        window.recommendTrendContainer = "<?php echo $trendConstainer; ?>";
-        window.numOfTrendsItem = "<?php echo $block->getData('numOfTrendsItem') ?>";
-        window.facetName = "<?php echo $block->getData('facetName') ?>";
-        window.facetValue = "<?php echo $block->getData('facetValue') ?>";
-    });
-</script>
-<script type="text/x-magento-init">
-    {
-        "[data-role=tocart-form]": {
-            "catalogAddToCart": {}
+/** @var \Algolia\AlgoliaSearch\Block\Widget\TrendsItem $block */
+$isEnabled = $block->isTrendingItemEnabled();
+if ($isEnabled):
+    $trendConstainer =  'trendItems' . $block->generateUniqueToken(); ?>
+    <div id="<?= $trendConstainer ?>" class="trendsItem recommend-component"></div>
+    <script type="text/x-magento-init">
+        {
+            "*": {
+                "Algolia_AlgoliaSearch/recommend" : {
+                    "recommendTrendContainer" : "<?= $trendConstainer ?>",
+                    "numOfTrendsItem" : "<?= $block->getData('numOfTrendsItem') ?>",
+                    "facetName" : "<?= $block->getData('facetName') ?>",
+                    "facetValue" : "<?= $block->getData('facetValue') ?>"
+                }
+            }
         }
-    }
-</script>
+    </script>
+    <script type="text/x-magento-init">
+        {
+            "[data-role=tocart-form]": {
+                "catalogAddToCart": {}
+            }
+        }
+    </script>
+<?php endif; ?>

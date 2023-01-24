@@ -895,7 +895,7 @@ class ProductHelper
     {
         if (isset($defaultData['in_stock']) === false) {
             $stockItem = $this->stockRegistry->getStockItem($product->getId());
-            $customData['in_stock'] = $stockItem && (int) $stockItem->getIsInStock();
+            $customData['in_stock'] = $product->isSaleable() && $stockItem->getIsInStock();
         }
 
         return $customData;
