@@ -340,8 +340,8 @@ define(
             let sources = [];
             let autocompleteConfig = [];
             let options = {
-                placeholder: algoliaConfig.translations.placeholder,
                 container: algoliaConfig.autocomplete.selector,
+                placeholder: algoliaConfig.translations.placeholder,
                 debug: algoliaConfig.autocomplete.isDebugEnabled,
                 detachedMediaQuery: 'none',
                 onSubmit(data){
