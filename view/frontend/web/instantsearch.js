@@ -262,7 +262,9 @@ requirejs(['algoliaBundle', 'Magento_Catalog/js/price-utils'], function (algolia
 					item: $('#current-refinements-template').html()
 				},
 				includedAttributes: attributes.map(function (attribute) {
-					return attribute.name
+                    if (!(algoliaConfig.isCategoryPage && attribute.name.indexOf('categories') > -1)) {
+                        return attribute.name;
+                    }
 				}),
 				transformItems: function (items) {
 					return items.map(function (item) {
@@ -434,15 +436,30 @@ requirejs(['algoliaBundle', 'Magento_Catalog/js/price-utils'], function (algolia
 					attributes: hierarchical_levels,
 					separator: ' /// ',
 					templates: templates,
-					alwaysGetRootLevel: true,
+					alwaysGetRootLevel: false,
+					showParentLevel:false,
 					limit: algoliaConfig.maxValuesPerFacet,
-					sortBy: ['name:asc']
+					sortBy: ['name:asc'],
+                    transformItems(items) {
+                    	if(algoliaConfig.isCategoryPage) {
+                            var filteredData = [];
+                            items.forEach(element => {
+                                if (element.label == algoliaConfig.request.parentCategory) {
+                                    filteredData.push(element);
+                                };
+                            });
+                            items = filteredData;
+                        }
+                        return items.map(item => ({
+                            ...item,
+                            label: item.label,
+                        }));
+                    },
 				};
 
 				hierarchicalMenuParams.templates.item = '' +
 					'<a class="{{cssClasses.link}} {{#isRefined}}{{cssClasses.link}}--selected{{/isRefined}}" href="{{url}}">{{label}}' + ' ' +
-					'<span class="{{cssClasses.count}}">{{#helpers.formatNumber}}{{count}}{{/helpers.formatNumber}}</span>' + ' ' +
-					'{{#isRefined}}<span class="cross-circle"></span>{{/isRefined}}' +
+					'<span class="{{cssClasses.count}}">{{#helpers.formatNumber}}{{count}}{{/helpers.formatNumber}}</span>' +
 					'</a>';
 				hierarchicalMenuParams.panelOptions = {
 					templates: {
