@@ -12,13 +12,40 @@ use Magento\Catalog\Model\Product;
 
 class PriceManager
 {
-    private $priceManagerSimple;
-    private $priceManagerVirtual;
-    private $priceManagerDownloadable;
-    private $priceManagerConfigurable;
-    private $priceManagerBundle;
-    private $priceManagerGrouped;
+    /**
+     * @var PriceManagerSimple
+     */
+    protected $priceManagerSimple;
 
+    /**
+     * @var PriceManagerVirtual
+     */
+    protected $priceManagerVirtual;
+    /**
+     * @var PriceManagerDownloadable
+     */
+    protected $priceManagerDownloadable;
+    /**
+     * @var PriceManagerConfigurable
+     */
+    protected $priceManagerConfigurable;
+    /**
+     * @var PriceManagerBundle
+     */
+    protected $priceManagerBundle;
+    /**
+     * @var PriceManagerGrouped
+     */
+    protected $priceManagerGrouped;
+
+    /**
+     * @param PriceManagerSimple $priceManagerSimple
+     * @param PriceManagerVirtual $priceManagerVirtual
+     * @param PriceManagerDownloadable $priceManagerDownloadable
+     * @param PriceManagerConfigurable $priceManagerConfigurable
+     * @param PriceManagerBundle $priceManagerBundle
+     * @param PriceManagerGrouped $priceManagerGrouped
+     */
     public function __construct(
         PriceManagerSimple $priceManagerSimple,
         PriceManagerVirtual $priceManagerVirtual,
@@ -35,13 +62,18 @@ class PriceManager
         $this->priceManagerGrouped = $priceManagerGrouped;
     }
 
+    /**
+     * @param $customData
+     * @param Product $product
+     * @param $subProducts
+     * @return mixed
+     */
     public function addPriceDataByProductType($customData, Product $product, $subProducts)
     {
         $priceManager = 'priceManager' . ucfirst($product->getTypeId());
         if (!property_exists($this, $priceManager)) {
             $priceManager = 'priceManagerSimple';
         }
-
         return $this->{$priceManager}->addPriceData($customData, $product, $subProducts);
     }
 }

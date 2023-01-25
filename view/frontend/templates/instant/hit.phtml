@@ -9,7 +9,6 @@ $baseVar         = $block->escapeHtml('price' . $priceKey);
 $maxVar          = $block->escapeHtml('price' . $priceKey . '_max');
 $baseFormatedVar = $block->escapeHtml('price' . $priceKey . '_formated');
 $origFormatedVar = $block->escapeHtml('price' . $priceKey . '_original_formated');
-$tierFormatedVar = $block->escapeHtml('price' . $priceKey . '_tier_formated');
 
 ?>
 
@@ -75,12 +74,6 @@ $tierFormatedVar = $block->escapeHtml('price' . $priceKey . '_tier_formated');
                                                     {{<?php echo $origFormatedVar; ?>}}
                                                 </span>
                                             {{/<?php echo $origFormatedVar; ?>}}
-                                            {{#<?php echo $tierFormatedVar; ?>}}
-                                                <span class="tier_price">
-                                                    <?php echo __('As low as') ?>
-                                                    <span class="tier_value">{{<?php echo $tierFormatedVar; ?>}}</span>
-                                                </span>
-                                            {{/<?php echo $tierFormatedVar; ?>}}
                                         </div>
                                     </div>
                                 </div>

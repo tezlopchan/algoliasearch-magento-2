@@ -423,6 +423,7 @@ class ProductHelper
                 'index_settings' => $transport,
             ]
         );
+
         $indexSettings = $transport->getData();
 
         $this->algoliaHelper->setSettings($indexName, $indexSettings, false, true);
@@ -450,6 +451,11 @@ class ProductHelper
             }, $sortingIndices));
         }
 
+        // Managing Virtual Replica
+        if ($this->configHelper->useVirtualReplica($storeId)) {
+            $replicas = $this->handleVirtualReplica($replicas, $indexName);
+        }
+
         // Merge current replicas with sorting replicas to not delete A/B testing replica indices
         try {
             $currentSettings = $this->algoliaHelper->getSettings($indexName);
@@ -464,19 +470,26 @@ class ProductHelper
 
         if (count($replicas) > 0) {
             $this->algoliaHelper->setSettings($indexName, ['replicas' => $replicas]);
-
             $this->logger->log('Setting replicas to "' . $indexName . '" index.');
             $this->logger->log('Replicas: ' . json_encode($replicas));
             $setReplicasTaskId = $this->algoliaHelper->getLastTaskId();
 
-            foreach ($sortingIndices as $values) {
-                $replicaName = $values['name'];
-                $indexSettings['ranking'] = $values['ranking'];
-
-                $this->algoliaHelper->setSettings($replicaName, $indexSettings, false, true);
-
-                $this->logger->log('Setting settings to "' . $replicaName . '" replica.');
-                $this->logger->log('Settings: ' . json_encode($indexSettings));
+            if (!$this->configHelper->useVirtualReplica($storeId)) {
+                foreach ($sortingIndices as $values) {
+                    $replicaName = $values['name'];
+                    $indexSettings['ranking'] = $values['ranking'];
+                    $this->algoliaHelper->setSettings($replicaName, $indexSettings, false, true);
+                    $this->logger->log('Setting settings to "' . $replicaName . '" replica.');
+                    $this->logger->log('Settings: ' . json_encode($indexSettings));
+                }
+            } else {
+                foreach ($sortingIndices as $values) {
+                    $replicaName = $values['name'];
+                    $replicaSetting['customRanking'] = [$values['ranking'][0], ...$customRanking];
+                    $this->algoliaHelper->setSettings($replicaName, $replicaSetting, false, false);
+                    $this->logger->log('Setting settings to "' . $replicaName . '" replica.');
+                    $this->logger->log('Settings: ' . json_encode($replicaSetting));
+                }
             }
         } else {
             $this->algoliaHelper->setSettings($indexName, ['replicas' => []]);
@@ -486,46 +499,6 @@ class ProductHelper
 
         // Commented out as it doesn't delete anything now because of merging replica indices earlier
         // $this->deleteUnusedReplicas($indexName, $replicas, $setReplicasTaskId);
-
-        if ($this->configHelper->isEnabledSynonyms($storeId) === true) {
-            if ($synonymsFile = $this->configHelper->getSynonymsFile($storeId)) {
-                $synonymsToSet = json_decode(file_get_contents($synonymsFile), true);
-            } else {
-                $synonymsToSet = [];
-
-                $synonyms = $this->configHelper->getSynonyms($storeId);
-                foreach ($synonyms as $objectID => $synonym) {
-                    $synonymsToSet[] = [
-                        'objectID' => $objectID,
-                        'type' => 'synonym',
-                        'synonyms' => $this->explodeSynonyms($synonym['synonyms']),
-                    ];
-                }
-
-                $onewaySynonyms = $this->configHelper->getOnewaySynonyms($storeId);
-                foreach ($onewaySynonyms as $objectID => $onewaySynonym) {
-                    $synonymsToSet[] = [
-                        'objectID' => $objectID,
-                        'type' => 'oneWaySynonym',
-                        'input' => $onewaySynonym['input'],
-                        'synonyms' => $this->explodeSynonyms($onewaySynonym['synonyms']),
-                    ];
-                }
-            }
-
-            $this->algoliaHelper->setSynonyms($indexName, $synonymsToSet);
-            $this->logger->log('Setting synonyms to "' . $indexName . '"');
-            if ($saveToTmpIndicesToo === true) {
-                $this->algoliaHelper->setSynonyms($indexNameTmp, $synonymsToSet);
-                $this->logger->log('Setting synonyms to "' . $indexNameTmp . '"');
-            }
-        } elseif ($saveToTmpIndicesToo === true) {
-            $this->algoliaHelper->copySynonyms($indexName, $indexNameTmp);
-            $this->logger->log('
-                Synonyms management disabled.
-                Copying synonyms from production index to TMP one to not to erase them with the index move.
-            ');
-        }
 
         if ($saveToTmpIndicesToo === true) {
             try {
@@ -882,7 +855,7 @@ class ProductHelper
     {
         if (isset($defaultData['in_stock']) === false) {
             $stockItem = $this->stockRegistry->getStockItem($product->getId());
-            $customData['in_stock'] = $stockItem && (int) $stockItem->getIsInStock();
+            $customData['in_stock'] = $product->isSaleable() && $stockItem->getIsInStock();
         }
 
         return $customData;
@@ -1332,15 +1305,6 @@ class ProductHelper
     }
 
     /**
-     * @param $synonyms
-     * @return array
-     */
-    protected function explodeSynonyms($synonyms)
-    {
-        return array_map('trim', explode(',', $synonyms));
-    }
-
-    /**
      * Check if product can be index on Algolia
      *
      * @param Product $product
@@ -1401,5 +1365,17 @@ class ProductHelper
         $stockItem = $this->stockRegistry->getStockItem($product->getId());
 
         return $product->isSaleable() && $stockItem->getIsInStock();
+    }
+
+    /**
+     * @param $replica
+     * @return array
+     */
+    protected function handleVirtualReplica($replicas, $indexName) {
+        $virtualReplicaArray = [];
+        foreach ($replicas as $replica) {
+            $virtualReplicaArray[] = 'virtual('.$replica.')';
+        }
+        return $virtualReplicaArray;
     }
 }
