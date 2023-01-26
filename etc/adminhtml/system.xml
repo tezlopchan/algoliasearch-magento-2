@@ -345,6 +345,15 @@
                         ]]>
                     </comment>
                 </field>
+                <field id="instantsearch_searchbox" translate="label comment" type="select" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enable searchBox Widget in Instant Search Page</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>
+                        <![CDATA[
+                            The searchBox widget is used to let the user perform a text-based query. <a target="_blank" href="https://www.algolia.com/doc/api-reference/widgets/search-box/js/#about"> Know More </a>
+                        ]]>
+                    </comment>
+                </field>
                 <field id="replace_categories" translate="label comment" type="select" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Replace categories page</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
