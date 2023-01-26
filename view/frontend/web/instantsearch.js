@@ -322,7 +322,7 @@ requirejs(['algoliaBundle', 'Magento_Catalog/js/price-utils'], function (algolia
 			}
 		};
 
-		if (algoliaConfig.instant.isSearchBoxEnabled === true){
+		if (algoliaConfig.instant.isSearchBoxEnabled){
 			/**
 			* searchBox
 			* Docs: https://www.algolia.com/doc/api-reference/widgets/search-box/js/
