@@ -326,7 +326,7 @@
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                     <comment>
                         <![CDATA[
-                            This feature is only applicable with premium plans
+                            Virtual Replica is only available on Premium plans <a target="_blank" href="https://www.algolia.com/doc/integration/magento-2/how-it-works/indexing/?client=php#switching-to-virtual-replica">documentation</a> 
                         ]]>
                     </comment>
                     <depends>
@@ -779,20 +779,6 @@
                     <depends>
                         <field id="active">1</field>
                     </depends>
-                </field>
-            </group>
-        </section>
-        <section id="algoliasearch_synonyms" translate="label" type="text" sortOrder="66" showInDefault="1" showInWebsite="1" showInStore="1">
-            <label>Synonyms</label>
-            <tab>algolia</tab>
-            <resource>Algolia_AlgoliaSearch::algolia_algoliasearch</resource>
-            <group id="synonyms_group" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
-                <label>Synonyms</label>
-                <field id="notice" translate="label comment" type="label" sortOrder="10" showInDefault="1">
-                    <label>Notice:</label>
-                    <comment>
-                        <![CDATA[Configurations related to Synonyms have been deprecated from the Magento dashboard. We advise you to configure synonyms from the Algolia dashboard]]>
-                    </comment>
                 </field>
             </group>
         </section>
