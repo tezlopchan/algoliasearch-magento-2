@@ -1,5 +1,30 @@
 # CHANGE LOG
 
+
+## 3.10.0
+
+### UPDATES
+- Updated the sorting strategy to select between using Virtual Replica v/s Standard Replica. 
+- Deprecated the set up of Algolia synonyms from Magento admin
+- Updated Algolia Recommend version to 1.8.0 and refactored the corresponding code.
+- Added code to delete category from Algolia when the category is deleted from Magento.
+- Added keyboard navigation in autocomplete
+- Added search input placeholder translation in the autocomplete.
+- Added 10 SKU limit in SKU indexing form in the Magento admin.
+- Added configuration to enable/disable the searchBox widget on the instant search page.
+
+
+### FIXES
+- Fixed the issue with the price filter in Algolia Merchandiser.
+- Fixed the product price issue when the special price and catalog price rules are present.
+- Fixed the group price issues for all product types [Simple, Configurable, Bundle, Group, Downloadable, and Virtual Product].
+- Fixed the Algolia objectID issue in Recommend
+- Fixed the issue on the instant search page where the current search term was not reflecting on the page title.
+- Fixed the TagName error in autocomplete.
+- Fixed the issue with stock indexing when manage stock is set to No
+- Added code to prevent full indexing after placing order when MSI is disabled
+
+
 ## 3.9.1
 
 ### UPDATES
