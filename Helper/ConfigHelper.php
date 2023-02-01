@@ -32,6 +32,7 @@ class ConfigHelper
     public const SHOW_SUGGESTIONS_NO_RESULTS = 'algoliasearch_instant/instant/show_suggestions_on_no_result_page';
     public const XML_ADD_TO_CART_ENABLE = 'algoliasearch_instant/instant/add_to_cart_enable';
     public const INFINITE_SCROLL_ENABLE = 'algoliasearch_instant/instant/infinite_scroll_enable';
+    public const SEARCHBOX_ENABLE = 'algoliasearch_instant/instant/instantsearch_searchbox';
 
     public const IS_POPUP_ENABLED = 'algoliasearch_autocomplete/autocomplete/is_popup_enabled';
     public const NB_OF_PRODUCTS_SUGGESTIONS = 'algoliasearch_autocomplete/autocomplete/nb_of_products_suggestions';
@@ -62,11 +63,6 @@ class ConfigHelper
     public const XML_PATH_IMAGE_HEIGHT = 'algoliasearch_images/image/height';
     public const XML_PATH_IMAGE_TYPE = 'algoliasearch_images/image/type';
 
-    public const ENABLE_SYNONYMS = 'algoliasearch_synonyms/synonyms_group/enable_synonyms';
-    public const SYNONYMS = 'algoliasearch_synonyms/synonyms_group/synonyms';
-    public const ONEWAY_SYNONYMS = 'algoliasearch_synonyms/synonyms_group/oneway_synonyms';
-    public const SYNONYMS_FILE = 'algoliasearch_synonyms/synonyms_group/synonyms_file';
-
     public const CC_ANALYTICS_ENABLE = 'algoliasearch_cc_analytics/cc_analytics_group/enable';
     public const CC_ANALYTICS_IS_SELECTOR = 'algoliasearch_cc_analytics/cc_analytics_group/is_selector';
     public const CC_CONVERSION_ANALYTICS_MODE = 'algoliasearch_cc_analytics/cc_analytics_group/conversion_analytics_mode';
@@ -84,7 +80,7 @@ class ConfigHelper
     public const REMOVE_PUB_DIR_IN_URL = 'algoliasearch_advanced/advanced/remove_pub_dir_in_url';
     public const MAKE_SEO_REQUEST = 'algoliasearch_advanced/advanced/make_seo_request';
     public const REMOVE_BRANDING = 'algoliasearch_advanced/advanced/remove_branding';
-    public const AUTOCOMPLETE_SELECTOR = 'algoliasearch_advanced/advanced/autocomplete_selector';
+    public const AUTOCOMPLETE_SELECTOR = 'algoliasearch_autocomplete/autocomplete/autocomplete_selector';
     public const IDX_PRODUCT_ON_CAT_PRODUCTS_UPD = 'algoliasearch_advanced/advanced/index_product_on_category_products_update';
     public const PREVENT_BACKEND_RENDERING = 'algoliasearch_advanced/advanced/prevent_backend_rendering';
     public const PREVENT_BACKEND_RENDERING_DISPLAY_MODE =
@@ -123,6 +119,11 @@ class ConfigHelper
     protected const IS_ADDTOCART_ENABLED_IN_FREQUENTLY_BOUGHT_TOGETHER = 'algoliasearch_recommend/recommend/frequently_bought_together/is_addtocart_enabled';
     protected const IS_ADDTOCART_ENABLED_IN_RELATED_PRODUCTS = 'algoliasearch_recommend/recommend/related_product/is_addtocart_enabled';
     protected const IS_ADDTOCART_ENABLED_IN_TRENDS_ITEM = 'algoliasearch_recommend/recommend/trends_item/is_addtocart_enabled';
+    protected const USE_VIRTUAL_REPLICA_ENABLED = 'algoliasearch_instant/instant/use_virtual_replica';
+    protected const AUTOCOMPLETE_KEYBORAD_NAVIAGATION = 'algoliasearch_autocomplete/autocomplete/navigator';
+    protected const FREQUENTLY_BOUGHT_TOGETHER_TITLE = 'algoliasearch_recommend/recommend/frequently_bought_together/title';
+    protected const RELATED_PRODUCTS_TITLE = 'algoliasearch_recommend/recommend/related_product/title';
+    protected const TRENDING_ITEMS_TITLE = 'algoliasearch_recommend/recommend/trends_item/title';
 
     /**
      * @var Magento\Framework\App\Config\ScopeConfigInterface
@@ -173,7 +174,6 @@ class ConfigHelper
      * @var GroupCollection
      */
     protected $groupCollection;
-
 
     /**
      * @param Magento\Framework\App\Config\ScopeConfigInterface $configInterface
@@ -543,6 +543,16 @@ class ConfigHelper
      * @param $storeId
      * @return bool
      */
+    public function isInstantSearchBoxEnabled($storeId = null)
+    {
+        return $this->isInstantEnabled($storeId)
+            && $this->configInterface->isSetFlag(self::SEARCHBOX_ENABLE, ScopeInterface::SCOPE_STORE, $storeId);
+    }
+
+    /**
+     * @param $storeId
+     * @return bool
+     */
     public function isInstantEnabled($storeId = null)
     {
         return $this->configInterface->isSetFlag(self::IS_INSTANT_ENABLED, ScopeInterface::SCOPE_STORE, $storeId);
@@ -724,10 +734,10 @@ class ConfigHelper
         );
     }
 
-     /**
-     * @param int $storeId
-     * @return int
-     */
+    /**
+    * @param int $storeId
+    * @return int
+    */
     public function isRecommendTrendingItemsEnabled($storeId = null)
     {
         return (int)$this->configInterface->getValue(
@@ -827,6 +837,33 @@ class ConfigHelper
     public function isAddToCartEnabledInTrendsItem($storeId = null)
     {
         return $this->configInterface->isSetFlag(self::IS_ADDTOCART_ENABLED_IN_TRENDS_ITEM, ScopeInterface::SCOPE_STORE, $storeId);
+    }
+
+    /**
+     * @param $storeId
+     * @return string
+     */
+    public function getFBTTitle($storeId = null)
+    {
+        return $this->configInterface->getValue(self::FREQUENTLY_BOUGHT_TOGETHER_TITLE, ScopeInterface::SCOPE_STORE, $storeId);
+    }
+
+    /**
+     * @param $storeId
+     * @return string
+     */
+    public function getRelatedProductsTitle($storeId = null)
+    {
+        return $this->configInterface->getValue(self::RELATED_PRODUCTS_TITLE, ScopeInterface::SCOPE_STORE, $storeId);
+    }
+
+    /**
+     * @param $storeId
+     * @return string
+     */
+    public function getTrendingItemsTitle($storeId = null)
+    {
+        return $this->configInterface->getValue(self::TRENDING_ITEMS_TITLE, ScopeInterface::SCOPE_STORE, $storeId);
     }
 
     /**
@@ -1427,64 +1464,6 @@ class ConfigHelper
      * @param $storeId
      * @return bool
      */
-    public function isEnabledSynonyms($storeId = null)
-    {
-        return $this->configInterface->isSetFlag(self::ENABLE_SYNONYMS, ScopeInterface::SCOPE_STORE, $storeId);
-    }
-
-    /**
-     * @param $storeId
-     * @return array
-     */
-    public function getSynonyms($storeId = null)
-    {
-        $synonyms = $this->unserialize($this->configInterface->getValue(
-            self::SYNONYMS,
-            ScopeInterface::SCOPE_STORE,
-            $storeId
-        ));
-        if (is_array($synonyms)) {
-            return $synonyms;
-        }
-        return [];
-    }
-
-    /**
-     * @param $storeId
-     * @return array
-     */
-    public function getOnewaySynonyms($storeId = null)
-    {
-        $onewaySynonyms = $this->unserialize($this->configInterface->getValue(
-            self::ONEWAY_SYNONYMS,
-            ScopeInterface::SCOPE_STORE,
-            $storeId
-        ));
-        if (is_array($onewaySynonyms)) {
-            return $onewaySynonyms;
-        }
-        return [];
-    }
-
-    /**
-     * @param $storeId
-     * @return string|null
-     * @throws Magento\Framework\Exception\FileSystemException
-     */
-    public function getSynonymsFile($storeId = null)
-    {
-        $filename = $this->configInterface->getValue(self::SYNONYMS_FILE, ScopeInterface::SCOPE_STORE, $storeId);
-        if (!$filename) {
-            return null;
-        }
-        $baseDirectory = $this->directoryList->getPath(DirectoryList::MEDIA);
-        return $baseDirectory . '/algoliasearch_admin_config_uploads/' . $filename;
-    }
-
-    /**
-     * @param $storeId
-     * @return bool
-     */
     public function isClickConversionAnalyticsEnabled($storeId = null)
     {
         return $this->configInterface->isSetFlag(self::CC_ANALYTICS_ENABLE, ScopeInterface::SCOPE_STORE, $storeId);
@@ -1599,13 +1578,38 @@ class ConfigHelper
             $storeId
         );
     }
-    
+
     /**
      * @param $storeId
      * @return mixed
      */
-    public function getCacheTime($storeId = null) {
-        return $this->configInterface->getValue(self::MAGENTO_DEFAULT_CACHE_TIME,
+    public function getCacheTime($storeId = null)
+    {
+        return $this->configInterface->getValue(
+            self::MAGENTO_DEFAULT_CACHE_TIME,
+            ScopeInterface::SCOPE_STORE,
+            $storeId
+        );
+    }
+
+    /**
+     * @param $storeId
+     * @return mixed
+     */
+    public function useVirtualReplica($storeId = null) {
+        return $this->configInterface->isSetFlag(self::USE_VIRTUAL_REPLICA_ENABLED,
+            ScopeInterface::SCOPE_STORE,
+            $storeId
+        );
+    }
+
+    /**
+     * @param $storeId
+     * @return mixed
+     */
+    public function isAutocompleteNavigatorEnabled($storeId = null)
+    {
+        return $this->configInterface->isSetFlag(self::AUTOCOMPLETE_KEYBORAD_NAVIAGATION,
             ScopeInterface::SCOPE_STORE,
             $storeId
         );

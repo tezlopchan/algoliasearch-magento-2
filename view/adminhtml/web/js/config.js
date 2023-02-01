@@ -29,7 +29,7 @@ require(
 			var pageIds = [
 				'#algoliasearch_products_products',
 				'#algoliasearch_categories_categories',
-				'#algoliasearch_synonyms_synonyms_group',
+				'#algoliasearch_credentials_credentials',
 				'#algoliasearch_extra_settings_extra_settings'
 			];
 
@@ -38,14 +38,14 @@ require(
 			pageWarning += '</div>';
 
 			var pageWarningSynonyms = '<div class="algolia_dashboard_warning algolia_dashboard_warning_page">';
-			pageWarningSynonyms += '<p>These settings are also available in the Algolia Dashboard. We advise you to configure synonyms configuration from the Algolia dashboard as this is going to be deprecated in release 3.9.2.</p>';
+			pageWarningSynonyms += '<p>Configurations related to Synonyms have been deprecated from the Magento dashboard. We advise you to configure synonyms from the Algolia dashboard.</p>';
 			pageWarningSynonyms += '</div>';
 
 			for (var i=0; i < pageIds.length; i++) {
 				var element = $(pageIds[i]);
-				if (element.length > 0 && pageIds[i] != "#algoliasearch_synonyms_synonyms_group") {
+				if (element.length > 0 && pageIds[i] != "#algoliasearch_credentials_credentials") {
 					element.find('.comment').append(pageWarning);
-				} else if (element.length > 0 && pageIds[i] == "#algoliasearch_synonyms_synonyms_group"){
+				} else if (element.length > 0 && pageIds[i] == "#algoliasearch_credentials_credentials"){
 				    element.find('.comment').append(pageWarningSynonyms);
 				}
 			}

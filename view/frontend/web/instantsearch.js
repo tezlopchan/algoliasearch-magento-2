@@ -5,10 +5,6 @@ requirejs(['algoliaBundle', 'Magento_Catalog/js/price-utils'], function (algolia
 			return;
 		}
 
-		if (!algoliaConfig.autocomplete.enabled && $(algoliaConfig.autocomplete.selector).length == 0) {
-			return;
-		}
-
 		if ($(algoliaConfig.instant.selector).length <= 0) {
 			throw '[Algolia] Invalid instant-search selector: ' + algoliaConfig.instant.selector;
 		}
@@ -47,7 +43,7 @@ requirejs(['algoliaBundle', 'Magento_Catalog/js/price-utils'], function (algolia
 		 * Docs: http://twitter.github.io/hogan.js/
 		 **/
 		var wrapperTemplate = algoliaBundle.Hogan.compile($('#instant_wrapper_template').html());
-		var instant_selector = !algoliaConfig.autocomplete.enabled ? algoliaConfig.autocomplete.selector : "#instant-search-bar";
+		var instant_selector = "#instant-search-bar";
 
 		var div = document.createElement('div');
 		$(div).addClass('algolia-instant-results-wrapper');
@@ -57,7 +53,7 @@ requirejs(['algoliaBundle', 'Magento_Catalog/js/price-utils'], function (algolia
 
 		$('.algolia-instant-results-wrapper').append('<div class="algolia-instant-selector-results"></div>');
 		$('.algolia-instant-selector-results').html(wrapperTemplate.render({
-			second_bar: algoliaConfig.autocomplete.enabled,
+			second_bar: algoliaConfig.instant.enabled,
 			findAutocomplete: findAutocomplete,
 			config: algoliaConfig.instant,
 			translations: algoliaConfig.translations
@@ -220,15 +216,6 @@ requirejs(['algoliaBundle', 'Magento_Catalog/js/price-utils'], function (algolia
 				}
 			],
 			/**
-			 * searchBox
-			 * Docs: https://www.algolia.com/doc/api-reference/widgets/search-box/js/
-			 **/
-			searchBox: {
-				container: instant_selector,
-				placeholder: algoliaConfig.translations.searchFor,
-				showSubmit: false
-			},
-			/**
 			 * stats
 			 * Docs: https://www.algolia.com/doc/api-reference/widgets/stats/js/
 			 **/
@@ -271,7 +258,9 @@ requirejs(['algoliaBundle', 'Magento_Catalog/js/price-utils'], function (algolia
 					item: $('#current-refinements-template').html()
 				},
 				includedAttributes: attributes.map(function (attribute) {
-					return attribute.name
+                    if (!(algoliaConfig.isCategoryPage && attribute.name.indexOf('categories') > -1)) {
+                        return attribute.name;
+                    }
 				}),
 				transformItems: function (items) {
 					return items.map(function (item) {
@@ -332,6 +321,24 @@ requirejs(['algoliaBundle', 'Magento_Catalog/js/price-utils'], function (algolia
 				}
 			}
 		};
+
+		if (algoliaConfig.instant.isSearchBoxEnabled){
+			/**
+			* searchBox
+			* Docs: https://www.algolia.com/doc/api-reference/widgets/search-box/js/
+			**/
+			allWidgetConfiguration.searchBox = {
+				container: instant_selector,
+				placeholder: algoliaConfig.translations.searchFor,
+				showSubmit: false,
+				queryHook : function(inputValue, search) {
+					if (algoliaConfig.isSearchPage && algoliaConfig.request.categoryId.length <= 0 && algoliaConfig.request.landingPageId.length <= 0) {
+					    $(".page-title-wrapper span.base").html(algoliaConfig.translations.searchTitle+": '"+inputValue+"'");
+					}
+					return search(inputValue);
+				}
+			}
+		}
 
 		if (algoliaConfig.instant.infiniteScrollEnabled === true) {
 			/**
@@ -425,15 +432,30 @@ requirejs(['algoliaBundle', 'Magento_Catalog/js/price-utils'], function (algolia
 					attributes: hierarchical_levels,
 					separator: ' /// ',
 					templates: templates,
-					alwaysGetRootLevel: true,
+					alwaysGetRootLevel: false,
+					showParentLevel:false,
 					limit: algoliaConfig.maxValuesPerFacet,
-					sortBy: ['name:asc']
+					sortBy: ['name:asc'],
+                    transformItems(items) {
+                    	if(algoliaConfig.isCategoryPage) {
+                            var filteredData = [];
+                            items.forEach(element => {
+                                if (element.label == algoliaConfig.request.parentCategory) {
+                                    filteredData.push(element);
+                                };
+                            });
+                            items = filteredData;
+                        }
+                        return items.map(item => ({
+                            ...item,
+                            label: item.label,
+                        }));
+                    },
 				};
 
 				hierarchicalMenuParams.templates.item = '' +
 					'<a class="{{cssClasses.link}} {{#isRefined}}{{cssClasses.link}}--selected{{/isRefined}}" href="{{url}}">{{label}}' + ' ' +
-					'<span class="{{cssClasses.count}}">{{#helpers.formatNumber}}{{count}}{{/helpers.formatNumber}}</span>' + ' ' +
-					'{{#isRefined}}<span class="cross-circle"></span>{{/isRefined}}' +
+					'<span class="{{cssClasses.count}}">{{#helpers.formatNumber}}{{count}}{{/helpers.formatNumber}}</span>' +
 					'</a>';
 				hierarchicalMenuParams.panelOptions = {
 					templates: {
@@ -591,39 +613,6 @@ requirejs(['algoliaBundle', 'Magento_Catalog/js/price-utils'], function (algolia
 				triggerOnUIInteraction: algoliaConfig.analytics.triggerOnUiInteraction,
 				pushInitialSearch: algoliaConfig.analytics.pushInitialSearch
 			};
-		}
-
-		if (!algoliaConfig.autocomplete.enabled) {
-			var customSearchBox = algoliaBundle.instantsearch.connectors.connectSearchBox(function(renderOptions, isFirstRendering) {
-				if (isFirstRendering) {
-					var input = document.querySelector(instant_selector);
-					var clearBtn = input.parentElement.getElementsByClassName('clear-query-autocomplete')[0];
-
-					input.addEventListener('input', function (event) {
-						var query = event.target.value;
-						renderOptions.refine(query);
-						if (clearBtn) {
-							if (query.length > 0) {
-								$(clearBtn).show();
-							} else {
-								$(clearBtn).hide();
-							}
-						}
-					});
-
-					if (clearBtn) {
-						clearBtn.addEventListener('click', function () {
-							renderOptions.refine('');
-							input.value = '';
-						});
-					}
-
-					input.value = renderOptions.query;
-				}
-			});
-
-			delete allWidgetConfiguration['searchBox'];
-			allWidgetConfiguration.custom.push(customSearchBox());
 		}
 
 		allWidgetConfiguration = algolia.triggerHooks('beforeWidgetInitialization', allWidgetConfiguration, algoliaBundle);
