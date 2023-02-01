@@ -485,7 +485,8 @@ class ProductHelper
             } else {
                 foreach ($sortingIndices as $values) {
                     $replicaName = $values['name'];
-                    $replicaSetting['customRanking'] = [$values['ranking'][0], ...$customRanking];
+                    array_unshift($customRanking,$values['ranking'][0]); 
+                    $replicaSetting['customRanking'] = $customRanking;   
                     $this->algoliaHelper->setSettings($replicaName, $replicaSetting, false, false);
                     $this->logger->log('Setting settings to "' . $replicaName . '" replica.');
                     $this->logger->log('Settings: ' . json_encode($replicaSetting));

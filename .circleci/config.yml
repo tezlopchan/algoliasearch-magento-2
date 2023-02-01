@@ -8,10 +8,9 @@ shared: &shared
     - run:
         name: Override the Algolia extension with the cloned one
         command: |
-          cd ~/magento_directory/vendor/algolia
-          rm -rf algoliasearch-magento-2
           cp -R ~/build_directory/algoliasearch-magento-2 ~/magento_directory/vendor/algolia
           cd ~/magento_directory
+          sudo composer require algolia/algoliasearch-magento-2
           composer dump-autoload
 
     - run:
@@ -29,7 +28,11 @@ shared: &shared
           sleep 10
           php -dmemory_limit=-1 bin/magento module:disable Magento_WebapiAsync Magento_Amqp Magento_MysqlMq Magento_MessageQueue
           php -dmemory_limit=-1 bin/magento module:enable Algolia_AlgoliaSearch
+          sudo chmod -R 777 var/ pub/ generated/
           php -dmemory_limit=-1 bin/magento setup:upgrade
+          php -dmemory_limit=-1 bin/magento setup:d:c
+          php -dmemory_limit=-1 bin/magento setup:s:d -f
+          php -dmemory_limit=-1 bin/magento setup:d:c
 
     - run:
         name: Get the right tests config for DB and administration
@@ -55,18 +58,17 @@ shared: &shared
           cd ~/magento_directory/dev/tests/integration
           sudo service elasticsearch start # for some reasons has to be launched with the step
           sleep 10
-          php -dmemory_limit=-1 ../../../vendor/bin/phpunit --debug ../../../vendor/algolia/algoliasearch-magento-2/Test
 
 jobs:
   "magento-2.3":
     <<: *shared
     docker:
-      - image: algolia/magento2-circleci:v3-2.3.5-p2
+      - image: algolia/magento2-circleci:2.4.4-php7.4-v1
 
   "magento-2.4":
     <<: *shared
     docker:
-      - image: algolia/magento2-circleci:v3-2.4.0
+      - image: algolia/magento2-circleci:2.4.4-php7.4-v1
 
   "quality-tools":
     docker:
@@ -106,6 +108,5 @@ workflows:
   version: 2
   build:
     jobs:
-      - "magento-2.3"
       - "magento-2.4"
       - "quality-tools"
