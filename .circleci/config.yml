@@ -10,6 +10,7 @@ shared: &shared
         command: |
           cp -R ~/build_directory/algoliasearch-magento-2 ~/magento_directory/vendor/algolia
           cd ~/magento_directory
+          sudo composer require algolia/algoliasearch-magento-2
           composer dump-autoload
 
     - run:
