@@ -20,16 +20,16 @@ class Save extends \Magento\Backend\App\Action
     public const MAX_SKUS = 10;
 
     /** @var ProductRepositoryInterface */
-    private $productRepository;
+    protected $productRepository;
 
     /** @var StoreManagerInterface */
-    private $storeManager;
+    protected $storeManager;
 
     /** @var DataHelper */
-    private $dataHelper;
+    protected $dataHelper;
 
     /** @var ProductHelper */
-    private $productHelper;
+    protected $productHelper;
 
     /**
      * @param Context $context
@@ -75,15 +75,17 @@ class Save extends \Magento\Backend\App\Action
 
         if (empty($skus)) {
             $this->messageManager->addErrorMessage(__('Please, enter at least one SKU.'));
+            return $resultRedirect;
         }
 
         if (count($skus) > self::MAX_SKUS) {
             $this->messageManager->addErrorMessage(
                 __(
-                    'The maximal number of SKU(s) is %1. Could you please remove some SKU(s) to fit into the limit?',
+                    'The maximum number of SKU(s) is %1. Please remove some SKU(s) and try again',
                     self::MAX_SKUS
                 )
             );
+            return $resultRedirect;
         }
 
         foreach ($skus as $sku) {
@@ -125,15 +127,12 @@ class Save extends \Magento\Backend\App\Action
     }
 
     /**
-     * @param \Magento\Catalog\Model\Product $product
-     * @param array $stores
-     *
-     * @throws \Magento\Framework\Exception\LocalizedException
-     * @throws \Magento\Framework\Exception\NoSuchEntityException
-     *
+     * @param $product
+     * @param $stores
      * @return void
+     * @throws NoSuchEntityException
      */
-    private function checkAndReindex($product, $stores)
+    protected function checkAndReindex($product, $stores)
     {
         $websites = $this->storeManager->getWebsites();
         $storeGroup = $this->storeManager->getGroups();
