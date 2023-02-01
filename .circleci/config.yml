@@ -32,7 +32,6 @@ shared: &shared
           php -dmemory_limit=-1 bin/magento setup:upgrade
           php -dmemory_limit=-1 bin/magento setup:d:c
           php -dmemory_limit=-1 bin/magento setup:s:d -f
-          php -dmemory_limit=-1 bin/magento setup:d:c
 
     - run:
         name: Get the right tests config for DB and administration
