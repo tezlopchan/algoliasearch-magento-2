@@ -30,7 +30,8 @@ shared: &shared
           php -dmemory_limit=-1 bin/magento module:disable Magento_WebapiAsync Magento_Amqp Magento_MysqlMq Magento_MessageQueue
           php -dmemory_limit=-1 bin/magento module:enable Algolia_AlgoliaSearch
           sudo chmod -R 777 var/ pub/ generated/
-          php -dmemory_limit=-1 bin/magento setup:upgrade
+          rm -rf generated
+          php -dmemory_limit=-1 bin/magento setup:d:c
 
     - run:
         name: Get the right tests config for DB and administration
