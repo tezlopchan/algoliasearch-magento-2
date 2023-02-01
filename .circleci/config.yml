@@ -8,8 +8,6 @@ shared: &shared
     - run:
         name: Override the Algolia extension with the cloned one
         command: |
-          cd ~/magento_directory/vendor/algolia
-          rm -rf algoliasearch-magento-2
           cp -R ~/build_directory/algoliasearch-magento-2 ~/magento_directory/vendor/algolia
           cd ~/magento_directory
           composer dump-autoload
