@@ -7,7 +7,7 @@ use Magento\Framework\DataObject\IdentityInterface;
 
 class Query extends \Magento\Framework\Model\AbstractModel implements IdentityInterface, QueryInterface
 {
-    const CACHE_TAG = 'algoliasearch_query';
+    public const CACHE_TAG = 'algoliasearch_query';
 
     protected $_cacheTag = 'algoliasearch_query';
 
@@ -29,7 +29,7 @@ class Query extends \Magento\Framework\Model\AbstractModel implements IdentityIn
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function getQueryId()
     {
@@ -37,7 +37,7 @@ class Query extends \Magento\Framework\Model\AbstractModel implements IdentityIn
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function getStoreId()
     {
@@ -45,7 +45,7 @@ class Query extends \Magento\Framework\Model\AbstractModel implements IdentityIn
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function getQueryText()
     {
@@ -53,7 +53,7 @@ class Query extends \Magento\Framework\Model\AbstractModel implements IdentityIn
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function getBannerImage()
     {
@@ -61,7 +61,7 @@ class Query extends \Magento\Framework\Model\AbstractModel implements IdentityIn
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function getBannerUrl()
     {
@@ -69,7 +69,7 @@ class Query extends \Magento\Framework\Model\AbstractModel implements IdentityIn
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function getBannerAlt()
     {
@@ -77,7 +77,7 @@ class Query extends \Magento\Framework\Model\AbstractModel implements IdentityIn
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function getBannerContent()
     {
@@ -85,7 +85,7 @@ class Query extends \Magento\Framework\Model\AbstractModel implements IdentityIn
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function getCreatedAt()
     {
@@ -93,7 +93,7 @@ class Query extends \Magento\Framework\Model\AbstractModel implements IdentityIn
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function setQueryId($value)
     {
@@ -101,7 +101,7 @@ class Query extends \Magento\Framework\Model\AbstractModel implements IdentityIn
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function setStoreId($value)
     {
@@ -109,7 +109,7 @@ class Query extends \Magento\Framework\Model\AbstractModel implements IdentityIn
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function setQueryText($value)
     {
@@ -117,7 +117,7 @@ class Query extends \Magento\Framework\Model\AbstractModel implements IdentityIn
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function setBannerImage($value)
     {
@@ -125,7 +125,7 @@ class Query extends \Magento\Framework\Model\AbstractModel implements IdentityIn
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function setBannerUrl($value)
     {
@@ -133,7 +133,7 @@ class Query extends \Magento\Framework\Model\AbstractModel implements IdentityIn
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function setBannerAlt($value)
     {
@@ -141,7 +141,7 @@ class Query extends \Magento\Framework\Model\AbstractModel implements IdentityIn
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function setBannerContent($value)
     {
@@ -149,7 +149,7 @@ class Query extends \Magento\Framework\Model\AbstractModel implements IdentityIn
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function setCreatedAt($value)
     {

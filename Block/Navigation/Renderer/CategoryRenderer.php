@@ -34,7 +34,7 @@ class CategoryRenderer extends Template implements FilterRendererInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected function canRenderFilter()
     {

@@ -49,7 +49,7 @@ class Product implements \Magento\Framework\Indexer\ActionInterface, \Magento\Fr
         if (!$this->configHelper->getApplicationID()
             || !$this->configHelper->getAPIKey()
             || !$this->configHelper->getSearchOnlyAPIKey()) {
-            $errorMessage = 'Algolia reindexing failed: 
+            $errorMessage = 'Algolia reindexing failed:
                 You need to configure your Algolia credentials in Stores > Configuration > Algolia Search.';
 
             if (php_sapi_name() === 'cli') {
@@ -82,7 +82,7 @@ class Product implements \Magento\Framework\Indexer\ActionInterface, \Magento\Fr
                     $this->queue->addToQueue(
                         Data::class,
                         'rebuildStoreProductIndex',
-                        ['store_id' => $storeId, 'product_ids' => $chunk],
+                        ['storeId' => $storeId, 'productIds' => $chunk],
                         count($chunk)
                     );
                 }
@@ -91,7 +91,6 @@ class Product implements \Magento\Framework\Indexer\ActionInterface, \Magento\Fr
             }
 
             $useTmpIndex = $this->configHelper->isQueueActive($storeId);
-
             $collection = $this->productHelper->getProductCollectionQuery($storeId, $productIds, $useTmpIndex);
             $size = $collection->getSize();
 
@@ -99,16 +98,15 @@ class Product implements \Magento\Framework\Indexer\ActionInterface, \Magento\Fr
 
             /** @uses IndicesConfigurator::saveConfigurationToAlgolia() */
             $this->queue->addToQueue(IndicesConfigurator::class, 'saveConfigurationToAlgolia', [
-                'store_id' => $storeId,
+                'storeId' => $storeId,
                 'useTmpIndex' => $useTmpIndex,
             ], 1, true);
-
             for ($i = 1; $i <= $pages; $i++) {
                 $data = [
-                    'store_id' => $storeId,
-                    'product_ids' => $productIds,
+                    'storeId' => $storeId,
+                    'productIds' => $productIds,
                     'page' => $i,
-                    'page_size' => $productsPerPage,
+                    'pageSize' => $productsPerPage,
                     'useTmpIndex' => $useTmpIndex,
                 ];
 
@@ -123,7 +121,7 @@ class Product implements \Magento\Framework\Indexer\ActionInterface, \Magento\Fr
                 $this->queue->addToQueue(IndexMover::class, 'moveIndexWithSetSettings', [
                     'tmpIndexName' => $this->fullAction->getIndexName($suffix, $storeId, true),
                     'indexName' => $this->fullAction->getIndexName($suffix, $storeId),
-                    'store_id' => $storeId,
+                    'storeId' => $storeId,
                 ], 1, true);
             }
         }

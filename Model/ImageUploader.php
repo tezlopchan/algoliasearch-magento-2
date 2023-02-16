@@ -223,6 +223,7 @@ class ImageUploader
                 $this->coreFileStorageDatabase->saveFile($relativePath);
             } catch (\Exception $e) {
                 $this->logger->critical($e);
+
                 throw new \Magento\Framework\Exception\LocalizedException(
                     __('Something went wrong while saving the file(s).')
                 );

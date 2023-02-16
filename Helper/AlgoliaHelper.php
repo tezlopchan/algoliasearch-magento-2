@@ -35,7 +35,7 @@ class AlgoliaHelper extends AbstractHelper
     private $potentiallyLongAttributes = ['description', 'short_description', 'meta_description', 'content'];
 
     /** @var array */
-    private $nonCastableAttributes = ['sku', 'name', 'description'];
+    private $nonCastableAttributes = ['sku', 'name', 'description', 'query'];
 
     /** @var string */
     private static $lastUsedIndexName;
@@ -419,6 +419,7 @@ class AlgoliaHelper extends AbstractHelper
 
         if (!isset($this->client)) {
             $msg = 'Operation ' . $methodName . ' could not be performed because Algolia credentials were not provided.';
+
             throw new AlgoliaException($msg);
         }
     }
@@ -470,6 +471,7 @@ class AlgoliaHelper extends AbstractHelper
                     - ID ' . $previousObject['objectID'] . ' - skipped - longest attribute: ' . $longestAttribute;
 
                 unset($objects[$key]);
+
                 continue;
             } elseif ($previousObject !== $object) {
                 $modifiedIds[] = $indexName . ' - ID ' . $previousObject['objectID'] . ' - truncated';
@@ -500,8 +502,7 @@ class AlgoliaHelper extends AbstractHelper
     private function getMaxRecordSize()
     {
         if (!$this->maxRecordSize) {
-            $this->maxRecordSize = $this->config->getMaxRecordSizeLimit()
-                ? $this->config->getMaxRecordSizeLimit() : $this->config->getDefaultMaxRecordSize();
+            $this->maxRecordSize = $this->config->getMaxRecordSizeLimit();
         }
 
         return $this->maxRecordSize;
@@ -581,14 +582,15 @@ class AlgoliaHelper extends AbstractHelper
             $data = $this->castAttribute($data);
 
             if (is_array($data) === false) {
-                $data = explode('|', $data);
-
-                if (count($data) === 1) {
-                    $data = $data[0];
-                    $data = $this->castAttribute($data);
-                } else {
-                    foreach ($data as &$element) {
-                        $element = $this->castAttribute($element);
+                if ($data != null) {
+                    $data = explode('|', $data);
+                    if (count($data) === 1) {
+                        $data = $data[0];
+                        $data = $this->castAttribute($data);
+                    } else {
+                        foreach ($data as &$element) {
+                            $element = $this->castAttribute($element);
+                        }
                     }
                 }
             }
@@ -608,13 +610,27 @@ class AlgoliaHelper extends AbstractHelper
         return $object;
     }
 
+    /**
+     * This method serves to prevent parse of float values that exceed PHP_FLOAT_MAX as INF will break
+     * JSON encoding.
+     *
+     * To further customize the handling of values that may be incorrectly interpreted as numeric by
+     * PHP you can implement an "after" plugin on this method.
+     *
+     * @param $value - what PHP thinks is a floating point number
+     * @return bool
+     */
+    public function isValidFloat(string $value) : bool {
+        return floatval($value) !== INF;
+    }
+
     private function castAttribute($value)
     {
         if (is_numeric($value) && floatval($value) === floatval((int) $value)) {
             return (int) $value;
         }
 
-        if (is_numeric($value)) {
+        if (is_numeric($value) && $this->isValidFloat($value)) {
             return floatval($value);
         }
 
@@ -745,6 +761,7 @@ class AlgoliaHelper extends AbstractHelper
                         unset($filters[$i]);
                         $filters = array_values($filters);
                         $i--;
+
                         break;
                     }
                 }

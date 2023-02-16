@@ -106,6 +106,18 @@
                         ]]>
                     </comment>
                 </field>
+                <field id="autocomplete_selector" translate="label comment" type="text" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Search Input Container Selector</label>
+                    <comment>
+                        <![CDATA[
+                            If you don't have the <code>top.search</code> block, you can specify a DOM selector of your dom container here to make the search work.
+                            Default value is <code>.algolia-search-input</code>.
+                        ]]>
+                    </comment>
+                    <depends>
+                        <field id="is_popup_enabled">1</field>
+                    </depends>
+                </field>
                 <field id="nb_of_products_suggestions" translate="label comment" type="text" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="1">
                     <validate>validate-digits</validate>
                     <label>Number of products</label>
@@ -224,6 +236,13 @@
                         <field id="is_popup_enabled">1</field>
                     </depends>
                 </field>
+                <field id="navigator" translate="label comment" type="select" sortOrder="80" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enable keyboard navigation</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <depends>
+                        <field id="is_popup_enabled">1</field>
+                    </depends>
+                </field>
             </group>
         </section>
         <section id="algoliasearch_instant" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
@@ -302,6 +321,18 @@
                         ]]>
                     </comment>
                 </field>
+                <field id="use_virtual_replica" translate="label comment" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Use Virtual Replica</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>
+                        <![CDATA[
+                            Virtual Replica is only available on Premium plans <a target="_blank" href="https://www.algolia.com/doc/integration/magento-2/how-it-works/indexing/?client=php#switching-to-virtual-replica">documentation</a> 
+                        ]]>
+                    </comment>
+                    <depends>
+                        <field id="is_instant_enabled">1</field>
+                    </depends>
+                </field>
                 <field id="sorts" translate="label comment" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Sorts</label>
                     <frontend_model>Algolia\AlgoliaSearch\Model\Source\Sorts</frontend_model>
@@ -311,6 +342,15 @@
                             Specify different sorting options you want to offer on a search results page.<br>
                             Each sort will significantly increase the number of records you store in Algolia.<br>
                             Read more in <a target="_blank" href="https://www.algolia.com/doc/integration/magento-2/how-it-works/indexing/?utm_source=magento&utm_medium=extension&utm_campaign=magento_2&utm_term=shop-owner&utm_content=doc-link#sorting-strategies">documentation</a>.
+                        ]]>
+                    </comment>
+                </field>
+                <field id="instantsearch_searchbox" translate="label comment" type="select" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enable searchBox Widget in Instant Search Page</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>
+                        <![CDATA[
+                            The searchBox widget is used to let the user perform a text-based query. <a target="_blank" href="https://www.algolia.com/doc/api-reference/widgets/search-box/js/#about"> Know More </a>
                         ]]>
                     </comment>
                 </field>
@@ -468,6 +508,196 @@
                 </field>
             </group>
         </section>
+        <section id="algoliasearch_recommend" translate="label" type="text" sortOrder="45" showInDefault="1" showInWebsite="1" showInStore="1">
+            <label>Recommend Products Settings</label>
+            <tab>algolia</tab>
+            <resource>Algolia_AlgoliaSearch::algolia_algoliasearch</resource>
+            <group id="recommend" translate="label" type="text" sortOrder="0" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Algolia Recommend Products Settings</label>
+                <comment>
+                    <![CDATA[
+                        <div class="algolia-admin-content"></div>
+                        ]]>
+                </comment>
+                <group id="frequently_bought_together" translate="label" type="text" sortOrder="0" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Frequently Bought Together</label>
+                    <field id="is_frequently_bought_together_enabled" translate="label comment" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Enable On PDP</label>
+                        <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                        <comment>
+                            <![CDATA[
+                                Do you want the Frequently Bought Together products to display inside a product detail page after main product info?
+                                <br><span class="algolia-config-warning">&#9888;</span> Enabling Frequently Bought Together products can potentially break your design on PDP page and some work will be required to have a good integration with your theme.
+                            ]]>
+                        </comment>
+                    </field>
+                    <field id="is_frequently_bought_together_enabled_in_cart_page" translate="label comment" type="select" sortOrder="1.5" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Enable On Cart Page</label>
+                        <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                        <comment>
+                            <![CDATA[
+                                Do you want the Frequently Bought Together products to display inside a shopping cart page?
+                                <br><span class="algolia-config-warning">&#9888;</span> Enabling Frequently Bought Together products can potentially break your design on shopping cart page and some work will be required to have a good integration with your theme.
+                            ]]>
+                        </comment>
+                    </field>
+                    <field id="title" translate="label comment" type="text" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <validate>required-entry</validate>
+                        <label>Title</label>
+                    </field>
+                    <field id="num_of_frequently_bought_together_products" translate="label comment" type="text" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <validate>required-entry validate-digits validate-greater-than-zero</validate>
+                        <label>Number of Products</label>
+                        <comment>
+                            <![CDATA[
+                            How many products do you want to display in the Frequently Bought Together? Default value is 6.
+                        ]]>
+                        </comment>
+                    </field>
+                    <field id="is_addtocart_enabled" translate="label comment" type="select" sortOrder="4" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Enable Add To Cart Button</label>
+                        <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                        <comment>
+                            <![CDATA[
+                            Do you want to display an "Add To Cart" button in Frequently Bought Together products?
+                            ]]>
+                        </comment>
+                    </field>
+                    <field id="is_remove_core_upsell_products_block" translate="label comment" type="select" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Remove The Magento Upsell Products Block</label>
+                        <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                        <comment>
+                            <![CDATA[
+                            Do you want to remove the magento default upsell products inside a product detail page?
+                        ]]>
+                        </comment>
+                        <depends>
+                            <field id="is_frequently_bought_together_enabled">1</field>
+                        </depends>
+                    </field>
+                </group>
+                <group id="related_product" translate="label" type="text" sortOrder="0" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Related Products</label>
+                    <field id="is_related_products_enabled" translate="label comment" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Enable On PDP</label>
+                        <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                        <comment>
+                            <![CDATA[
+                                Do you want the Related Products to display inside a product detail page after main product info?
+                                <br><span class="algolia-config-warning">&#9888;</span> Enabling Related Products can potentially break your design on PDP page and some work will be required to have a good integration with your theme.
+                            ]]>
+                        </comment>
+                    </field>
+                    <field id="is_related_products_enabled_in_cart_page" translate="label comment" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Enable on Cart Page</label>
+                        <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                        <comment>
+                            <![CDATA[
+                                Do you want the Related Products to display inside a shopping cart page?
+                                <br><span class="algolia-config-warning">&#9888;</span> Enabling Related Products can potentially break your design on shopping cart page and some work will be required to have a good integration with your theme.
+                            ]]>
+                        </comment>
+                    </field>
+                    <field id="title" translate="label comment" type="text" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <validate>required-entry</validate>
+                        <label>Title</label>
+                    </field>
+                    <field id="num_of_related_products" translate="label comment" type="text" sortOrder="4" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <validate>required-entry validate-digits validate-greater-than-zero</validate>
+                        <label>Number of Related Products</label>
+                        <comment>
+                            <![CDATA[
+                                How many products do you want to display in the Related Products? Default value is 6.
+                            ]]>
+                        </comment>
+                    </field>
+                    <field id="is_addtocart_enabled" translate="label comment" type="select" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Enable Add To Cart Button</label>
+                        <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                        <comment>
+                            <![CDATA[
+                            Do you want to display an "Add To Cart" button in Related Products?
+                            ]]>
+                        </comment>
+                    </field>
+                    <field id="is_remove_core_related_products_block" translate="label comment" type="select" sortOrder="6" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Remove The Magento Related Products Block</label>
+                        <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                        <comment>
+                            <![CDATA[
+                                Do you want to remove the magento default Related Products inside a product detail page?
+                            ]]>
+                        </comment>
+                        <depends>
+                            <field id="is_related_products_enabled">1</field>
+                        </depends>
+                    </field>
+                </group>
+                <group id="trends_item" translate="label" type="text" sortOrder="0" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Trending Items</label>
+                    <field id="is_trending_items_enabled_on_pdp" translate="label comment" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Enable on PDP</label>
+                        <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                        <comment>
+                            <![CDATA[
+                                Do you want the Trending Items to display inside a product detail page after main product info?
+                            ]]>
+                        </comment>
+                    </field>
+                    <field id="is_trending_items_enabled_on_cart_page" translate="label comment" type="select" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Enable on Cart Page</label>
+                        <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                        <comment>
+                            <![CDATA[
+                                Do you want the Trending Items to display inside a cart page after cart item info?
+                            ]]>
+                        </comment>
+                    </field>
+                    <field id="is_trending_items_enabled" translate="label comment" type="select" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Enable Trending Items Widgets</label>
+                        <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    </field>
+                    <field id="title" translate="label comment" type="text" sortOrder="4" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <validate>required-entry</validate>
+                        <label>Title</label>
+                    </field>
+                    <field id="facet_name" translate="label comment" type="text" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Facet Name</label>
+                        <comment>
+                            <![CDATA[
+                                Please Input Valid facet attribute name EX:- color,size etc.
+                            ]]>
+                        </comment>
+                    </field>
+                    <field id="facet_value" translate="label comment" type="text" sortOrder="6" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Facet Value</label>
+                        <comment>
+                            <![CDATA[
+                                Please Enter Valid Facet Value.
+                            ]]>
+                        </comment>
+                    </field>
+                    <field id="num_of_trending_items" translate="label comment" type="text" sortOrder="7" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Number of Trending Items</label>
+                        <validate>required-entry validate-digits validate-greater-than-zero</validate>
+                        <comment>
+                            <![CDATA[
+                                How many products do you want to display in the Trending Items? Default value is 6.
+                            ]]>
+                        </comment>
+                    </field>
+                    <field id="is_addtocart_enabled" translate="label comment" type="select" sortOrder="8" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Enable Add To Cart Button</label>
+                        <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                        <comment>
+                            <![CDATA[
+                            Do you want to display an "Add To Cart" button in Trending Items?
+                            ]]>
+                        </comment>
+                    </field>
+                </group>
+            </group>
+        </section>
         <section id="algoliasearch_images" translate="label" type="text" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1">
             <label>Images</label>
             <tab>algolia</tab>
@@ -552,72 +782,6 @@
                 </field>
             </group>
         </section>
-        <section id="algoliasearch_synonyms" translate="label" type="text" sortOrder="66" showInDefault="1" showInWebsite="1" showInStore="1">
-            <label>Synonyms</label>
-            <tab>algolia</tab>
-            <resource>Algolia_AlgoliaSearch::algolia_algoliasearch</resource>
-            <group id="synonyms_group" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
-                <label>Synonyms</label>
-                <comment>
-                    <![CDATA[
-                    <div class="algolia-admin-content"></div>
-                ]]>
-                </comment>
-                <field id="enable_synonyms" translate="label comment" type="select" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="1">
-                    <label>Enable Synonyms Management</label>
-                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
-                    <comment>
-                        <![CDATA[
-                            Do you want to manage <a target="_blank" href="https://www.algolia.com/doc/guides/managing-results/optimize-search-results/adding-synonyms/?utm_source=magento&utm_medium=extension&utm_campaign=magento_2&utm_term=shop-owner&utm_content=doc-link">synonyms</a> in Magento?
-                            If not, synonyms will be managed only in <a target="_blank" href="https://www.algolia.com/dashboard/">Algolia's dashboard</a> and won't be overridden by Magento.
-                        ]]>
-                    </comment>
-                </field>
-                <field id="synonyms" translate="label comment" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
-                    <label>Synonyms</label>
-                    <frontend_model>Algolia\AlgoliaSearch\Model\Source\Synonyms</frontend_model>
-                    <backend_model>Magento\Config\Model\Config\Backend\Serialized\ArraySerialized</backend_model>
-                    <comment>
-                        <![CDATA[
-                            <a href="https://www.algolia.com/doc/guides/managing-results/optimize-search-results/adding-synonyms/?utm_source=magento&utm_medium=extension&utm_campaign=magento_2&utm_term=shop-owner&utm_content=doc-link#regular-synonyms-default" target="_blank">Synonyms</a> can be defined by a comma-separated list of words that will be considered equivalent by the Algolia engine.<br>
-                            For instance: <code>tv, television, tv set</code><br>
-                            Using that set, if a record contains “television” and a user searches for “TV”, this record will be returned.
-                        ]]>
-                    </comment>
-                </field>
-                <field id="oneway_synonyms" translate="label comment" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
-                    <label>One-way Synonyms</label>
-                    <frontend_model>Algolia\AlgoliaSearch\Model\Source\OnewaySynonyms</frontend_model>
-                    <backend_model>Magento\Config\Model\Config\Backend\Serialized\ArraySerialized</backend_model>
-                    <comment>
-                        <![CDATA[
-                        <a href="https://www.algolia.com/doc/guides/managing-results/optimize-search-results/adding-synonyms/?utm_source=magento&utm_medium=extension&utm_campaign=magento_2&utm_term=shop-owner&utm_content=doc-link#one-way-synonyms" target="_blank">One-way synonyms</a>
-                        allow you to define alternative words for a search term, which are not synonyms to each other.<br>
-                        Let’s take an example: when a user searches for “tablet”, you want him to be able to find iPads and Galaxy Note tablets alike, but you might not want Android tablets to show up when he searches for “iPad”.<br>
-                        To do this, you’d define a one-way synonym set between <code>tablet</code> (as input) and <code>ipad, galaxy note</code> (as synonyms). When the user types in “tablet”, records containing “iPad” and “Galaxy Note” will be returned. However records containing only “tablet” or “Galaxy Note” won’t be returned if he searches for “iPad”.
-                        <br>
-                        <br>
-                        Algolia offers more synonymys’ types - placeholders and alternative corrections. These types can be managed directly from your <a href="https://www.algolia.com/dashboard" target="_blank">Algolia’s dashboard</a>.
-                        Any changes you make to placeholders and alternative corrections in Algolia’s dashboard won’t be overridden.
-                        ]]>
-                    </comment>
-                </field>
-                <field id="synonyms_file" translate="label comment" type="file" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
-                    <label>Synonyms File</label>
-                    <backend_model>Algolia\AlgoliaSearch\Model\Source\SynonymsFile</backend_model>
-                    <upload_dir config="system/filesystem/media" scope_info="1">algoliasearch_admin_config_uploads</upload_dir>
-                    <base_url type="media" scope_info="1">algoliasearch_admin_config_uploads</base_url>
-                    <comment>
-                        <![CDATA[
-                            If you have a large amount of synonyms (more than 1 hundred), you don't have to manually enter them in the inputs above.
-                            You can upload a <a href="https://www.algolia.com/doc/guides/managing-results/optimize-search-results/adding-synonyms/how-to/managing-synonyms-from-the-dashboard/?utm_source=magento&utm_medium=extension&utm_campaign=magento_2&utm_term=shop-owner&utm_content=doc-link&language=php#importing-synonyms-from-a-file" target="_blank">JSON file</a> with synonyms instead.
-                            <br><span class="algolia-config-warning">&#9888;</span>
-                            When you upload a JSON file, all the synonyms settings from above will be ignored and only synonyms from the JSON file will be pushed to Algolia.
-                        ]]>
-                    </comment>
-                </field>
-            </group>
-        </section>
         <section id="algoliasearch_cc_analytics" translate="label" type="text" sortOrder="67" showInDefault="1" showInWebsite="1" showInStore="1">
             <label><![CDATA[Click & Conversion Analytics]]></label>
             <tab>algolia</tab>
@@ -634,7 +798,7 @@
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                     <comment>
                         <![CDATA[
-                            To use this feature, you need to first activate it in your Algolia Application.
+                            Click Analytics is available for free! Getting direct and accurate feedback from your users about their behavior, interests, and expectations helps you measure the success of your search solution and improve customer retention.
                         ]]>
                     </comment>
                 </field>
@@ -922,15 +1086,6 @@
                     <label>Remove branding logo</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
-                <field id="autocomplete_selector" translate="label comment" type="text" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1">
-                    <label>Search input DOM Selector</label>
-                    <comment>
-                        <![CDATA[
-                            If you don't have the <code>top.search</code> block, you can specify a DOM selector of your search input here to make the search work.
-                            Default value is <code>.algolia-search-input</code>.
-                        ]]>
-                    </comment>
-                </field>
                 <field id="index_product_on_category_products_update" translate="label comment" type="select" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Update products in changed category?</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
@@ -985,6 +1140,14 @@
                         <![CDATA[
                             (In days - default value is 30) Sets the limit when the oldest records should be cleared from the archive logs (algoliasearch_queue_archive).
                         ]]>
+                    </comment>
+                </field>
+                <field id="max_record_size_limit" translate="label comment" type="text" sortOrder="96" showInDefault="1">
+                    <label>Max record size limit per record</label>
+                    <comment>
+                        <![CDATA[
+                            By default, the Algolia extension has a record size limit of 10 kB per record.
+                            If your Algolia plan allows a higher record size limit, you can customize the record size limit.]]>
                     </comment>
                 </field>
             </group>

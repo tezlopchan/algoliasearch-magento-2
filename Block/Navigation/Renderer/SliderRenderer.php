@@ -81,7 +81,7 @@ class SliderRenderer extends Template implements FilterRendererInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected function canRenderFilter()
     {

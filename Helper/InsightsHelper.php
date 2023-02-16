@@ -11,9 +11,9 @@ use Magento\Framework\Stdlib\CookieManagerInterface;
 
 class InsightsHelper
 {
-    const ALGOLIA_ANON_USER_TOKEN_COOKIE_NAME = '_ALGOLIA';
+    public const ALGOLIA_ANON_USER_TOKEN_COOKIE_NAME = '_ALGOLIA';
 
-    const ALGOLIA_CUSTOMER_USER_TOKEN_COOKIE_NAME = 'aa-search';
+    public const ALGOLIA_CUSTOMER_USER_TOKEN_COOKIE_NAME = 'aa-search';
 
     /** @var ConfigHelper */
     private $configHelper;

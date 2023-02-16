@@ -11,12 +11,15 @@
             <autocomplete>
                 <sections><![CDATA[{"_1600351750374_374":{"name":"pages","label":"Pages","hitsPerPage":"2"}}]]></sections>
                 <excluded_pages><![CDATA[{"_1600351757831_831":{"attribute":"no-route"}}]]></excluded_pages>
+                <navigator>1</navigator>
             </autocomplete>
         </algoliasearch_autocomplete>
         <algoliasearch_instant>
             <instant>
                 <facets><![CDATA[{"_1458145454535_587":{"attribute":"price","type":"slider","label":"Price","searchable":"2","create_rule":"2"},"_2541608784525_123":{"attribute":"categories","type":"conjunctive","label":"Categories","searchable":"2","create_rule":"2"},"_3211608784535_456":{"attribute":"color","type":"disjunctive","label":"Colors","searchable":"1","create_rule":"2"}}]]></facets>
                 <sorts><![CDATA[{"_4581608784535_789":{"attribute":"price","sort":"asc","sortLabel":"Lowest price"},"_2541555584535_585":{"attribute":"price","sort":"desc","sortLabel":"Highest price"},"_5581608784535_898":{"attribute":"created_at","sort":"desc","sortLabel":"Newest first"}}]]></sorts>
+                <instantsearch_searchbox>1</instantsearch_searchbox>
+                <use_virtual_replica>0</use_virtual_replica>
             </instant>
         </algoliasearch_instant>
         <algoliasearch_products>
@@ -42,5 +45,26 @@
                 </personalization_conversion_events_group>
             </personalization_group>
         </algoliasearch_personalization>
+        <algoliasearch_recommend>
+            <recommend>
+                <frequently_bought_together>
+                    <title>Frequently bought together</title>
+                    <num_of_frequently_bought_together_products>6</num_of_frequently_bought_together_products>
+                </frequently_bought_together>
+                <related_product>
+                    <title>Related products</title>
+                    <num_of_related_products>6</num_of_related_products>
+                </related_product>
+                <trends_item>
+                    <title>Trending items</title>
+                    <num_of_trending_items>6</num_of_trending_items>
+                </trends_item>
+            </recommend>
+        </algoliasearch_recommend>
+        <algoliasearch_advanced>
+            <advanced>
+                <max_record_size_limit>10000</max_record_size_limit>
+            </advanced>
+        </algoliasearch_advanced>
     </default>
 </config>

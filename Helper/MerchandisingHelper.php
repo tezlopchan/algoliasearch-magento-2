@@ -115,6 +115,7 @@ class MerchandisingHelper
         $productIndex = $this->algoliaHelper->getIndex($productsIndexName);
         $context = $this->getQueryRuleId($entityIdFrom, $entityType);
         $queryRulesToSet = [];
+
         try {
             $hitsPerPage = 100;
             $page = 0;

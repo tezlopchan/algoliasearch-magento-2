@@ -1,0 +1,26 @@
+<?php
+/** @var \Algolia\AlgoliaSearch\Block\Widget\TrendsItem $block */
+$isEnabled = $block->isTrendingItemEnabled();
+if ($isEnabled):
+    $trendConstainer =  'trendItems' . $block->generateUniqueToken(); ?>
+    <div id="<?= $trendConstainer ?>" class="trendsItem recommend-component"></div>
+    <script type="text/x-magento-init">
+        {
+            "*": {
+                "Algolia_AlgoliaSearch/recommend" : {
+                    "recommendTrendContainer" : "<?= $trendConstainer ?>",
+                    "numOfTrendsItem" : "<?= $block->getData('numOfTrendsItem') ?>",
+                    "facetName" : "<?= $block->getData('facetName') ?>",
+                    "facetValue" : "<?= $block->getData('facetValue') ?>"
+                }
+            }
+        }
+    </script>
+    <script type="text/x-magento-init">
+        {
+            "[data-role=tocart-form]": {
+                "catalogAddToCart": {}
+            }
+        }
+    </script>
+<?php endif; ?>

@@ -51,7 +51,7 @@ class Suggestion implements \Magento\Framework\Indexer\ActionInterface, \Magento
         if (!$this->configHelper->getApplicationID()
             || !$this->configHelper->getAPIKey()
             || !$this->configHelper->getSearchOnlyAPIKey()) {
-            $errorMessage = 'Algolia reindexing failed: 
+            $errorMessage = 'Algolia reindexing failed:
                 You need to configure your Algolia credentials in Stores > Configuration > Algolia Search.';
 
             if (php_sapi_name() === 'cli') {
@@ -72,7 +72,7 @@ class Suggestion implements \Magento\Framework\Indexer\ActionInterface, \Magento
                 continue;
             }
 
-            $this->queue->addToQueue($this->fullAction, 'rebuildStoreSuggestionIndex', ['store_id' => $storeId], 1);
+            $this->queue->addToQueue($this->fullAction, 'rebuildStoreSuggestionIndex', ['storeId' => $storeId], 1);
         }
     }
 

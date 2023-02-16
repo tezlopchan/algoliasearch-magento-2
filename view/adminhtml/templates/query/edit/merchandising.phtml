@@ -191,12 +191,6 @@ $isConfig = [
         algoliaAdminBundle.$(function ($) {
         	var config = <?php echo json_encode($isConfig); ?>;
             config.searchFunction = function(helper) {
-                if (helper.state.query !== '') {
-                    algoliaEventsTracking.postEvent('Searched Keyword', {
-                        source: 'magento2.querymerch.edit',
-                        search: helper.state.query
-                    });
-                }
                 helper.search();
             };
 
@@ -340,7 +334,7 @@ $isConfig = [
 
             var initAutocomplete = function() {
 	            var client = algoliaAdminBundle.algoliasearch(config.appId, config.apiKey),
-                    index = client.initIndex(config.indexName),
+                    index = client.initIndex(window.algoliaSearch.helper.state.index),
                     template = algoliaAdminBundle.Hogan.compile($('#algolia_merchandising_autocomplete_hit').html()),
                     options = {
                         hitsPerPage: config.searchParameters.hitsPerPage + 5,

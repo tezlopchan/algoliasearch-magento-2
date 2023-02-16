@@ -215,7 +215,7 @@ class PageHelper
             $s = $dom->saveHTML();
         }
 
-        $s = html_entity_decode($s, null, 'UTF-8');
+        $s = html_entity_decode($s, 0, 'UTF-8');
 
         $s = trim(preg_replace('/\s+/', ' ', $s));
         $s = preg_replace('/&nbsp;/', ' ', $s);

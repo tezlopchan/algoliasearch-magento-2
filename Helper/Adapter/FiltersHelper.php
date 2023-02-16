@@ -167,6 +167,7 @@ class FiltersHelper
             if ($facet['attribute'] == 'categories') {
                 $level = '.level' . (count($facetValues) - 1);
                 $facetFilters[] = $facet['attribute'] . $level . ':' . implode(' /// ', $facetValues);
+
                 continue;
             }
 

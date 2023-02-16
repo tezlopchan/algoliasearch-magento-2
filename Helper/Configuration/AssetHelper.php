@@ -40,15 +40,15 @@ class AssetHelper extends \Magento\Framework\App\Helper\AbstractHelper
             'url' => 'https://www.youtube.com/watch?v=0V1BSKlCm10',
             'thumbnail' => 'https://img.youtube.com/vi/0V1BSKlCm10/mqdefault.jpg',
         ],
-        'algoliasearch_synonyms' => [
-            'title' => 'Notable features',
-            'url' => 'https://www.youtube.com/watch?v=45NKJbrs1Z4',
-            'thumbnail' => 'https://img.youtube.com/vi/45NKJbrs1Z4/mqdefault.jpg',
-        ],
         'algoliasearch_cc_analytics' => [
             'title' => 'Notable features',
             'url' => 'https://www.youtube.com/watch?v=45NKJbrs1Z4',
             'thumbnail' => 'https://img.youtube.com/vi/45NKJbrs1Z4/mqdefault.jpg',
+        ],
+        'algoliasearch_recommend' => [
+            'title' => 'Algolia eCommerce Recommendations',
+            'url' => 'https://www.youtube.com/watch?v=CmoNHmOMedQ',
+            'thumbnail' => 'https://img.youtube.com/vi/CmoNHmOMedQ/mqdefault.jpg',
         ],
     ];
 
@@ -66,10 +66,15 @@ class AssetHelper extends \Magento\Framework\App\Helper\AbstractHelper
                 'icon' => 'iconFaq',
             ],
             [
-                'title' => 'Issues',
-                'url' => 'https://github.com/algolia/algoliasearch-magento-2/issues/',
+                'title' => 'Support',
+                'url' => 'https://www.algolia.com/support/?contact=',
                 'icon' => 'iconIssues',
             ],
+            [
+                'title' => 'Release Notes',
+                'url' => 'https://github.com/algolia/algoliasearch-magento-2/releases',
+                'icon' => 'iconDocs',
+            ]
         ],
         'algoliasearch_autocomplete' => [
             [
@@ -133,13 +138,6 @@ class AssetHelper extends \Magento\Framework\App\Helper\AbstractHelper
                 'icon' => 'iconDocs',
             ],
         ],
-        'algoliasearch_synonyms' => [
-            [
-                'title' => 'Synonyms documentation',
-                'url' => 'https://www.algolia.com/doc/guides/managing-results/optimize-search-results/adding-synonyms/?utm_source=magento&utm_medium=extension&utm_campaign=magento_2&utm_term=shop-owner&utm_content=doc-link',
-                'icon' => 'iconDocs',
-            ],
-        ],
         'algoliasearch_cc_analytics' => [
             [
                 'title' => 'Click & Conversion Analytics',
@@ -163,6 +161,18 @@ class AssetHelper extends \Magento\Framework\App\Helper\AbstractHelper
             [
                 'title' => 'List of possible settings',
                 'url' => 'https://www.algolia.com/doc/api-reference/settings-api-parameters/#index-settings-parameters',
+                'icon' => 'iconDocs',
+            ],
+        ],
+        'algoliasearch_recommend' => [
+            [
+                'title' => 'Algolia Recommend',
+                'url' => 'https://www.algolia.com/doc/guides/algolia-recommend/overview/',
+                'icon' => 'iconDocs',
+            ],
+            [
+                'title' => 'Setup Recommend',
+                'url' => 'https://www.algolia.com/doc/guides/algolia-recommend/how-to/set-up/',
                 'icon' => 'iconDocs',
             ],
         ],

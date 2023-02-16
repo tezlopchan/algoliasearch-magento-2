@@ -27,7 +27,7 @@ class View extends Template
         $this->coreRegistry = $coreRegistry;
     }
 
-    /** {@inheritdoc} */
+    /** @inheritdoc */
     protected function _prepareLayout()
     {
         /** @var Button $button */

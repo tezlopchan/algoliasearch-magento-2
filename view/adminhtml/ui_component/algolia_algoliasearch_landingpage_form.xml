@@ -250,7 +250,7 @@
         </argument>
         <container name="algolia_notice_container" >
             <htmlContent name="html_content">
-                <argument name="block" xsi:type="object">Algolia\AlgoliaSearch\Block\Adminhtml\LandingPage\CmsNotice</argument>
+                <block class="Algolia\AlgoliaSearch\Block\Adminhtml\LandingPage\CmsNotice" name="cmsnotice"/>
             </htmlContent>
         </container>
         <field name="content">
@@ -300,7 +300,7 @@
         </field>
         <container name="algolia_merchandising_container" >
             <htmlContent name="html_content">
-                <argument name="block" xsi:type="object">Algolia\AlgoliaSearch\Block\Adminhtml\LandingPage\SearchConfiguration</argument>
+                <block class="Algolia\AlgoliaSearch\Block\Adminhtml\LandingPage\SearchConfiguration" name="search_configuration" />
             </htmlContent>
         </container>
     </fieldset>

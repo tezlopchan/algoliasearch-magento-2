@@ -71,6 +71,7 @@ class Merchandising implements ObserverInterface
             }
 
             $phrase = new Phrase($message);
+
             throw new LocalizedException($phrase);
         }
     }

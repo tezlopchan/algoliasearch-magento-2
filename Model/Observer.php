@@ -14,38 +14,45 @@ use Magento\Store\Model\StoreManagerInterface;
  */
 class Observer implements ObserverInterface
 {
-    private $config;
-    private $registry;
-    private $storeManager;
-    private $pageConfig;
+    protected $config;
+    protected $registry;
+    protected $storeManager;
+    protected $pageConfig;
+    protected $request;
 
+    /**
+     * @param ConfigHelper $configHelper
+     * @param Registry $registry
+     * @param StoreManagerInterface $storeManager
+     * @param PageConfig $pageConfig
+     * @param \Magento\Framework\App\Request\Http $http
+     */
     public function __construct(
         ConfigHelper $configHelper,
         Registry $registry,
         StoreManagerInterface $storeManager,
-        PageConfig $pageConfig
+        PageConfig $pageConfig,
+        \Magento\Framework\App\Request\Http $http
     ) {
         $this->config = $configHelper;
         $this->registry = $registry;
         $this->storeManager = $storeManager;
         $this->pageConfig = $pageConfig;
+        $this->request = $http;
     }
 
     public function execute(\Magento\Framework\Event\Observer $observer)
     {
+        $actionName = $this->request->getFullActionName();
+        if ($actionName === 'swagger_index_index') {
+            return $this;
+        }
         if ($this->config->isEnabledFrontEnd()) {
             if ($this->config->getApplicationID() && $this->config->getAPIKey()) {
                 if ($this->config->isAutoCompleteEnabled() || $this->config->isInstantEnabled()) {
                     /** @var Layout $layout */
                     $layout = $observer->getData('layout');
-
                     $layout->getUpdate()->addHandle('algolia_search_handle');
-
-                    if ($this->config->isDefaultSelector()) {
-                        $layout->getUpdate()->addHandle('algolia_search_handle_with_topsearch');
-                    } else {
-                        $layout->getUpdate()->addHandle('algolia_search_handle_no_topsearch');
-                    }
 
                     $this->loadPreventBackendRenderingHandle($layout);
                 }

@@ -1,3 +1,4 @@
+var algoliaInsights;
 requirejs([
     'jquery',
     'algoliaAnalytics',
@@ -6,7 +7,7 @@ requirejs([
 
     algoliaAnalytics = algoliaAnalyticsWrapper.default;
 
-    var algoliaInsights = {
+    algoliaInsights = {
         config: null,
         defaultIndexName: null,
         isTracking: false,
@@ -61,7 +62,7 @@ requirejs([
 
                 if (algoliaConfig.personalization.enabled) {
                     allWidgetConfiguration.configure.enablePersonalization = true;
-                    allWidgetConfiguration.configure.userToken = algoliaAnalytics.userToken;
+                    allWidgetConfiguration.configure.userToken = algoliaAnalytics.getUserToken();
                 }
 
                 return allWidgetConfiguration;
@@ -108,7 +109,7 @@ requirejs([
             });
 
 
-            if (this.config.ccAnalytics.enabled || this.config.personalization.enabled) {
+            if (this.config.ccAnalytics.enabled) {
                 $(document).on('click', this.config.ccAnalytics.ISSelector, function() {
                     var $this = $(this);
                     if ($this.data('clicked')) return;

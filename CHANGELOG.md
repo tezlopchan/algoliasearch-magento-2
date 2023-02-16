@@ -1,5 +1,139 @@
 # CHANGE LOG
 
+
+## 3.10.0
+
+### UPDATES
+- Updated the sorting strategy to select between using Virtual Replica v/s Standard Replica. 
+- Deprecated the set up of Algolia synonyms from Magento admin
+- Updated Algolia Recommend version to 1.8.0 and refactored the corresponding code.
+- Added code to delete category from Algolia when the category is deleted from Magento.
+- Added keyboard navigation in autocomplete
+- Added search input placeholder translation in the autocomplete.
+- Added 10 SKU limit in SKU indexing form in the Magento admin.
+- Added configuration to enable/disable the searchBox widget on the instant search page.
+
+
+### FIXES
+- Fixed the issue with the price filter in Algolia Merchandiser.
+- Fixed the product price issue when the special price and catalog price rules are present.
+- Fixed the group price issues for all product types [Simple, Configurable, Bundle, Group, Downloadable, and Virtual Product].
+- Fixed the Algolia objectID issue in Recommend
+- Fixed the issue on the instant search page where the current search term was not reflecting on the page title.
+- Fixed the TagName error in autocomplete.
+- Fixed the issue with stock indexing when manage stock is set to No
+- Added code to prevent full indexing after placing order when MSI is disabled
+
+
+## 3.9.1
+
+### UPDATES
+- Refactored the Autocomplete to provide an extensible model for function-based templates by utilizing tagged template literals. The approach supports the use of RequireJS mixins for overriding the template functionality. 
+- Update the synonym area notice in the Magento admin to point customers to use the Algolia dashboard for Synonym management as Magento Dashboard will be deprecated in a future release
+- Refactored the casting Attributes
+- Managing Max record size via the admin
+
+
+### FIXES
+- Autocomplete category links not preselecting facets on the target URL
+- Fixed bug related to conjunctive facets and adaptive images in autocomplete
+- Fixed issue with showing __empty__ in the url if autocomplete was disabled 
+- Fixed autocomplete suggestions
+- Instant search fixes when the price was set to retrievable = 'no'
+- Price attribute fixes in autocomplete when the price attribute is set to Non-Retrievable
+- Add to cart triggering duplicate view event for the Algolia recommend products
+- Issues while saving and loading data by the wrong cache key for the popular queries
+- Issues with max_retries in clear old jobs function in the queue
+- Place Order duplicate Conversion issue for Grouped Product
+- Fixes issues with store-specific category index
+
+
+
+## 3.9.0
+
+### New Features
+- Trends Recommendations: We have added the ability to add Trending Items to the PDP and the shopping cart page. More information can be found <a href="https://www.algolia.com/doc/integration/magento-2/how-it-works/recommend/?client=php#trending-items">here</a>. We also provide a <a href="https://www.algolia.com/doc/integration/magento-2/how-it-works/recommend/?client=php#configure-the-trending-items-widget">Trending Items widget</a> that can be used to add Trending Items to any page.
+- Added an option to show Recommend Related and Frequently Bought Together products on the shopping cart page.
+- Added an option to enable the Add To Cart button for all types of recommended products (Related, Frequently Bought Together, and Trending Items).
+- Added Algolia Recommend dashboard link on the Magento dashboard
+- Added Algolia Search extensions release notes link in the Magento admin to be able to access release notes easily.
+- Implemented Recommended Product click event using personalization.
+
+### UPDATES
+- Refactored the Algolia Insight functionality in the extension code base per Magento standard (moved the observer directory in the module root).
+- Refactored the autocomplete 2.0 code to make it more developer-friendly to allow for customization per customer needs.
+- Collated all autocomplete-specific logic in a single autocomplete.js file and segregated JS-based templates that control the layout of the different autocomplete sources to be more developer-friendly. This enables the customers to easily override the layout of the autocomplete menu in the custom theme and the extension.
+
+
+### FIXES
+- Click event in autocomplete
+- Autocomplete errors if the product is not assigned a category and indexed into Algolia
+- Issues with the price attribute in autocomplete when price attribute is set to Non-Retrievable
+- The autocomplete in Query merchandiser (in the Magento admin) shows products from the default store on switching stores [Fixed]
+- Issues with triggering Add to Cart Conversion for Configurable Product
+- Issues with indexer not updating when product goes out of stock when the last of the inventory is done
+
+
+## 3.8.1
+
+### UPDATES
+- Updated the system configuration message for Click & Conversion Analytics 
+- Added validation in synonyms upload section (for Algolia Search) in the Magento admin(#1226)
+- Updated code to set "Filter Only" facets via the instantsearch/facets settings in the Magento admin panel(#1224)
+- Updated CSR policy to fix content security error for insights.io(#1228)
+
+### FIXES
+- Fixed the InstantSearch variant image issue(#1223)
+- Fixed the proper case for 'Related Products' in comment Magento Admin (#1221)
+- Fixed the code deploy error if the DB has tables with Prefix - patch not applied(#1229)
+- Fixed the Remove trailing ? url in category page(#1222)
+
+## 3.8.0
+
+### New Features
+- Added Algolia Recommend(#1212)
+
+### UPDATES
+- Updated Autocomplete V1.6.3 (#1217)
+
+### FIXES
+- Fixed the analytics dashboard issue in the magento admin(#1215)
+- Fixed the compatibility issue with landing page (#1216)
+- Fixed the issue with in_numeric in search suggestion indexing(#1218)
+
+## 3.7.0
+
+### UPDATES
+- Updated instantsearch.js(#1203)
+
+### FIXES
+- Fixed the autocomplete.js vulnerability issues (#1205)
+- Fixed the issue with PHP 8.1: Deprecated Functionality: explode() on category page (#1208)
+- Fixed the issue with Mview update by patch (#1210)
+
+## 3.6.1
+
+### UPDATES
+- Updated Algolia Php Client version 2.5.1 to 3.2.0(#1200)
+
+## 3.6.0
+
+### UPDATES
+- Implemented DB schema using the Declarative schema(#1196)
+- Updated to support the latest released Magento 2.4.4 with PHP 8.1(#1196)
+- Updated to support Guzzle Http version with 6.3 and 7.4 for compatibility with Magento 2.4.x  (#1187)
+- Updated to support the latest released Magento 2.4.4 with PHP 7.4 (#1173)
+- Updated PHP Unit Integration Test for magento 2.4.4 (#1176)
+- Release Notes Automation using github release.yml (#1174)
+
+### FIXES
+- Fixed the merchandised query on Query Merchandiser to display query-based products for merchandising (#1177)
+- Fixed the issue with userToken not being sent to Algolia for the logged-in user for personalisation (#1178)
+- Fixed the issue with requirejs not being defined on the swagger (#1172) 
+
+### TOOLING
+-  Update CS fixer with the Version 3 (#1173)
+
 ## 3.2.0
 
 ### UPDATES

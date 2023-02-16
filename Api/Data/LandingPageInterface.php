@@ -9,26 +9,26 @@ namespace Algolia\AlgoliaSearch\Api\Data;
  */
 interface LandingPageInterface
 {
-    const TABLE_NAME = 'algoliasearch_landing_page';
+    public const TABLE_NAME = 'algoliasearch_landing_page';
 
     /**#@+
      * Constants for keys of data array. Identical to the name of the getter in snake case
      */
-    const FIELD_LANDING_PAGE_ID = 'landing_page_id';
-    const FIELD_STORE_ID = 'store_id';
-    const FIELD_URL_KEY = 'url_key';
-    const FIELD_IS_ACTIVE = 'is_active';
-    const FIELD_TITLE = 'title';
-    const FIELD_DATE_FROM = 'date_from';
-    const FIELD_DATE_TO = 'date_to';
-    const FIELD_META_TITLE = 'meta_title';
-    const FIELD_META_DESCRIPTION = 'meta_description';
-    const FIELD_META_KEYWORDS = 'meta_keywords';
-    const FIELD_CONTENT = 'content';
-    const FIELD_QUERY = 'query';
-    const FIELD_CONFIGURATION = 'configuration';
-    const FIELD_CUSTOM_JS = 'custom_js';
-    const FIELD_CUSTOM_CSS = 'custom_css';
+    public const FIELD_LANDING_PAGE_ID = 'landing_page_id';
+    public const FIELD_STORE_ID = 'store_id';
+    public const FIELD_URL_KEY = 'url_key';
+    public const FIELD_IS_ACTIVE = 'is_active';
+    public const FIELD_TITLE = 'title';
+    public const FIELD_DATE_FROM = 'date_from';
+    public const FIELD_DATE_TO = 'date_to';
+    public const FIELD_META_TITLE = 'meta_title';
+    public const FIELD_META_DESCRIPTION = 'meta_description';
+    public const FIELD_META_KEYWORDS = 'meta_keywords';
+    public const FIELD_CONTENT = 'content';
+    public const FIELD_QUERY = 'query';
+    public const FIELD_CONFIGURATION = 'configuration';
+    public const FIELD_CUSTOM_JS = 'custom_js';
+    public const FIELD_CUSTOM_CSS = 'custom_css';
     /**#@-*/
 
     /**

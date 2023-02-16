@@ -11,11 +11,11 @@ use Magento\Store\Api\Data\StoreInterface;
 
 class Overview implements \Magento\Framework\View\Element\Block\ArgumentInterface
 {
-    const LIMIT_RESULTS = 5;
+    public const LIMIT_RESULTS = 5;
 
-    const DEFAULT_TYPE = 'products';
+    public const DEFAULT_TYPE = 'products';
 
-    const DEFAULT_RETENTION_DAYS = 7;
+    public const DEFAULT_RETENTION_DAYS = 90;
 
     /** @var BackendView */
     private $backendView;
@@ -218,6 +218,7 @@ class Overview implements \Magento\Framework\View\Element\Block\ArgumentInterfac
         foreach ($array as $item) {
             if ($item['date'] === $date) {
                 $value = $item[$valueKey];
+
                 break;
             }
         }
@@ -329,10 +330,6 @@ class Overview implements \Magento\Framework\View\Element\Block\ArgumentInterfac
     public function getAnalyticRetentionDays()
     {
         $retention = self::DEFAULT_RETENTION_DAYS;
-        $clientData = $this->analyticsHelper->getClientData();
-        if (isset($clientData['analytics_retention_days'])) {
-            $retention = (int) $clientData['analytics_retention_days'];
-        }
 
         return $retention;
     }

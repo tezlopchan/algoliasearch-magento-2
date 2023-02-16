@@ -19,7 +19,7 @@ class PriceRenderer extends SliderRenderer
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected function getConfig()
     {
