@@ -2,9 +2,9 @@
 
 ## 3.10.1
 
-### FIXES
-- Add caching on category name lookup (scoped by store) to fix sloness in indexing.
-- Preserve synonyms on tmp index copy after deprecated from the Magento.
+### Bug Fixes
+- Add caching on category name lookup (scoped by store) to fix slowness in indexing.
+- Prevent loss of synonyms while copying from tmp index during Indexing in Algolia Dashboard.
 
 ## 3.10.0
 
