@@ -2,9 +2,16 @@
 
 ## 3.10.1
 
+### UPDATES
+- Added recommended js version in readme file.
+
 ### Bug Fixes
 - Add caching on category name lookup (scoped by store) to fix slowness in indexing.
 - Prevent loss of synonyms while copying from tmp index during Indexing in Algolia Dashboard.
+- Fixed the translation issue of labels in Algolia autocomplete dropdown
+- Ensured compatibility of the extension with PHP 7.4
+- Resolved the deployment issue related to prefixing Magento database tables
+
 
 ## 3.10.0
 
