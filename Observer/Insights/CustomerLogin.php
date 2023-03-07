@@ -11,7 +11,7 @@ class CustomerLogin implements ObserverInterface
 {
 
     /** @var InsightsHelper */
-    protected InsightsHelper $insightsHelper;
+    protected $insightsHelper;
 
     /**
      * @param InsightsHelper $insightsHelper

@@ -9,7 +9,7 @@ use Magento\Framework\Session\SessionManagerInterface;
 class CheckoutCartProductAddBefore implements ObserverInterface
 {
     /** @var SessionManagerInterface */
-    protected SessionManagerInterface $coreSession;
+    protected $coreSession;
 
     /**
      * @param SessionManagerInterface $coreSession
