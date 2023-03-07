@@ -485,8 +485,8 @@ class ProductHelper
             } else {
                 foreach ($sortingIndices as $values) {
                     $replicaName = $values['name'];
-                    array_unshift($customRanking,$values['ranking'][0]); 
-                    $replicaSetting['customRanking'] = $customRanking;   
+                    array_unshift($customRanking,$values['ranking'][0]);
+                    $replicaSetting['customRanking'] = $customRanking;
                     $this->algoliaHelper->setSettings($replicaName, $replicaSetting, false, false);
                     $this->logger->log('Setting settings to "' . $replicaName . '" replica.');
                     $this->logger->log('Settings: ' . json_encode($replicaSetting));
@@ -502,6 +502,15 @@ class ProductHelper
         // $this->deleteUnusedReplicas($indexName, $replicas, $setReplicasTaskId);
 
         if ($saveToTmpIndicesToo === true) {
+            try {
+                $this->algoliaHelper->copySynonyms($indexName, $indexNameTmp);
+                $this->logger->log('
+                    Copying synonyms from production index to TMP one to not to erase them with the index move.
+                ');
+            } catch (AlgoliaException $e) {
+                $this->logger->error('Error encountered while copying synonyms: ' . $e->getMessage());
+            }
+
             try {
                 $this->algoliaHelper->copyQueryRules($indexName, $indexNameTmp);
                 $this->logger->log('

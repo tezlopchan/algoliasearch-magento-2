@@ -1,11 +1,11 @@
 define([], function () {
     return {
         getNoResultHtml: function ({html}) {
-            return html`<p>No Results</p>`;
+            return html`<p>${algoliaConfig.translations.noResults}</p>`;
         },
 
         getHeaderHtml: function ({section}) {
-            return section.label || section.name;
+            return section.label;
         },
 
         getItemHtml: function ({item, components, html}) {
