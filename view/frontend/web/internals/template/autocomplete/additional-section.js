@@ -1,7 +1,7 @@
 define([], function () {
     return {
         getNoResultHtml: function ({html}) {
-            return html`<p>No Results</p>`;
+            return html`<p>${algoliaConfig.translations.noResults}</p>`;
         },
 
         getHeaderHtml: function ({section}) {

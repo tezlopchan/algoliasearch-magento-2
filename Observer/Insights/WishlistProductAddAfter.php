@@ -15,16 +15,16 @@ use Psr\Log\LoggerInterface;
 class WishlistProductAddAfter implements ObserverInterface
 {
     /** @var Data */
-    protected Data $dataHelper;
+    protected $dataHelper;
 
     /** @var PersonalizationHelper */
-    protected PersonalizationHelper $personalisationHelper;
+    protected $personalisationHelper;
 
     /** @var InsightsHelper */
-    protected InsightsHelper $insightsHelper;
+    protected $insightsHelper;
 
     /** @var LoggerInterface */
-    protected LoggerInterface $logger;
+    protected $logger;
 
     /**
      * CheckoutCartProductAddAfter constructor.
