@@ -1,5 +1,10 @@
 # CHANGE LOG
 
+## 3.10.1
+
+### FIXES
+- Add caching on category name lookup (scoped by store) to fix sloness in indexing.
+- Preserve synonyms on tmp index copy after deprecated from the Magento.
 
 ## 3.10.0
 
