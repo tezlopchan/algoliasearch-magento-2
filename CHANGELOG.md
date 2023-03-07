@@ -1,5 +1,10 @@
 # CHANGE LOG
 
+## 3.10.1
+
+### Bug Fixes
+- Add caching on category name lookup (scoped by store) to fix slowness in indexing.
+- Prevent loss of synonyms while copying from tmp index during Indexing in Algolia Dashboard.
 
 ## 3.10.0
 
