@@ -505,7 +505,7 @@ class ProductHelper
             try {
                 $this->algoliaHelper->copySynonyms($indexName, $indexNameTmp);
                 $this->logger->log('
-                    Copying synonyms from production index to TMP one to not to erase them with the index move.
+                    Copying synonyms from production index to TMP one to not erase them with the index move.
                 ');
             } catch (AlgoliaException $e) {
                 $this->logger->error('Error encountered while copying synonyms: ' . $e->getMessage());
