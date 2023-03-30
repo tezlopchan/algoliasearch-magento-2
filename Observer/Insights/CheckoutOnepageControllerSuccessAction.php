@@ -16,19 +16,19 @@ use Psr\Log\LoggerInterface;
 class CheckoutOnepageControllerSuccessAction implements ObserverInterface
 {
     /** @var Data */
-    protected Data $dataHelper;
+    protected $dataHelper;
 
     /** @var InsightsHelper */
-    protected InsightsHelper $insightsHelper;
+    protected $insightsHelper;
 
     /** @var OrderFactory */
-    protected OrderFactory $orderFactory;
+    protected $orderFactory;
 
     /** @var LoggerInterface */
-    protected LoggerInterface $logger;
+    protected $logger;
 
     /** @var ConfigHelper  */
-    protected ConfigHelper $configHelper;
+    protected $configHelper;
 
     /**
      * @param Data $dataHelper

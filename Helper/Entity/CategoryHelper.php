@@ -50,6 +50,7 @@ class CategoryHelper
     protected $categoryRepository;
 
     protected $isCategoryVisibleInMenuCache;
+    protected $coreCategories;
     protected $idColumn;
     protected $categoryAttributes;
     protected $rootCategoryId = -1;
@@ -548,7 +549,12 @@ class CategoryHelper
      */
     public function getCoreCategories($filterNotIncludedCategories = true, $storeId = null)
     {
-        $key = $filterNotIncludedCategories ? 'filtered' : 'non_filtered';
+        // Cache category look up by store scope
+        $key = ($filterNotIncludedCategories ? 'filtered' : 'non_filtered') . "-$storeId";
+
+        if (isset($this->coreCategories[$key])) {
+            return $this->coreCategories[$key];
+        }
 
         $collection = $this->categoryCollectionFactory->create()
             ->distinct(true)
@@ -562,14 +568,14 @@ class CategoryHelper
             $collection->addAttributeToFilter('include_in_menu', '1');
         }
 
-        $coreCategories[$key] = [];
+        $this->coreCategories[$key] = [];
 
         /** @var \Magento\Catalog\Model\Category $category */
         foreach ($collection as $category) {
-                $coreCategories[$key][$category->getId()] = $category;
+                $this->coreCategories[$key][$category->getId()] = $category;
         }
 
-        return $coreCategories[$key];
+        return $this->coreCategories[$key];
     }
 
     /**

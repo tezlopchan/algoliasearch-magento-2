@@ -327,7 +327,7 @@ define(
         }
 
         if (algoliaConfig.autocomplete.nbOfQueriesSuggestions > 0) {
-            algoliaConfig.autocomplete.sections.unshift({ hitsPerPage: algoliaConfig.autocomplete.nbOfQueriesSuggestions, label: '', name: "suggestions"});
+            algoliaConfig.autocomplete.sections.unshift({ hitsPerPage: algoliaConfig.autocomplete.nbOfQueriesSuggestions, label: algoliaConfig.translations.suggestions, name: "suggestions"});
         }
 
         /**

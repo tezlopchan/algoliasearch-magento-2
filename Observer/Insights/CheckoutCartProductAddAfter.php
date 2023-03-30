@@ -18,22 +18,22 @@ class CheckoutCartProductAddAfter implements ObserverInterface
 {
 
     /** @var Data */
-    protected Data $dataHelper;
+    protected $dataHelper;
 
     /** @var InsightsHelper */
-    protected InsightsHelper $insightsHelper;
+    protected $insightsHelper;
 
     /** @var LoggerInterface */
-    protected LoggerInterface $logger;
+    protected $logger;
 
     /** @var ConfigHelper  */
-    protected ConfigHelper $configHelper;
+    protected $configHelper;
 
     /** @var PersonalizationHelper */
-    private PersonalizationHelper $personalizationHelper;
+    protected $personalizationHelper;
 
     /** @var SessionManagerInterface */
-    protected SessionManagerInterface $coreSession;
+    protected $coreSession;
 
     /**
      * @param Data $dataHelper
